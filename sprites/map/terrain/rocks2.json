@@ -1,0 +1,21 @@
+{"frames": {
+
+"Rocks_03.png":
+{
+	"frame": {"x":1,"y":1,"w":965,"h":58},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":33,"y":34,"w":965,"h":58},
+	"sourceSize": {"w":1024,"h":128},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "rocks2.png",
+	"format": "RGBA8888",
+	"size": {"w":967,"h":60},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:ade60be7983e7dc17c8677505c973f3e:bb1f146b4035e16868d92c051fb87745:054f6022ebeee3b03fd14469118a1983$"
+}
+}
