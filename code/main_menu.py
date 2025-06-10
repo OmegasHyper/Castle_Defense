@@ -63,6 +63,10 @@ class Main_Menu:
     def draw(self):
        # self.display.blit(self.Button_Red_9Slides,self.Button_Red_9Slides_rect)
         self.display.fill('black')
+        menu_background.convert_alpha()
+        scaled_menu_background = pg.transform.scale(menu_background ,(WINDOW_WIDTH,WINDOW_HEIGHT))
+        self.display.blit(scaled_menu_background,(0,0))
+       #buttons
         self.display.blit(self.mid_button[self.button1_state] ,
                           self.mid_button[self.button1_state].get_frect(center = (WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2-80)))
 
@@ -70,6 +74,7 @@ class Main_Menu:
                           self.mid_button[self.button2_state].get_frect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2 +50)))
         self.display.blit(self.start_text,self.start_text_rect)
         self.display.blit(self.exit_text , self.exit_text_rect)
+       #buttons collision
         self.collision()
     def update(self):
         self.input()
