@@ -1,0 +1,21 @@
+{"frames": {
+
+"Tilemap_Elevation.png":
+{
+	"frame": {"x":0,"y":0,"w":256,"h":512},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":256,"h":512},
+	"sourceSize": {"w":256,"h":512},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "elevated_ground.png",
+	"format": "RGBA8888",
+	"size": {"w":256,"h":512},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e1fba17b839a56fd0e1ddc826ab9bfb1:ebf1b0cf13aec375cc704f81a4bc778d:bd4628450aceaca179d5b9406d8f39a6$"
+}
+}

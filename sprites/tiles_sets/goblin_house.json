@@ -1,0 +1,21 @@
+{"frames": {
+
+"Goblin_House.png":
+{
+	"frame": {"x":0,"y":0,"w":128,"h":192},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":128,"h":192},
+	"sourceSize": {"w":128,"h":192},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "goblin_house.png",
+	"format": "RGBA8888",
+	"size": {"w":128,"h":192},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:e4185c6104bec8a2c30a7db68a4f74af:1fa02c7771f0e7f007225db94740fd89:fcffea4f49cbbf09255bb4f5d3c27f4d$"
+}
+}

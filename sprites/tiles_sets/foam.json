@@ -1,0 +1,21 @@
+{"frames": {
+
+"Foam.png":
+{
+	"frame": {"x":0,"y":0,"w":1536,"h":192},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":1536,"h":192},
+	"sourceSize": {"w":1536,"h":192},
+	"pivot": {"x":0.5,"y":0.5}
+}},
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "foam.png",
+	"format": "RGBA8888",
+	"size": {"w":1536,"h":192},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:202eef3d38446f3dad01a4314c07381f:e3ace45e0e1bde08e43109ce13f2474b:efa9f9a02ceb9a0c9aaa07c78ca2adcb$"
+}
+}
