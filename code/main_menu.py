@@ -12,6 +12,8 @@ class Main_Menu:
         self.mid_button = []
         self.mid_button1_rect =None
         self.buttons_spritesheet = pg.image.load('../sprites/buttons/buttons.png').convert_alpha()
+        self.menu_background = pg.image.load('../sprites/menu_background.jpg').convert_alpha()
+        self.menu_background_rect = self.menu_background.get_frect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
 
         self.load()
     def load(self):
@@ -63,8 +65,8 @@ class Main_Menu:
     def draw(self):
        # self.display.blit(self.Button_Red_9Slides,self.Button_Red_9Slides_rect)
         self.display.fill('black')
-        menu_background.convert_alpha()
-        scaled_menu_background = pg.transform.scale(menu_background ,(WINDOW_WIDTH,WINDOW_HEIGHT))
+        self.menu_background.convert_alpha()
+        scaled_menu_background = pg.transform.scale(self.menu_background ,(WINDOW_WIDTH,WINDOW_HEIGHT))
         self.display.blit(scaled_menu_background,(0,0))
        #buttons
         self.display.blit(self.mid_button[self.button1_state] ,

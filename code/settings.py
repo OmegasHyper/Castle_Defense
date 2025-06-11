@@ -3,8 +3,11 @@ from pygame import *
 import json
 import pytmx
 from os.path import join
+from allsprites import *
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
+TILE_SIZE= 64
+
 Tower_upgrades = \
     {
             'level1': {
@@ -41,8 +44,5 @@ Player_upgrades =\
     'speed': 90
 },
 }
-menu_background = pg.image.load('../sprites/menu_background.jpg')
-menu_background_rect = menu_background.get_frect(center = (WINDOW_WIDTH/2,WINDOW_HEIGHT/2))
-
 
 

@@ -2,7 +2,6 @@ from settings import *
 import pygame as pg
 from game import *
 from main_menu import *
-
 class Game_Mannager:
     def __init__(self):
         self.running = True
