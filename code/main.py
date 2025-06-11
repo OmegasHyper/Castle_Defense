@@ -16,6 +16,7 @@ class Game_Mannager:
 
     def run(self):
         while self.running:
+            dt = self.clock.tick_busy_loop(60)/1000
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     self.running = False
@@ -23,6 +24,7 @@ class Game_Mannager:
             if self.state == 'menu':
                 self.main_menu.draw()
             elif self.state == 'game':
+                self.game.update(dt)
                 self.game.draw()
 
             pg.display.update()

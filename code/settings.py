@@ -2,6 +2,8 @@ import pygame as pg
 from pygame import *
 import json
 import pytmx
+from os.path import join
+
 WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
 Tower_upgrades = \
     {
