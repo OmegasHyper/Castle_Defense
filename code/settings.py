@@ -41,7 +41,8 @@ Player_upgrades =\
     'speed': 90
 },
 }
-
+menu_background = pg.image.load('../sprites/menu_background.jpg')
+menu_background_rect = menu_background.get_frect(center = (WINDOW_WIDTH/2,WINDOW_HEIGHT/2))
 
 
 
