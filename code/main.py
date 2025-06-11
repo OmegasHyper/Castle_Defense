@@ -2,6 +2,8 @@ from settings import *
 import pygame as pg
 from game import *
 from main_menu import *
+import os 
+os.chdir(os.path.dirname(__file__))
 class Game_Mannager:
     def __init__(self):
         self.running = True
