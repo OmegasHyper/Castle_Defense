@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="112" height="112" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="871">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="112" height="112" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="872">
  <tileset firstgid="1" source="../tiles_sets/ground.tsx"/>
  <tileset firstgid="41" source="../tiles_sets/castle.tsx"/>
  <tileset firstgid="42" source="../tiles_sets/Tower_Red.tsx"/>
@@ -10,8 +10,8 @@
  <tileset firstgid="89" source="../tiles_sets/decos.tsx"/>
  <tileset firstgid="124" source="../tiles_sets/scare_crow.tsx"/>
  <tileset firstgid="125" source="../tiles_sets/goblin_sign.tsx"/>
- <tileset firstgid="126" source="C:/Users/CompuMart/Desktop/elevated_ground.tsx"/>
- <tileset firstgid="158" source="C:/Users/CompuMart/Desktop/ground.tsx"/>
+ <tileset firstgid="126" source="../tiles_sets/elevated_ground.tsx"/>
+ <tileset firstgid="158" source="../tiles_sets/ground.tsx"/>
  <layer id="1" name="Ground" width="112" height="112">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -776,7 +776,7 @@
  <objectgroup id="3" name="Castle">
   <object id="1" name="Castle" gid="41" x="3013.33" y="3627.33" width="753.333" height="602.667"/>
  </objectgroup>
- <objectgroup id="4" name="Towers" visible="0">
+ <objectgroup id="4" name="Towers">
   <object id="2" name="ST" gid="42" x="3292" y="4278" width="200" height="408"/>
   <object id="3" name="NT" gid="42" x="3293" y="2780" width="200" height="408"/>
   <object id="4" name="ET" gid="42" x="4038" y="3540" width="200" height="408"/>
