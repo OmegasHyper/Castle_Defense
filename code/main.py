@@ -4,6 +4,8 @@ from game import *
 from main_menu import *
 import os 
 os.chdir(os.path.dirname(__file__))
+
+#a7la mesa 3la billy
 class Game_Mannager:
     def __init__(self):
         self.running = True
