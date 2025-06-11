@@ -55,7 +55,6 @@ class Game:
                 continue
 
             collision_surf = pg.Surface((width, height))
-            print(f"Collision object: {width} x {height} at ({x}, {y})")
             collision_surf.fill('red')
             Collision_sprites(self.collision_sprites, collision_surf, (x, y))
         # Load player spawn point
