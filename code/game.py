@@ -1,6 +1,6 @@
 from settings import *
 from player import *
-from ground_sprites import *
+from sprites import *
 from allsprites import *
 from Collision_sprites import *
 from sprites import *
