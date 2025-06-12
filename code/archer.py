@@ -1,14 +1,16 @@
 import os
-
+import Queue
 from PIL.ImageChops import offset
-
+from arrow import *
 from settings import *
 
 class Archer(pg.sprite.Sprite) :
     def __init__(self,groups,pos,direction = "NT",attack_range =700):
         super().__init__(groups)
         self.frames = None      #store ainamtions for each direction
-
+        self.all_sprites = groups[0]
+        self.pos = pos
+        self.direction = direction
         self.direction = direction
         self.attack_range = attack_range
         self.load_images()
@@ -19,8 +21,8 @@ class Archer(pg.sprite.Sprite) :
         self.arching = False
 
         self.image = self.frames[self.direction][0] # if the archer not in the arching state it will be as the 0 image
-        self.rect = self.image.get_frect(center=pos)
-
+        self.rect = self.image.get_frect(center=self.pos)
+        #self.archer_queue = Queue()
     def load_images(self):
         self.frames = self.frames = { 'ET':[], 'NT':[],'ST':[],'WT':[]}
         base_path = "../sprites/archers"
@@ -34,13 +36,13 @@ class Archer(pg.sprite.Sprite) :
                         self.frames[dir_name].append(surf)
 
 
-
     def update_archer(self,dt,enemy_group):
         for enemy in enemy_group:
             if hasattr(enemy,"rect"):
                 distance = pg.math.Vector2(self.rect.center).distance_to(enemy.rect.center)
                 if distance <= self.attack_range:
                     self.arching = True
+                    #self.archer_queue.enqueue(enemy)
                     break
                 else:
                     self.arching = False
@@ -52,6 +54,7 @@ class Archer(pg.sprite.Sprite) :
                 self.last_update = now
                 self.current_frame = (self.current_frame -1 + 1 )% (len(self.frames[self.direction])-1)+1 # cuz starting from frame 1 the frame 0 is used for the static state
                 self.image = self.frames[self.direction][self.current_frame]
+                Arrow(self. direction, self.rect, enemy, self.all_sprites)
 
         else:
             self.image = self.frames[self.direction][0]
@@ -71,26 +74,6 @@ class Archer(pg.sprite.Sprite) :
         pg.draw.arc(range_surface,(255,0,0,100), arc_rect,start_angle ,end_angle,1000)
 
         surface.blit(range_surface,(screen_pos.x - self.attack_range,screen_pos.y-self.attack_range))
-        print(screen_pos)
         surface.blit(self.image , self.rect.topleft)
 
 
-from settings import *
-
-class Node:
-    def __init__(self):
-        pass
-
-class Queue:
-    def __init__(self):
-        pass
-
-class archer:
-    def __init__(self, state):
-        pass
-    def handle_shooting(self):
-        pass
-    def load(self):
-        pass
-    def update(self):
-        pass
