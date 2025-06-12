@@ -12,16 +12,16 @@ class Game:
         self.display = display
         self.all_sprites = AllSPrites()
         self.collision_sprites = pg.sprite.Group()
-        self.collision_sprites2 = pg.sprite.Group()
+        self.collision_sprites2 = pg.sprite.Group() #for archer_animations
         self.tower_sprites = pg.sprite.Group()
         self.archer = pg.sprite.Group()
         self.gamemanager = gamemanager
 
-        CollisionSprites( (3393.33,1910),(30,40),(255,0,0),(self.all_sprites,self.collision_sprites2))
-        self.player = Player(self.all_sprites, (3393.33, 3550), self.collision_sprites)
-        self.archer.add(Archer(self.all_sprites, (3400.33, 2350),"NT"))
-        self.archer.add(Archer(self.all_sprites, (4400, 3370),"ET"))
-        self.archer.add(Archer(self.all_sprites, (2372, 3370),"WT"))
+        CollisionSprites( (3393.33,1910),(30,40),(255,0,0),(self.all_sprites,self.collision_sprites2)) # for testing the archer animations
+
+        Archer((self.all_sprites,self.archer), (3400.33, 2350),"NT")
+        Archer((self.all_sprites,self.archer), (4400, 3370),"ET")
+        Archer((self.all_sprites,self.archer), (2372, 3370),"WT")
 
         self.setup()
 
@@ -68,13 +68,10 @@ class Game:
             collision_surf.fill('red')
             Collision_sprites(self.collision_sprites, collision_surf, (x, y))
         # Load player spawn point
-        # for obj in map.get_layer_by_name('Player_waypoint'):
-        #     self.player = Player(self.all_sprites, (obj.x, obj.y), self.collision_sprites)
-        #     print(obj.x, obj.y)
-        # load archer
         for obj in map.get_layer_by_name('Player_waypoint'):
-            self.archer.add(Archer(self.all_sprites, (obj.x, obj.y),"ST"))
-            print(obj.x, obj.y)
+            self.player = Player(self.all_sprites, (obj.x, obj.y), self.collision_sprites)
+            Archer((self.all_sprites,self.archer), (obj.x, obj.y), "ST")
+
         #load goblin houses
         for obj in map.get_layer_by_name('Goblin_House'):
             # Use the actual house image for visual representation
