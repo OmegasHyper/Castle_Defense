@@ -3,10 +3,13 @@ from player import *
 from sprites import *
 from allsprites import *
 from Collision_sprites import *
-from sprites import *
+from sprites import * 
 from os import*
 from archer import Archer
 from collisionsprites import CollisionSprites
+from enemy import*
+
+
 class Game:
     def __init__(self,display , gamemanager):
         self.display = display
@@ -15,6 +18,11 @@ class Game:
         self.collision_sprites2 = pg.sprite.Group() #for archer_animations
         self.tower_sprites = pg.sprite.Group()
         self.archer = pg.sprite.Group()
+        self.enemy_group = pg.sprite.Group()
+
+        
+        
+
         self.gamemanager = gamemanager
 
         CollisionSprites( (3393.33,1910),(30,40),(255,0,0),(self.all_sprites,self.collision_sprites2)) # for testing the archer animations
@@ -117,6 +125,10 @@ class Game:
             collision_surf = pg.Surface((width, height))
             collision_surf.fill('red')  # This won't be visible, just for debugging
             Collision_sprites(self.collision_sprites, collision_surf, (x, y))
+        self.enemy_queue = Queue()
+        for i in range(5):
+            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (3400 , 5400)))
+            
     def draw_debug_collisions(self):
         """Draw collision boxes for debugging purposes"""
         # Draw player hitbox
@@ -140,6 +152,7 @@ class Game:
         collision_count = len(self.collision_sprites)
         count_text = font.render(f"Collision objects: {collision_count}", True, 'white')
         self.display.blit(count_text, (10, 50))
+        
 
     def draw(self):
         self.display.fill('black')
@@ -152,7 +165,15 @@ class Game:
         # self.draw_debug_collisions()
 
     def update(self,dt):
-        self.player.update(dt)
-
         for archer in self.archer:
             archer.update(dt,self.collision_sprites2)
+
+        Enemy.spawning()
+        if Enemy.spawn == True :
+            enemy = self.enemy_queue.dequeue()
+            if enemy != None :
+                enemy.ismoving = True
+                Enemy.spawn = False
+        self.all_sprites.update(dt)
+        self.draw()
+
