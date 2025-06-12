@@ -6,6 +6,7 @@ import os
 os.chdir(os.path.dirname(__file__))
 
 #a7la mesa 3la billy
+# palmer , bellingham , saka , toney , trent ---> pressure!!! _______  what pressure?
 class Game_Mannager:
     def __init__(self):
         self.running = True
