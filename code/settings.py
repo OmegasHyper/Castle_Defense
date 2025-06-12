@@ -32,7 +32,12 @@ for direction in enemy_paths.keys():
                     enemy_paths[direction][action].append(full_path)
                     print(f"Found path: {direction}/{action}/{file_name}")
 
-
+enemy_frames ={
+        'N': { 'walk': [], 'atk': [] },
+        'S': { 'walk': [], 'atk': [] },
+        'E': { 'walk': [], 'atk': [] },
+        'W': { 'walk': [], 'atk': [] }
+    }
 Tower_upgrades = \
     {
             'level1': {
