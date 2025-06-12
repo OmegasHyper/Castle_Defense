@@ -82,7 +82,8 @@ class Archer(pg.sprite.Sprite) :
                 self.image = self.frames[self.direction][self.current_frame]
                 if enemy_group:
                     Arrow(self.direction, self.rect, enemy, self.all_sprites)
-
+                else:
+                    self.arching = False
         else:
             self.image = self.frames[self.direction][0]
             self.current_frame = 1
