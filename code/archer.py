@@ -71,6 +71,5 @@ class Archer(pg.sprite.Sprite) :
         pg.draw.arc(range_surface,(255,0,0,100), arc_rect,start_angle ,end_angle,1000)
 
         surface.blit(range_surface,(screen_pos.x - self.attack_range,screen_pos.y-self.attack_range))
-        print(screen_pos)
         surface.blit(self.image , self.rect.topleft)
 
