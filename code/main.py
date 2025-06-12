@@ -17,7 +17,15 @@ class Game_Mannager:
         self.game =  Game(self.display , self)
         self.clock = pg.time.Clock()
         self.state = 'menu'
+        self.load()
 
+    def load(self):
+        for direction in enemy_paths.keys():
+            for action in ['walk', 'atk']:
+                for full_path in enemy_paths[direction][action]:
+                        surf = pg.image.load(full_path).convert_alpha()
+                        enemy_frames[direction][action].append(surf)
+                        
     def run(self):
         while self.running:
             dt = self.clock.tick_busy_loop(60)/1000
