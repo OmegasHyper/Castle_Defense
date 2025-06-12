@@ -8,7 +8,7 @@ class Enemy(pg.sprite.Sprite):
     number_eneimes = 0
     spawn_time = 2000
     last_spawn_t = pg.time.get_ticks()
-    display = pg.display.get_surface()
+    
 
     def __init__(self,groups,pos):
         super().__init__(groups)
@@ -19,6 +19,7 @@ class Enemy(pg.sprite.Sprite):
         self.ismoving = False
         self.enemy = True
         Enemy.number_eneimes +=1
+        self.display = pg.display.get_surface()
         print(Enemy.number_eneimes)
         
         ## will be changed  (debugging )
@@ -37,9 +38,9 @@ class Enemy(pg.sprite.Sprite):
 
     def move(self,dt):
         self.rect.center += self.speed*self.direction*dt
-    # def draw( self):
-    #     if self.ismoving:
-    #         Enemy.display.blit(self.image,self.rect)
+    def draw( self,x):
+        if self.ismoving:
+            self.display.blit(self.image,self.rect.topleft + x)
 
     def update(self,dt):
         if self.ismoving :

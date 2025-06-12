@@ -16,7 +16,7 @@ class AllSPrites(pg.sprite.Group):
                 #print(sprite)
                 if  hasattr(sprite , 'enemy') and not hasattr(sprite, 'ground') :
                     if sprite.ismoving:
-                        self.display_surface.blit(sprite.image,sprite.rect.topleft + self.offset)
-                    else : continue
+                        sprite.draw(self.offset)
+                    else :continue
                 else :
                     self.display_surface.blit(sprite.image,sprite.rect.topleft + self.offset)

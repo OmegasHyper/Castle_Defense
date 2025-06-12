@@ -152,4 +152,4 @@ class Game:
                 enemy.ismoving = True
                 Enemy.spawn = False
         self.all_sprites.update(dt)
-        
+        self.draw()

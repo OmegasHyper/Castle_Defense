@@ -31,7 +31,7 @@ class Game_Mannager:
                 self.main_menu.draw()
             elif self.state == 'game':
                 self.game.update(dt)
-                self.game.draw()
+                # self.game.draw()
 
             pg.display.update()
     pg.quit()
