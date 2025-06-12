@@ -6,6 +6,7 @@ import os
 os.chdir(os.path.dirname(__file__))
 
 #a7la mesa 3la billy
+# palmer , bellingham , saka , toney , trent ---> pressure!!! _______  what pressure?
 class Game_Mannager:
     def __init__(self):
         self.running = True
@@ -13,7 +14,7 @@ class Game_Mannager:
         self.display = pg.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
         pg.display.set_caption('Castle Defense')
         self.main_menu = Main_Menu(self.display,self)
-        self.game = Game(self.display , self)
+        self.game =  Game(self.display , self)
         self.clock = pg.time.Clock()
         self.state = 'menu'
 
@@ -23,12 +24,14 @@ class Game_Mannager:
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     self.running = False
+                if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
+                    self.running = False
 
             if self.state == 'menu':
                 self.main_menu.draw()
             elif self.state == 'game':
                 self.game.update(dt)
-                self.game.draw()
+                # self.game.draw()
 
             pg.display.update()
     pg.quit()
