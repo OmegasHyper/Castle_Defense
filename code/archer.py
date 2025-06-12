@@ -1,11 +1,11 @@
 import os
-import Queue
+from Queue import *
 from PIL.ImageChops import offset
 from arrow import *
 from settings import *
 
 class Archer(pg.sprite.Sprite) :
-    def __init__(self,groups,pos,direction = "NT",attack_range =700):
+    def __init__(self,groups,pos,direction = "NT",attack_range =400):
         super().__init__(groups)
         self.frames = None      #store ainamtions for each direction
         self.all_sprites = groups[0]
@@ -16,7 +16,7 @@ class Archer(pg.sprite.Sprite) :
         self.load_images()
 
         self.current_frame = 1
-        self.animation_speed = 150
+        self.animation_speed = 300
         self.last_update = pg.time.get_ticks()
         self.arching = False
 
@@ -40,7 +40,24 @@ class Archer(pg.sprite.Sprite) :
         for enemy in enemy_group:
             if hasattr(enemy,"rect"):
                 distance = pg.math.Vector2(self.rect.center).distance_to(enemy.rect.center)
+                shoot_direction = pg.Vector2(enemy.rect.center) - pg.Vector2(self.rect.center)
+                
                 if distance <= self.attack_range:
+                    if self.direction == "NT":
+                        if shoot_direction.y > 0:
+                            continue
+
+                    if self.direction == "ET":
+                        if shoot_direction.x < 0:
+                            continue
+
+                    if self.direction == "ST":
+                        if shoot_direction.y < 0:
+                            continue
+
+                    if self.direction == "WT":
+                        if shoot_direction.x > 0:
+                            continue
                     self.arching = True
                     #self.archer_queue.enqueue(enemy)
                     break
@@ -54,7 +71,7 @@ class Archer(pg.sprite.Sprite) :
                 self.last_update = now
                 self.current_frame = (self.current_frame -1 + 1 )% (len(self.frames[self.direction])-1)+1 # cuz starting from frame 1 the frame 0 is used for the static state
                 self.image = self.frames[self.direction][self.current_frame]
-                Arrow(self. direction, self.rect, enemy, self.all_sprites)
+                Arrow(self.direction, self.rect, enemy, self.all_sprites)
 
         else:
             self.image = self.frames[self.direction][0]
