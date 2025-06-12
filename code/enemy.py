@@ -68,7 +68,7 @@ class Enemy(pg.sprite.Sprite):
     def load(self):
         base_path = '../sprites/enemies/torch'
         # Load frames for each direction and action
-        for direction in frames.keys():
+        for direction in self.frames.keys():
             for action in ['walk', 'atk']:
                 folder_path = join(base_path, direction, action)
 
