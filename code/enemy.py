@@ -10,7 +10,7 @@ class Enemy(pg.sprite.Sprite):
     spawn_time = 2000
     last_spawn_t = pg.time.get_ticks()
 
-    def __init__(self,groups,pos,state):
+    def __init__(self,groups,pos,state, collision_spr):
         super().__init__(groups)
         self.animate_speed = 24
         self.image= Enemy.image
@@ -25,13 +25,10 @@ class Enemy(pg.sprite.Sprite):
         self.state = state
         self.action = walk
         self.frame_index = 0
-        self.frames ={
-        'N': { 'walk': [], 'atk': [] },
-        'S': { 'walk': [], 'atk': [] },
-        'E': { 'walk': [], 'atk': [] },
-        'W': { 'walk': [], 'atk': [] }
-    }
-        self.load()
+        self.collision_spr = collision_spr
+        self.hitbox_rect = self.rect
+        
+        
 
         ## will be changed  (debugging )
     def direction_func (self,x = 0 , y=-1 ):
@@ -45,6 +42,16 @@ class Enemy(pg.sprite.Sprite):
             Enemy.spawn = True
             Enemy.last_spawn_t = recent_spawn
         else : Enemy.spawn = False
+    def collision(self , direction):
+        for sprite in self.collision_spr:
+            if sprite.rect.colliderect(self.hitbox_rect):
+                if(direction == 'x'):
+                    if self.direction.x > 0 : self.hitbox_rect.right = sprite.rect.left
+                    if self.direction.x < 0: self.hitbox_rect.left = sprite.rect.right
+                else:
+                    if self.direction.y > 0: self.hitbox_rect.bottom = sprite.rect.top
+                    if self.direction.y < 0 : self.hitbox_rect.top = sprite.rect.bottom
+                self.rect.center = self.hitbox_rect.center
 
     def handle_direction(self):
         if self.state == 'N':
@@ -59,31 +66,21 @@ class Enemy(pg.sprite.Sprite):
     def animate(self,dt):
         if self.ismoving:
             self.frame_index = self.frame_index + self.animate_speed * dt if self.direction else 0
-            self.image = self.frames[self.state]['walk'][int(self.frame_index) % len(self.frames[self.state]['walk'])]
-
-
-    def load(self):
-        for direction in enemy_paths.keys():
-            for action in ['walk', 'atk']:
-                for full_path in enemy_paths[direction][action]:
-                    try:
-                        surf = pg.image.load(full_path).convert_alpha()
-                        self.frames[direction][action].append(surf)
-                        print(f"Loaded image: {full_path}")
-                    except enemy_paths.error as e:
-                        print(f"Error loading {full_path}: {e}")
-
-        print(self.frames)
-
+            self.image = enemy_frames[self.state]['walk'][int(self.frame_index) % len(enemy_frames[self.state]['walk'])]
     def move(self,dt):
         self.handle_direction()
-        self.rect.center += self.speed*self.direction*dt
+        self.hitbox_rect.x += self.direction.x * self.speed * dt
+        self.collision('x')
+        self.hitbox_rect.y += self.direction.y * self.speed * dt
+        self.collision('y')
+        self.rect.center = self.hitbox_rect.center
     def draw( self,x):
         if self.ismoving:
             self.display.blit(self.image,self.rect.topleft + x)
 
     def update(self,dt):
         if self.ismoving :
+            self.collision(self.direction)
             self.move(dt)
             self.animate(dt)
         
