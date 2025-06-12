@@ -13,6 +13,7 @@ class Enemy(pg.sprite.Sprite):
     def __init__(self,groups,pos,state, collision_spr):
         super().__init__(groups)
         self.animate_speed = 24
+        self.health = 500
         self.image= Enemy.image
         self.rect = self.image.get_frect(center=pos)
         self.speed = 200
@@ -83,6 +84,10 @@ class Enemy(pg.sprite.Sprite):
             self.collision(self.direction)
             self.move(dt)
             self.animate(dt)
+
+    def get_killed(self):
+        Enemy.number_eneimes -= 1
+        self.kill()
         
 
 

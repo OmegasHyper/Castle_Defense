@@ -29,7 +29,7 @@ class Game:
 
         # CollisionSprites( (3393.33,1910),(30,40),(255,0,0),(self.all_sprites,self.collision_sprites2)) # for testing the archer animations
 
-        Archer((self.all_sprites,self.archer), (3400.33, 2350),"NT")
+        Archer((self.all_sprites,self.archer), (3400.33, 2450),"NT")
         Archer((self.all_sprites,self.archer), (4400, 3370),"ET")
         Archer((self.all_sprites,self.archer), (2372, 3370),"WT")
 

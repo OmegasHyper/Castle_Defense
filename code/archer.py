@@ -3,10 +3,13 @@ from Queue import *
 from PIL.ImageChops import offset
 from arrow import *
 from settings import *
+from enemy import *
 
 class Archer(pg.sprite.Sprite) :
     def __init__(self,groups,pos,direction = "NT",attack_range =400):
         super().__init__(groups)
+        self.Wave_Font = pg.font.Font('../sprites/fonts/Minecraft.ttf', 90)
+        self.Wave_text = self.Wave_Font.render("Wave Cleared", True, (240, 240, 240))
         self.frames = None      #store ainamtions for each direction
         self.all_sprites = groups[0]
         self.pos = pos
@@ -38,6 +41,12 @@ class Archer(pg.sprite.Sprite) :
 
     def update_archer(self,dt,enemy_group):
         for enemy in enemy_group:
+            print(Enemy.number_eneimes)
+            if Enemy.number_eneimes == 0:
+                self.arching = False
+                print('waveClear')
+                #Text = self.Wave_text.get_frect(center=(WINDOW_WIDTH, WINDOW_HEIGHT))
+                continue
             if hasattr(enemy,"rect"):
                 distance = pg.math.Vector2(self.rect.center).distance_to(enemy.rect.center)
                 shoot_direction = pg.Vector2(enemy.rect.center) - pg.Vector2(self.rect.center)
@@ -82,13 +91,12 @@ class Archer(pg.sprite.Sprite) :
 
         range_surface = pg.Surface((self.attack_range*2 ,self.attack_range*2),pg.SRCALPHA)
         arc_rect = pg.Rect(0,0,self.attack_range*2,self.attack_range*2)
-        directyion_angle = {'NT':(0.4,2.74),#1.57,2.14
+        direction_angle = {'NT':(0.4,2.74),#1.57,2.14
                             'ST':(3.54,5.88),
                             'ET':(5.1,1.17),#5.7,6.28
                             'WT':(1.97,4.31)} #(3.14,3.7)
 
-        start_angle ,end_angle = directyion_angle.get(self.direction,(0,6.28))
-        pg.draw.arc(range_surface,(255,0,0,100), arc_rect,start_angle ,end_angle,1000)
+        start_angle ,end_angle = direction_angle.get(self.direction,(0,6.28))
 
         surface.blit(range_surface,(screen_pos.x - self.attack_range,screen_pos.y-self.attack_range))
         surface.blit(self.image , self.rect.topleft)
