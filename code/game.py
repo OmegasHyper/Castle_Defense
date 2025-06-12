@@ -5,15 +5,31 @@ from allsprites import *
 from Collision_sprites import *
 from sprites import * 
 from os import*
+from archer import Archer
+from collisionsprites import CollisionSprites
 from enemy import*
+
+
 class Game:
     def __init__(self,display , gamemanager):
         self.display = display
         self.all_sprites = AllSPrites()
         self.collision_sprites = pg.sprite.Group()
+        self.collision_sprites2 = pg.sprite.Group() #for archer_animations
         self.tower_sprites = pg.sprite.Group()
+        self.archer = pg.sprite.Group()
         self.enemy_group = pg.sprite.Group()
+
+        
+        
+
         self.gamemanager = gamemanager
+
+        CollisionSprites( (3393.33,1910),(30,40),(255,0,0),(self.all_sprites,self.collision_sprites2)) # for testing the archer animations
+
+        Archer((self.all_sprites,self.archer), (3400.33, 2350),"NT")
+        Archer((self.all_sprites,self.archer), (4400, 3370),"ET")
+        Archer((self.all_sprites,self.archer), (2372, 3370),"WT")
 
         self.setup()
 
@@ -62,6 +78,8 @@ class Game:
         # Load player spawn point
         for obj in map.get_layer_by_name('Player_waypoint'):
             self.player = Player(self.all_sprites, (obj.x, obj.y), self.collision_sprites)
+            Archer((self.all_sprites,self.archer), (obj.x, obj.y), "ST")
+
         #load goblin houses
         for obj in map.get_layer_by_name('Goblin_House'):
             # Use the actual house image for visual representation
@@ -89,6 +107,7 @@ class Game:
             collision_surf = pg.Surface((width, height))
             collision_surf.fill('red')  # This won't be visible, just for debugging
             Collision_sprites(self.collision_sprites, collision_surf, (x, y))
+            print (obj.x, obj.y)
         for obj in map.get_layer_by_name('Castle'):
             # Use the actual catsle image for scaling
             original_image = obj.image
@@ -140,11 +159,15 @@ class Game:
 
         # Draw sprites
         self.all_sprites.draw(self.player.rect.center)
-
+        for archer in self.archer:
+            archer.draw(self.display,self.all_sprites.offset)
         # Add this line to see collision boxes (remove when not debugging)
-        self.draw_debug_collisions()
+        # self.draw_debug_collisions()
 
     def update(self,dt):
+        for archer in self.archer:
+            archer.update(dt,self.collision_sprites2)
+
         Enemy.spawning()
         if Enemy.spawn == True :
             enemy = self.enemy_queue.dequeue()
@@ -153,3 +176,4 @@ class Game:
                 Enemy.spawn = False
         self.all_sprites.update(dt)
         self.draw()
+

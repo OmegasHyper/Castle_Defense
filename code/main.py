@@ -14,7 +14,7 @@ class Game_Mannager:
         self.display = pg.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
         pg.display.set_caption('Castle Defense')
         self.main_menu = Main_Menu(self.display,self)
-        self.game = Game(self.display , self)
+        self.game =  Game(self.display , self)
         self.clock = pg.time.Clock()
         self.state = 'menu'
 
