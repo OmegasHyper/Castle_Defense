@@ -1,3 +1,5 @@
+from random import randint
+
 from settings import *
 from player import *
 from sprites import *
@@ -125,9 +127,13 @@ class Game:
             collision_surf = pg.Surface((width, height))
             collision_surf.fill('red')  # This won't be visible, just for debugging
             Collision_sprites(self.collision_sprites, collision_surf, (x, y))
+        self.enemy_waypoints =[]
+        for obj in map.get_layer_by_name('Enemy_waypoint'):
+            self.enemy_waypoints.append(obj)
         self.enemy_queue = Queue()
-        for i in range(5):
-            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (3400 , 5400)))
+        for i in range(waves['1']['weak']):
+            rand_waypoint = self.enemy_waypoints[randint(0,3)]
+            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name))
             
     def draw_debug_collisions(self):
         """Draw collision boxes for debugging purposes"""
@@ -160,13 +166,13 @@ class Game:
         # Draw sprites
         self.all_sprites.draw(self.player.rect.center)
         for archer in self.archer:
-            archer.draw(self.display,self.all_sprites.offset)
+            archer.draw_range(self.display)
         # Add this line to see collision boxes (remove when not debugging)
         # self.draw_debug_collisions()
 
     def update(self,dt):
         for archer in self.archer:
-            archer.update(dt,self.collision_sprites2)
+            archer.update_archer(dt,self.enemy_group)
 
         Enemy.spawning()
         if Enemy.spawn == True :
