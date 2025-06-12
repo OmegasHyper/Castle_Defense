@@ -3,14 +3,16 @@ from player import *
 from sprites import *
 from allsprites import *
 from Collision_sprites import *
-from sprites import *
+from sprites import * 
 from os import*
+from enemy import*
 class Game:
     def __init__(self,display , gamemanager):
         self.display = display
         self.all_sprites = AllSPrites()
         self.collision_sprites = pg.sprite.Group()
         self.tower_sprites = pg.sprite.Group()
+        self.enemy_group = pg.sprite.Group()
         self.gamemanager = gamemanager
 
         self.setup()
@@ -104,6 +106,10 @@ class Game:
             collision_surf = pg.Surface((width, height))
             collision_surf.fill('red')  # This won't be visible, just for debugging
             Collision_sprites(self.collision_sprites, collision_surf, (x, y))
+        self.enemy_queue = Queue()
+        for i in range(20):
+            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (3400 , 5400)))
+            
     def draw_debug_collisions(self):
         """Draw collision boxes for debugging purposes"""
         # Draw player hitbox
@@ -127,6 +133,7 @@ class Game:
         collision_count = len(self.collision_sprites)
         count_text = font.render(f"Collision objects: {collision_count}", True, 'white')
         self.display.blit(count_text, (10, 50))
+        
 
     def draw(self):
         self.display.fill('black')
@@ -138,4 +145,12 @@ class Game:
         self.draw_debug_collisions()
 
     def update(self,dt):
-        self.player.update(dt)
+        # self.player.update(dt)
+        Enemy.spawning()
+        if Enemy.spawn == True:
+            enemy = self.enemy_queue.dequeue()
+            enemy.ismoving = True
+            Enemy.spawn = False
+        # self.enemy_group.update(dt)
+        self.all_sprites.update(dt)
+        

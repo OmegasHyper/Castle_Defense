@@ -10,7 +10,13 @@ class AllSPrites(pg.sprite.Group):
         self.offset.y = 720 / 2 - target_pos[1]
         ground_sprites = [sprite for sprite in self if hasattr(sprite , 'ground' )]
         object_sprites = [sprite for sprite in self if not hasattr(sprite , 'ground' )]
-        for layer in [ground_sprites,object_sprites]:#the order is important
+        enemy_sprites  = [sprite for sprite in self if hasattr(sprite , 'enemy') and not hasattr(sprite, 'ground') ]
+        for layer in [ground_sprites,object_sprites, enemy_sprites]:#the order is important
             for sprite in sorted(layer,key  = lambda sprite: sprite.rect.centery):
                 #print(sprite)
-                self.display_surface.blit(sprite.image,sprite.rect.topleft + self.offset)
+                if  hasattr(sprite , 'enemy') and not hasattr(sprite, 'ground') :
+                    if sprite.ismoving:
+                        self.display_surface.blit(sprite.image,sprite.rect.topleft + self.offset)
+                    else : continue
+                else :
+                    self.display_surface.blit(sprite.image,sprite.rect.topleft + self.offset)
