@@ -18,7 +18,7 @@ class Queue :
 
     def dequeue(self):
         if self.isempty():
-            return "empty Queue"
+            return None
         elif self.front==self.back:
             temp = self.front
             self.back=self.front=None

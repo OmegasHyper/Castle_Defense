@@ -107,7 +107,7 @@ class Game:
             collision_surf.fill('red')  # This won't be visible, just for debugging
             Collision_sprites(self.collision_sprites, collision_surf, (x, y))
         self.enemy_queue = Queue()
-        for i in range(20):
+        for i in range(5):
             self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (3400 , 5400)))
             
     def draw_debug_collisions(self):
@@ -145,12 +145,11 @@ class Game:
         self.draw_debug_collisions()
 
     def update(self,dt):
-        # self.player.update(dt)
         Enemy.spawning()
-        if Enemy.spawn == True:
+        if Enemy.spawn == True :
             enemy = self.enemy_queue.dequeue()
-            enemy.ismoving = True
-            Enemy.spawn = False
-        # self.enemy_group.update(dt)
+            if enemy != None :
+                enemy.ismoving = True
+                Enemy.spawn = False
         self.all_sprites.update(dt)
         
