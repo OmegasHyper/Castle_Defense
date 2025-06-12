@@ -80,7 +80,8 @@ class Archer(pg.sprite.Sprite) :
                 self.last_update = now
                 self.current_frame = (self.current_frame -1 + 1 )% (len(self.frames[self.direction])-1)+1 # cuz starting from frame 1 the frame 0 is used for the static state
                 self.image = self.frames[self.direction][self.current_frame]
-                Arrow(self.direction, self.rect, enemy, self.all_sprites)
+                if enemy_group:
+                    Arrow(self.direction, self.rect, enemy, self.all_sprites)
 
         else:
             self.image = self.frames[self.direction][0]
