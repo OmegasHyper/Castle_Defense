@@ -5,7 +5,7 @@ from PIL.ImageChops import offset
 from settings import *
 
 class Archer(pg.sprite.Sprite) :
-    def __init__(self,groups,pos,direction = "NT",attack_range =1150):
+    def __init__(self,groups,pos,direction = "NT",attack_range =800):
         super().__init__(groups)
         # self.image = pg.image.load("../sprites/archers/ST/0.png")
         self.circle = None
@@ -76,10 +76,25 @@ class Archer(pg.sprite.Sprite) :
             self.image = self.frames[self.direction][0]
             self.current_frame = 1
 
-    def draw(self, surfacet):
-        #pos = self.rect.center+offset
-        # self.circle =none\
-        pg.draw.circle(surface,"red", self.rect.center,self.attack_range,1)
+    def draw(self, surface,offset):
+        screen_pos = pg.Vector2(self.rect.center) + offset
+        # offset = pg.Vector2(0.0)
+        # create a transparent surface for the range circle
+        range_surface = pg.Surface((self.attack_range*2 ,self.attack_range*2),pg.SRCALPHA)
+        arc_rect = pg.Rect(0,0,self.attack_range*2,self.attack_range*2)
+        directyion_angle = {'NT':(0.4,2.74),#1.57,2.14
+                            'ST':(3.54,5.88),
+                            'ET':(5.1,1.17),#5.7,6.28
+                            'WT':(1.97,4.31)} #(3.14,3.7)
+
+        start_angle ,end_angle = directyion_angle.get(self.direction,(0,6.28))
+        pg.draw.arc(range_surface,(255,0,0,100), arc_rect,start_angle ,end_angle,1000)
+        # draw the translucrant red circle (filled)
+        # pg.draw.circle(range_surface,(255,0,0,80),(self.attack_range,self.attack_range),self.attack_range)
+
+        surface.blit(range_surface,(screen_pos.x - self.attack_range,screen_pos.y-self.attack_range))
+        surface.blit(self.image , self.rect.topleft+offset)
+        # print("archer position",self.rect.topleft)
         # pg.draw.circle(surface,"white",(0,255,0), self.rect.center ,self.attack_range,1)
         # self.circle.fill('white')
 

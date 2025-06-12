@@ -17,7 +17,7 @@ class Game:
         self.archer = pg.sprite.Group()
         self.gamemanager = gamemanager
 
-        CollisionSprites( (3393.33,1210),(30,40),(self.all_sprites,self.collision_sprites2))
+        CollisionSprites( (3393.33,1910),(30,40),(255,0,0),(self.all_sprites,self.collision_sprites2))
         self.player = Player(self.all_sprites, (3393.33, 3550), self.collision_sprites)
         self.archer.add(Archer(self.all_sprites, (3400.33, 2350),"NT"))
         self.archer.add(Archer(self.all_sprites, (4400, 3370),"ET"))
@@ -150,7 +150,7 @@ class Game:
         # Draw sprites
         self.all_sprites.draw(self.player.rect.center)
         for archer in self.archer:
-            self.archer.draw(self.display,self.all_sprites.offset)
+            archer.draw(self.display,self.all_sprites.offset)
         # Add this line to see collision boxes (remove when not debugging)
         # self.draw_debug_collisions()
 
