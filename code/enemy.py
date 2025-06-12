@@ -2,16 +2,17 @@ from settings import *
 from Queue import Queue
 #from ground import collisionsprites
 
+
 class Enemy(pg.sprite.Sprite):
     image = pg.image.load("../sprites/enemies/torch/E/walk/3.png")
     spawn =True
     number_eneimes = 0
     spawn_time = 2000
     last_spawn_t = pg.time.get_ticks()
-    
 
     def __init__(self,groups,pos,state):
         super().__init__(groups)
+        self.animate_speed = 24
         self.image= Enemy.image
         self.rect = self.image.get_frect(center=pos)
         self.speed = 200
@@ -23,25 +24,15 @@ class Enemy(pg.sprite.Sprite):
         print(Enemy.number_eneimes)
         self.state = state
         self.action = walk
-        self.frames = {
-            'N': {
-                'walk': [],
-                'atk': []
-            },
-            'S': {
-                'walk': [],
-                'atk': []
-            },
-            'E': {
-                'walk': [],
-                'atk': []
-            },
-            'W': {
-                'walk': [],
-                'atk': []
-            }
-        }
-        
+        self.frame_index = 0
+        self.frames ={
+        'N': { 'walk': [], 'atk': [] },
+        'S': { 'walk': [], 'atk': [] },
+        'E': { 'walk': [], 'atk': [] },
+        'W': { 'walk': [], 'atk': [] }
+    }
+        self.load()
+
         ## will be changed  (debugging )
     def direction_func (self,x = 0 , y=-1 ):
         # takes the direction as x and y make vector and normalize
@@ -65,24 +56,24 @@ class Enemy(pg.sprite.Sprite):
         if self.state == 'S':
             self.direction_func(0, -1)
 
+    def animate(self,dt):
+        if self.ismoving:
+            self.frame_index = self.frame_index + self.animate_speed * dt if self.direction else 0
+            self.image = self.frames[self.state]['walk'][int(self.frame_index) % len(self.frames[self.state]['walk'])]
+
+
     def load(self):
-        base_path = '../sprites/enemies/torch'
-        # Load frames for each direction and action
-        for direction in self.frames.keys():
+        for direction in enemy_paths.keys():
             for action in ['walk', 'atk']:
-                folder_path = join(base_path, direction, action)
+                for full_path in enemy_paths[direction][action]:
+                    try:
+                        surf = pg.image.load(full_path).convert_alpha()
+                        self.frames[direction][action].append(surf)
+                        print(f"Loaded image: {full_path}")
+                    except enemy_paths.error as e:
+                        print(f"Error loading {full_path}: {e}")
 
-                for root_path, sub_dirs, file_names in walk(folder_path):
-                    if file_names:
-                        # Filter only PNG files and sort numerically
-                        png_files = [f for f in file_names if f.endswith('.png')]
-
-                        for file_name in sorted(png_files, key=lambda name: int(name.split('.')[0])):
-                            full_path = join(root_path, file_name)
-
-                            surf = pg.image.load(full_path).convert_alpha()
-                            self.frames[direction][action].append(surf)
-                            print(f"Loaded: {direction}/{action}/{file_name}")
+        print(self.frames)
 
     def move(self,dt):
         self.handle_direction()
@@ -94,6 +85,7 @@ class Enemy(pg.sprite.Sprite):
     def update(self,dt):
         if self.ismoving :
             self.move(dt)
+            self.animate(dt)
         
 
 

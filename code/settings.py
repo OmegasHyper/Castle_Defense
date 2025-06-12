@@ -10,6 +10,29 @@ os.chdir(os.path.dirname(__file__))
 WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
 TILE_SIZE= 64
 
+### loading enemies animation ###
+base_path = '../sprites/enemies/torch'
+enemy_paths = {
+    'N': {'walk': [], 'atk': []},
+    'S': {'walk': [], 'atk': []},
+    'E': {'walk': [], 'atk': []},
+    'W': {'walk': [], 'atk': []}
+}
+
+# Get paths for each direction and action
+for direction in enemy_paths.keys():
+    for action in ['walk', 'atk']:
+        folder_path = join(base_path, direction, action)
+        for root_path, sub_dirs, file_names in walk(folder_path):
+            if file_names:
+                # Filter only PNG files and sort numerically
+                png_files = [f for f in file_names if f.endswith('.png')]
+                for file_name in sorted(png_files, key=lambda name: int(name.split('.')[0])):
+                    full_path = join(root_path, file_name)
+                    enemy_paths[direction][action].append(full_path)
+                    print(f"Found path: {direction}/{action}/{file_name}")
+
+
 Tower_upgrades = \
     {
             'level1': {
