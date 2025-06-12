@@ -160,13 +160,13 @@ class Game:
         # Draw sprites
         self.all_sprites.draw(self.player.rect.center)
         for archer in self.archer:
-            archer.draw(self.display,self.all_sprites.offset)
+            archer.draw_range(self.display)
         # Add this line to see collision boxes (remove when not debugging)
         # self.draw_debug_collisions()
 
     def update(self,dt):
         for archer in self.archer:
-            archer.update(dt,self.collision_sprites2)
+            archer.update_archer(dt,self.enemy_group)
 
         Enemy.spawning()
         if Enemy.spawn == True :

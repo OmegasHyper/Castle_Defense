@@ -35,13 +35,15 @@ class Archer(pg.sprite.Sprite) :
 
 
 
-    def update(self,dt,enemy_group):
+    def update_archer(self,dt,enemy_group):
         for enemy in enemy_group:
             if hasattr(enemy,"rect"):
                 distance = pg.math.Vector2(self.rect.center).distance_to(enemy.rect.center)
                 if distance <= self.attack_range:
                     self.arching = True
                     break
+                else:
+                    self.arching = False
 
 
         if self.arching:
@@ -55,8 +57,8 @@ class Archer(pg.sprite.Sprite) :
             self.image = self.frames[self.direction][0]
             self.current_frame = 1
 
-    def draw(self, surface,offset):
-        screen_pos = pg.Vector2(self.rect.center) + offset
+    def draw_range(self, surface):
+        screen_pos = pg.Vector2(self.rect.center)
 
         range_surface = pg.Surface((self.attack_range*2 ,self.attack_range*2),pg.SRCALPHA)
         arc_rect = pg.Rect(0,0,self.attack_range*2,self.attack_range*2)
@@ -69,5 +71,6 @@ class Archer(pg.sprite.Sprite) :
         pg.draw.arc(range_surface,(255,0,0,100), arc_rect,start_angle ,end_angle,1000)
 
         surface.blit(range_surface,(screen_pos.x - self.attack_range,screen_pos.y-self.attack_range))
-        surface.blit(self.image , self.rect.topleft+offset)
+        print(screen_pos)
+        surface.blit(self.image , self.rect.topleft)
 
