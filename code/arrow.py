@@ -3,6 +3,8 @@ from game import *
 class Arrow(pg.sprite.Sprite):
     def __init__(self, direction, archer_rect, target, groups):
         super().__init__(groups)
+        self.liftime = 500
+        self.start_time = pg.time.get_ticks()
         self.target = target
         self.front = None
         self.arrow_path = "../sprites/archers/Arrow"
@@ -26,5 +28,6 @@ class Arrow(pg.sprite.Sprite):
     def update(self, dt):
         self.rect.center += self.speed * self.direction * dt
         #if pg.sprite.spritecollide(self, )
-        if self.rect.centerx >= 4600:
+        current_time = pg.time.get_ticks()
+        if current_time - self.start_time >= self.liftime:
             self.kill()
