@@ -41,6 +41,7 @@ class Enemy(pg.sprite.Sprite):
         self.health_bar_bg = pg.Surface((self.health_bar_width, self.health_bar_height), pg.SRCALPHA)
         pg.draw.rect(self.health_bar_bg, (0, 0, 0), (0, 0, self.health_bar_width, self.health_bar_height),
                      border_radius=4)
+        self.die_sound = pg.mixer.Sound("../sounds/goblin_death.wav")
 
         ## will be changed  (debugging )
     def direction_func (self,x = 0 , y=-1 ):
@@ -124,6 +125,7 @@ class Enemy(pg.sprite.Sprite):
 
     def get_killed(self):
         Enemy.number_eneimes -= 1
+        self.die_sound.play()
         self.kill()
         
 
