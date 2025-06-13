@@ -8,6 +8,9 @@ DARK_RED = (139, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 die_sound = pg.mixer.Sound("../sounds/goblin_death.wav")
+die_sound.set_volume(0.4)
+goblin_attack_sound = pg.mixer.Sound("../sounds/goblin_attack.wav")
+goblin_attack_sound.set_volume(0.3)
 class Enemy(pg.sprite.Sprite):
     image = pg.image.load("../sprites/enemies/torch/E/walk/3.png")
     Strongimage = pg.image.load("../sprites/enemies/barrel/N/walk/1.png")
@@ -100,6 +103,7 @@ class Enemy(pg.sprite.Sprite):
                     if self.direction.y < 0 : self.hitbox_rect.top = sprite.hitbox.bottom
                 self.rect.center = self.hitbox_rect.center
                 if self.isAttacking:
+                    goblin_attack_sound.play()
                     now = pg.time.get_ticks()
                     if now - self.last_attack > self.atk_speed:
                         self.last_attack =now
