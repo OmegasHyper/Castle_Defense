@@ -172,7 +172,7 @@ class Game:
             rand_waypoint = self.enemy_waypoints[randint(0,3)]
             self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,True))
         
-        print("round created")
+        print(f"round {r} created")
 
     
     time_start_wait =0
@@ -198,12 +198,12 @@ class Game:
         # timer for waves 
         if not self.enemy_queue.get_size() :
             print("round finish")
-            self.round +=1
             if Game.get_time:
+                self.round +=1
                 Game.time_start_wait = pg.time.get_ticks()
                 Game.get_time = False
             create = not self.wait(1000,Game.time_start_wait)      ## the timer is changable for debuging it has to be from levels table
-            if create:
+            if create and self.round <= 3:
                 self.create_round(self.round)
                 Game.get_time = True
         self.all_sprites.update(dt)

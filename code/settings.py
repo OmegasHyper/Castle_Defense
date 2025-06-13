@@ -106,12 +106,12 @@ Player_upgrades =\
 waves = {
     '1': {
         'weak': 1,
-        'strong': 100,
+        'strong': 2,
         'spawn_time':2000
     },
     '2': {
         'weak': 0,
-        'strong': 20,
+        'strong': 4,
         'spawn_time':1000
     },
     '3': {
