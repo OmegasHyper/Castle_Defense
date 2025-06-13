@@ -18,7 +18,6 @@ class Main_Menu:
 
         self.load()
     def load(self):
-        self.buttons_spritesheet = pg.image.load('../sprites/buttons/buttons.png').convert_alpha()
         with open('../sprites/buttons/buttons.json') as f:
             data = json.load(f)
         buttons = data['frames']
@@ -52,14 +51,14 @@ class Main_Menu:
     def collision(self):
         if self.button1_rect.collidepoint(pg.mouse.get_pos()):
             self.button1_state = 1
-            if pg.mouse.get_pressed()[0]:
+            if pg.mouse.get_just_pressed()[0]:
                 self.button1_state = 2
                 self.gamemanager.state = 'game'
         else :
             self.button1_state = 0
         if self.button2_rect.collidepoint(pg.mouse.get_pos()):
             self.button2_state = 1
-            if pg.mouse.get_pressed()[0]:
+            if pg.mouse.get_just_pressed()[0]:
                 self.button2_state = 2
                 self.gamemanager.running = False
         else :
