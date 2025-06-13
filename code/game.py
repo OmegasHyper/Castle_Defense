@@ -240,13 +240,11 @@ class Game:
         Enemy.spawning()
         if Enemy.spawn == True :
             enemy = self.enemy_queue.dequeue()
-            print("enemy gooo")
             if enemy != None :
                 enemy.ismoving = True
                 Enemy.spawn = False
         # timer for waves 
         if not self.enemy_queue.get_size() :
-            print("round finish")
             if Game.get_time:
                 self.round +=1
                 Game.time_start_wait = pg.time.get_ticks()
