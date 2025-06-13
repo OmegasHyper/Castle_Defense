@@ -6,20 +6,18 @@ from settings import *
 from enemy import *
 
 class Archer(pg.sprite.Sprite) :
-    def __init__(self,groups,pos,direction = "NT",attack_range =400):
+    def __init__(self,groups,pos,direction = "NT"):
         super().__init__(groups)
-        self.Wave_Font = pg.font.Font('../sprites/fonts/Minecraft.ttf', 90)
-        self.Wave_text = self.Wave_Font.render("Wave Cleared", True, (240, 240, 240))
         self.frames = None      #store ainamtions for each direction
         self.all_sprites = groups[0]
         self.pos = pos
         self.direction = direction
         self.direction = direction
-        self.attack_range = attack_range
+        self.attack_range = 500
         self.load_images()
 
         self.current_frame = 1
-        self.animation_speed = 300
+        self.animation_speed = 60
         self.last_update = pg.time.get_ticks()
         self.arching = False
 
@@ -41,12 +39,6 @@ class Archer(pg.sprite.Sprite) :
 
     def update_archer(self,dt,enemy_group):
         for enemy in enemy_group:
-            print(Enemy.number_eneimes)
-            if Enemy.number_eneimes == 0:
-                self.arching = False
-                print('waveClear')
-                #Text = self.Wave_text.get_frect(center=(WINDOW_WIDTH, WINDOW_HEIGHT))
-                continue
             if hasattr(enemy,"rect"):
                 distance = pg.math.Vector2(self.rect.center).distance_to(enemy.rect.center)
                 shoot_direction = pg.Vector2(enemy.rect.center) - pg.Vector2(self.rect.center)
@@ -68,11 +60,9 @@ class Archer(pg.sprite.Sprite) :
                         if shoot_direction.x > 0:
                             continue
                     self.arching = True
-                    #self.archer_queue.enqueue(enemy)
                     break
                 else:
                     self.arching = False
-
 
         if self.arching:
             now = pg.time.get_ticks()
@@ -80,7 +70,7 @@ class Archer(pg.sprite.Sprite) :
                 self.last_update = now
                 self.current_frame = (self.current_frame -1 + 1 )% (len(self.frames[self.direction])-1)+1 # cuz starting from frame 1 the frame 0 is used for the static state
                 self.image = self.frames[self.direction][self.current_frame]
-                if enemy_group:
+                if enemy_group and self.current_frame == 6:
                     Arrow(self.direction, self.rect, enemy, self.all_sprites)
                 else:
                     self.arching = False

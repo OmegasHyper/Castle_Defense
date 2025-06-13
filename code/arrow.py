@@ -18,7 +18,7 @@ class Arrow(pg.sprite.Sprite):
             rect = self.image.get_frect(midright = archer_rect.center)
         
         self.rect = rect
-        self.speed = 300
+        self.speed = 900
         self.damage = 100
         self.direction = pg.math.Vector2(self.target.rect.center)- pg.math.Vector2(archer_rect.center)
         self.direction = self.direction.normalize() if direction else direction

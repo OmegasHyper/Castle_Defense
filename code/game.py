@@ -1,5 +1,4 @@
 from random import randint
-
 from settings import *
 from player import *
 from sprites import *
