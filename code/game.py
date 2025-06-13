@@ -5,7 +5,7 @@ from sprites import *
 from allsprites import *
 from Collision_sprites import *
 from sprites import * 
-from os import*
+#from os import*      os has open() that overrides json.open()
 from archer import Archer
 from collisionsprites import CollisionSprites
 from enemy import*
@@ -20,18 +20,10 @@ class Game:
         self.tower_sprites = pg.sprite.Group()
         self.archer = pg.sprite.Group()
         self.enemy_group = pg.sprite.Group()
-
-        
-        
-
+        self.pause_button_state = 0
+        self.shop_button_state = 0
+        self.mid_button = []
         self.gamemanager = gamemanager
-
-        # CollisionSprites( (3393.33,1910),(30,40),(255,0,0),(self.all_sprites,self.collision_sprites2)) # for testing the archer animations
-
-        # Archer((self.all_sprites,self.archer), (3400.33, 2450),"NT")
-        # Archer((self.all_sprites,self.archer), (4400, 3370),"ET")
-        # Archer((self.all_sprites,self.archer), (2372, 3370),"WT")
-
         self.setup()
 
     def setup(self):
@@ -108,7 +100,7 @@ class Game:
             collision_surf = pg.Surface((width, height))
             collision_surf.fill('red')  # This won't be visible, just for debugging
             Collision_sprites(self.collision_sprites, collision_surf, (x, y))
-            print (obj.x, obj.y)
+            
         for obj in map.get_layer_by_name('Castle'):
             # Use the actual catsle image for scaling
             original_image = obj.image
@@ -137,7 +129,48 @@ class Game:
         for i in range(waves['1']['weak']):
             rand_waypoint = self.enemy_waypoints[randint(0,3)]
             self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.tower_sprites))
-            
+
+        buttons_spritesheet = pg.image.load('../sprites/buttons/buttons.png').convert_alpha()
+        with open('../sprites/buttons/buttons.json') as f:
+            data = json.load(f)
+        buttons = data['frames']
+        def get_button(frame_data):
+            rect = frame_data['frame']
+            x, y, w, h = rect['x'], rect['y'], rect['w'], rect['h']
+            return buttons_spritesheet.subsurface(pg.Rect(x, y, w, h))
+        self.mid_button.append(get_button(buttons['Button_Blue_3Slides.png']))
+        self.mid_button[0] = pg.transform.smoothscale(self.mid_button[0], (130, 70))
+        self.mid_button.append(get_button(buttons['Button_Hover_3Slides.png']))
+        self.mid_button[1] = pg.transform.smoothscale(self.mid_button[1], (130, 70))
+        self.mid_button.append(get_button(buttons['Button_Blue_3Slides_Pressed.png']))
+        self.mid_button[2] = pg.transform.smoothscale(self.mid_button[2], (130, 70))
+        self.pause_button_rect = self.mid_button[self.pause_button_state].get_frect(center = (WINDOW_WIDTH - 100, 60))
+        self.shop_button_rect = self.mid_button[self.shop_button_state].get_frect(center = (WINDOW_WIDTH - 280, 60))
+
+        # Text
+        self.pixel_font = pg.font.Font('../sprites/fonts/Minecraft.ttf', 30)
+        self.pause_text = self.pixel_font.render('Pause' , True , 'white')
+        self.pause_text_rect = self.pause_text.get_frect(center = self.pause_button_rect.center)
+        self.shop_text = self.pixel_font.render('Shop', True, 'white')
+        self.shop_text_rect = self.shop_text.get_frect(center = self.shop_button_rect.center)
+
+    def collision(self):
+        if self.pause_button_rect.collidepoint(pg.mouse.get_pos()):
+            self.pause_button_state = 1
+            if pg.mouse.get_pressed()[0]:
+                self.pause_button_state = 2
+                self.gamemanager.state = 'pause'
+        else :
+            self.pause_button_state = 0
+
+        if self.shop_button_rect.collidepoint(pg.mouse.get_pos()):
+            self.shop_button_state = 1
+            if pg.mouse.get_pressed()[0]:
+                self.shop_button_state = 2
+                self.gamemanager.state = 'shop'
+        else :
+            self.pause_button_state = 0
+    
     def draw_debug_collisions(self):
         """Draw collision boxes for debugging purposes"""
         # Draw player hitbox
@@ -172,7 +205,10 @@ class Game:
             archer.draw_range(self.display)
         # Add this line to see collision boxes (remove when not debugging)
         # self.draw_debug_collisions()
-
+        self.display.blit(self.mid_button[self.pause_button_state], self.pause_button_rect)
+        self.display.blit(self.mid_button[self.shop_button_state], self.shop_button_rect)
+        self.display.blit(self.shop_text,self.shop_text_rect)
+        self.display.blit(self.pause_text , self.pause_text_rect)
     def update(self,dt):
         for archer in self.archer:
             archer.update_archer(dt,self.enemy_group)
@@ -184,5 +220,6 @@ class Game:
                 enemy.ismoving = True
                 Enemy.spawn = False
         self.all_sprites.update(dt)
+        self.collision()
         self.draw()
 

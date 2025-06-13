@@ -2,7 +2,8 @@ from settings import *
 import pygame as pg
 from game import *
 from main_menu import *
-import os 
+from pause_menu import *
+import os
 os.chdir(os.path.dirname(__file__))
 
 #a7la mesa 3la billy
@@ -10,6 +11,7 @@ os.chdir(os.path.dirname(__file__))
 class Game_Mannager:
     def __init__(self):
         self.running = True
+        self.paused = False
         pg.init()
         self.display = pg.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
         pg.display.set_caption('Castle Defense')
@@ -35,12 +37,22 @@ class Game_Mannager:
                 if event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE:
                     self.running = False
 
-            if self.state == 'menu':
+            if self.paused and self.state =='pause':
+                self.pause_menu.update()
+            elif self.state == 'menu':
                 self.main_menu.draw()
             elif self.state == 'game':
                 self.game.update(dt)
-                # self.game.draw()
+                self.pause_menu = Pause_menu(self.display, self)
 
+                # self.game.draw()        
+            elif self.state == 'pause':
+                self.paused = not self.paused
+                for i in range(20):
+                    self.pause_menu = Pause_menu(self.display, self)
+                #self.pause_menu.display_copy = self.display.copy()
+            elif self.state == 'shop':
+                pass
             pg.display.update()
     pg.quit()
 
