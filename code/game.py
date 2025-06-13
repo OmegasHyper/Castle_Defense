@@ -163,7 +163,12 @@ class Game:
             archer.draw_range(self.display)
         # Add this line to see collision boxes (remove when not debugging)
         #self.draw_debug_collisions()
-
+    def createR2(self):
+        for i in range(waves['2']['weak']):
+            rand_waypoint = self.enemy_waypoints[randint(0,3)]
+            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites))
+        print("round2 created")
+    
     def update(self,dt):
         for archer in self.archer:
             archer.update_archer(dt,self.enemy_group)
@@ -177,4 +182,7 @@ class Game:
         self.draw()
         for building in self.building_sprites:
             building.update_health(dt)
+        if not self.enemy_queue.get_size():
+            print("round 1 finish")
+            self.createR2()
 
