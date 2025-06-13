@@ -12,7 +12,7 @@ class Tower(pg.sprite.Sprite):
         self.hitbox = self.rect.inflate(-140,-180)
         self.hitbox.top += 10
         self.black_health_rect = pg.Rect(self.pos[0], self.pos[1], 500, 500)
-        self.display_offset = AllSPrites.offset
+        self.display_offset = AllSprites.offset
         self.health = 110
         self.isBuilding = True
 
