@@ -8,21 +8,25 @@ from sprites import *
 #from os import*      os has open() that overrides json.open()
 from archer import Archer
 from enemy import*
+from Tower import *
 
 
 class Game:
     def __init__(self,display , gamemanager):
         self.display = display
-        self.all_sprites = AllSPrites()
+        self.all_sprites = AllSprites()
         self.collision_sprites = pg.sprite.Group()
         self.collision_sprites2 = pg.sprite.Group() #for archer_animations
-        self.tower_sprites = pg.sprite.Group()
+        self.building_sprites = pg.sprite.Group()
         self.archer = pg.sprite.Group()
         self.enemy_group = pg.sprite.Group()
+
         self.pause_button_state = 0
         self.shop_button_state = 0
         self.mid_button = []
         self.gamemanager = gamemanager
+        self.round = 1
+
         self.setup()
 
     def setup(self):
@@ -49,10 +53,7 @@ class Game:
             x = int(obj.x)+40
             y = int(obj.y)+50
 
-            collision_surf = pg.Surface((width, height))
-            collision_surf.fill('red')  # This won't be visible, just for debugging
-            Collision_sprites(self.collision_sprites, collision_surf, (x, y))
-        # Load col++sion objects
+        # Load collision objects
         for obj in map.get_layer_by_name('Collisions'):
             # Convert to integers to avoid floating point precision issues
             width = int(obj.width)
@@ -81,12 +82,9 @@ class Game:
             x = int(obj.x)+15
             y = int(obj.y)+40
 
-            collision_surf = pg.Surface((width, height))
-            collision_surf.fill('red')  # This won't be visible, just for debugging
-            Collision_sprites(self.collision_sprites, collision_surf, (x, y))
         for obj in map.get_layer_by_name('Towers'):
-            # Use the actual tree image for visual representation
-            Sprites((self.all_sprites,self.tower_sprites), obj.image, (int(obj.x+35), int(obj.y+70)))
+            # Use the actual Tower image for visual representation
+            Tower((self.all_sprites, self.building_sprites), obj.image, (int(obj.x+35), int(obj.y+70)))
 
             # Create collision surface with correct dimensions (converted to integers)
             width = int(obj.width)-80
@@ -94,10 +92,6 @@ class Game:
             x = int(obj.x)+40
             y = int(obj.y)+190
 
-            collision_surf = pg.Surface((width, height))
-            collision_surf.fill('red')  # This won't be visible, just for debugging
-            Collision_sprites(self.collision_sprites, collision_surf, (x, y))
-            
         for obj in map.get_layer_by_name('Castle'):
             # Use the actual catsle image for scaling
             original_image = obj.image
@@ -112,9 +106,6 @@ class Game:
             x = int(obj.x)+130
             y = int(obj.y)+150
 
-            collision_surf = pg.Surface((width, height))
-            collision_surf.fill('red')  # This won't be visible, just for debugging
-            Collision_sprites(self.collision_sprites, collision_surf, (x, y))
         for obj in map.get_layer_by_name('Outer_archers_waypoints'):
             Archer((self.all_sprites, self.archer), (obj.x, obj.y), obj.name)
         for obj in map.get_layer_by_name('Inner_archers_waypoints'):
@@ -123,6 +114,7 @@ class Game:
         for obj in map.get_layer_by_name('Enemy_waypoint'):
             self.enemy_waypoints.append(obj)
         self.enemy_queue = Queue()
+
         for i in range(waves['1']['weak']):
             rand_waypoint = self.enemy_waypoints[randint(0,3)]
             self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.tower_sprites))
@@ -168,6 +160,9 @@ class Game:
         else :
             self.shop_button_state = 0
     
+
+        self.create_round(self.round)
+
     def draw_debug_collisions(self):
         """Draw collision boxes for debugging purposes"""
         # Draw player hitbox
@@ -201,22 +196,71 @@ class Game:
         for archer in self.archer:
             archer.draw_range(self.display)
         # Add this line to see collision boxes (remove when not debugging)
-        # self.draw_debug_collisions()
+
+        
         self.display.blit(self.mid_button[self.pause_button_state], self.pause_button_rect)
         self.display.blit(self.mid_button[self.shop_button_state], self.shop_button_rect)
         self.display.blit(self.shop_text,self.shop_text_rect)
         self.display.blit(self.pause_text , self.pause_text_rect)
+
+        #self.draw_debug_collisions()
+    def create_round(self,round):
+        r = str(round)
+        counter_weak = 0
+        counter_strong = 0
+        
+        for i in range(waves[r]['weak']+waves[r]['strong']):
+            which_create = randint(0,1)
+            if (which_create and counter_weak < waves[r]['weak']) or  counter_strong ==  (waves[r]['strong']):    
+                rand_waypoint = self.enemy_waypoints[randint(0,3)]
+                self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,False))
+                counter_weak += 1
+            else : 
+                    rand_waypoint = self.enemy_waypoints[randint(0,3)]
+                    self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,True))
+                    counter_strong +=1
+                
+        Enemy.spawn_time = waves [r]['spawn_time']
+        print(f"round {r} created")
+        if r =='3' : print(Enemy.total_eneimes)           ## debugging purpose
+
+    
+    time_start_wait =0
+    get_time = True
+    def wait (self,time, time_start_wait):
+        time_to_stop = time
+        first_time = time_start_wait
+        delay =pg.time.get_ticks()
+        if delay - first_time > time_to_stop:
+            return False
+        else: 
+            return True 
+
     def update(self,dt):
         for archer in self.archer:
             archer.update_archer(dt,self.enemy_group)
-
+        # spawn of eneimes 
         Enemy.spawning()
         if Enemy.spawn == True :
             enemy = self.enemy_queue.dequeue()
+            print("enemy gooo")
             if enemy != None :
                 enemy.ismoving = True
                 Enemy.spawn = False
+        # timer for waves 
+        if not self.enemy_queue.get_size() :
+            print("round finish")
+            if Game.get_time:
+                self.round +=1
+                Game.time_start_wait = pg.time.get_ticks()
+                Game.get_time = False
+            create = not self.wait(10000,Game.time_start_wait)      ## the timer is changable for debuging it has to be from levels table
+            if create and self.round <= 3:
+                self.create_round(self.round)
+                Game.get_time = True
         self.all_sprites.update(dt)
         self.collision()
         self.draw()
+        for building in self.building_sprites:
+            building.update_health(dt)
 

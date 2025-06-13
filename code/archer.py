@@ -18,7 +18,7 @@ class Archer(pg.sprite.Sprite) :
         self.load_images()
 
         self.current_frame = 1
-        self.animation_speed = 60
+        self.animation_speed = 50
         self.last_update = pg.time.get_ticks()
         self.arching = False
 

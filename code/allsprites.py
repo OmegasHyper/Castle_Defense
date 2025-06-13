@@ -1,15 +1,15 @@
 from settings import *
 
-class AllSPrites(pg.sprite.Group):
+class AllSprites(pg.sprite.Group):
+    offset = pg.Vector2()
     def __init__(self):
         super().__init__()
         self.display_surface = pg.display.get_surface()
-        self.offset = pg.Vector2()
     def draw(self , target_pos):
-        self.offset.x = 1280 / 2 - target_pos[0] # Show tile area
-        self.offset.y = 720 / 2 - target_pos[1]
+        AllSprites.offset.x = 1280 / 2 - target_pos[0] # Show tile area
+        AllSprites.offset.y = 720 / 2 - target_pos[1]
         ground_sprites = [sprite for sprite in self if hasattr(sprite , 'ground' )]
-        object_sprites = [sprite for sprite in self if not hasattr(sprite , 'ground' )]
+        object_sprites = [sprite for sprite in self if not hasattr(sprite , 'ground' ) ]
         enemy_sprites  = [sprite for sprite in self if hasattr(sprite , 'enemy') and not hasattr(sprite, 'ground') ]
         archers_sprites = [sprite for sprite in self if not hasattr(sprite , 'ground' ) and hasattr(sprite , 'isArcher')]
         for layer in [ground_sprites,object_sprites,archers_sprites, enemy_sprites]:#the order is important
@@ -17,7 +17,7 @@ class AllSPrites(pg.sprite.Group):
                 #print(sprite)
                 if  hasattr(sprite , 'enemy') and not hasattr(sprite, 'ground') :
                     if sprite.ismoving:
-                        sprite.draw(self.offset)
+                        sprite.draw(AllSprites.offset)
                     else :continue
                 else :
-                    self.display_surface.blit(sprite.image,sprite.rect.topleft + self.offset)
+                    self.display_surface.blit(sprite.image,sprite.rect.topleft + AllSprites.offset)
