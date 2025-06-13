@@ -7,6 +7,7 @@ RED = (220, 20, 60)
 DARK_RED = (139, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
+die_sound = pg.mixer.Sound("../sounds/goblin_death.wav")
 class Enemy(pg.sprite.Sprite):
     image = pg.image.load("../sprites/enemies/torch/E/walk/3.png")
     Strongimage = pg.image.load("../sprites/enemies/barrel/N/walk/1.png")
@@ -38,12 +39,16 @@ class Enemy(pg.sprite.Sprite):
         self.atk_speed = 500     #for timer
         self.isAttacking = True #for timer
         self.last_attack = 0    #for timer
-
+        self.healthbar_offset_x = 0
+        self.healthbar_offset_y = 45
+        self.max_health = 500
         self.strong = strong 
         if strong :
             self.image = Enemy.Strongimage 
             self.damage = 20
-            self.health = 200
+            self.health = self.max_health = 200
+            self.healthbar_offset_x = -40
+            self.healthbar_offset_y = +15
             print("strong created")
         else: 
             print("weak created")     ## debugging
@@ -55,7 +60,7 @@ class Enemy(pg.sprite.Sprite):
         self.health_bar_bg = pg.Surface((self.health_bar_width, self.health_bar_height), pg.SRCALPHA)
         pg.draw.rect(self.health_bar_bg, (0, 0, 0), (0, 0, self.health_bar_width, self.health_bar_height),
                      border_radius=4)
-        self.die_sound = pg.mixer.Sound("../sounds/goblin_death.wav")
+
 
 
         ## will be changed  (debugging )
@@ -73,12 +78,12 @@ class Enemy(pg.sprite.Sprite):
         else : Enemy.spawn = False
 
     def load_health_bar(self, offset):
-        x = self.rect.centerx - self.health_bar_width // 2 + offset.x
-        y = self.rect.top + 45 + offset.y
+        x = self.rect.centerx - self.health_bar_width // 2 + offset.x +  self.healthbar_offset_x
+        y = self.rect.top +  self.healthbar_offset_y + offset.y
 
         self.display.blit(self.health_bar_bg, (x, y))
 
-        health_ratio = max(self.health, 0) / 500
+        health_ratio = max(self.health, 0) / self.max_health
         if health_ratio > 0:
             health_width = int((self.health_bar_width - 4) * health_ratio)
             health_rect = pg.Rect(x + 2, y + 2, health_width, self.health_bar_height - 4)
@@ -144,7 +149,7 @@ class Enemy(pg.sprite.Sprite):
 
     def get_killed(self):
         Enemy.number_eneimes -= 1
-        self.die_sound.play()
+        die_sound.play()
         self.kill()
         
 

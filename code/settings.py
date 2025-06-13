@@ -8,6 +8,7 @@ import os
 os.chdir(os.path.dirname(__file__))
 import math
 
+pg.mixer.init()
 WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
 TILE_SIZE= 64
 
@@ -106,7 +107,7 @@ Player_upgrades =\
 waves = {
     '1': {
         'weak': 5,
-        'strong': 1,
+        'strong': 200,
         'spawn_time':3000
     },
     '2': {

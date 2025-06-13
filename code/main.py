@@ -10,7 +10,6 @@ os.chdir(os.path.dirname(__file__))
 class Game_Mannager:
     def __init__(self):
         self.running = True
-        pg.mixer.init()
         pg.init()
         self.display = pg.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
         pg.display.set_caption('Castle Defense')

@@ -2,13 +2,15 @@ from math import acosh
 
 from settings import *
 from game import *
+
+attack_sound = pg.mixer.Sound("../sounds/Arrow_shot.wav")
 class Arrow(pg.sprite.Sprite):
     def __init__(self, groups, archer_rect, target, state):
         super().__init__(groups)
         self.target = target
         self.front = None
         self.arrow_path = "../sprites/archers/Arrow"
-        attack_sound = pg.mixer.Sound("../sounds/Arrow_shot.wav")
+
         attack_sound.play()
         self.arrow_path += state + ".png"
         self.image = pg.image.load(self.arrow_path).convert_alpha()
