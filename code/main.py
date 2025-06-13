@@ -18,7 +18,7 @@ class Game_Mannager:
         self.clock = pg.time.Clock()
         self.state = 'menu'
         self.load()
-
+        
     def load(self):
         for direction in enemy_paths.keys():
             for action in ['walk', 'atk']:
