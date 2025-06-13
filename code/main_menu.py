@@ -1,5 +1,5 @@
 from settings import *
-
+main_menu_sound = pg.mixer.Sound("../sounds/main_menu.mp3")
 class Main_Menu:
     def __init__(self,display,gamemanager):
         self.gamemanager = gamemanager
@@ -38,7 +38,8 @@ class Main_Menu:
         self.button1_rect = self.mid_button[0].get_frect(center = (WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2-80))
         self.button2_rect = self.mid_button[0].get_frect(center = (WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2+50))
        # self.button1_rect = self.mid_button[0].get_frect(center = (WINDOW_WIDTH / 2,WINDOW_HEIGHT / 2-80))
-
+        #sound
+        main_menu_sound.play()
         #TEXT
         self.pixel_font = pg.font.Font('../sprites/fonts/Minecraft.ttf', 60)
         self.start_text = self.pixel_font.render('START' , True , 'white')
