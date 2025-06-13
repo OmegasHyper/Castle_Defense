@@ -4,8 +4,10 @@ from game import *
 from main_menu import *
 import os 
 os.chdir(os.path.dirname(__file__))
+main_menu_sound = pg.mixer.Sound("../sounds/main_menu.mp3")
+ingame_sound = pg.mixer.Sound("../sounds/ingame.mp3")
+ingame_sound.set_volume(0.2)
 
-#a7la mesa 3la billy
 # palmer , bellingham , saka , toney , trent ---> pressure!!! _______  what pressure?
 class Game_Mannager:
     def __init__(self):
@@ -18,6 +20,8 @@ class Game_Mannager:
         self.clock = pg.time.Clock()
         self.state = 'menu'
         self.load()
+        self.state_switched = False
+        main_menu_sound.play(loops=-1)
         
     def load(self):
         for direction in enemy_paths.keys():
@@ -43,8 +47,13 @@ class Game_Mannager:
 
             if self.state == 'menu':
                 self.main_menu.draw()
+
             elif self.state == 'game':
                 self.game.update(dt)
+                if not  self.state_switched  :
+                    main_menu_sound.stop()
+                    ingame_sound.play(loops=-1)
+                    self.state_switched = True
                 # self.game.draw()
 
             pg.display.update()
