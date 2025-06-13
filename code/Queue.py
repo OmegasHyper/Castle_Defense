@@ -32,15 +32,15 @@ class Queue :
 
     def get_front(self):
         if self.isempty():
-            return "empty Queue" 
+            return None 
         else : return self.front.data
     def get_back(self) :
         if self.isempty():
-            return "empty Queue" 
+            return None 
         else : return self.back.data
     def print_queue(self):
         if self.isempty():
-            return "empty Queue" 
+            return None 
         else:
             temp = self.front
             while temp:

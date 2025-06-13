@@ -1,26 +1,29 @@
 import os
-
+from Queue import *
 from PIL.ImageChops import offset
-
+from arrow import *
 from settings import *
+from enemy import *
 
 class Archer(pg.sprite.Sprite) :
-    def __init__(self,groups,pos,direction = "NT",attack_range =700):
+    def __init__(self,groups,pos,direction = "NT"):
         super().__init__(groups)
         self.frames = None      #store ainamtions for each direction
-
+        self.all_sprites = groups[0]
+        self.pos = pos
         self.direction = direction
-        self.attack_range = attack_range
+        self.direction = direction
+        self.attack_range = 500
         self.load_images()
 
         self.current_frame = 1
-        self.animation_speed = 150
+        self.animation_speed = 60
         self.last_update = pg.time.get_ticks()
         self.arching = False
 
         self.image = self.frames[self.direction][0] # if the archer not in the arching state it will be as the 0 image
-        self.rect = self.image.get_frect(center=pos)
-
+        self.rect = self.image.get_frect(center=self.pos)
+        #self.archer_queue = Queue()
     def load_images(self):
         self.frames = self.frames = { 'ET':[], 'NT':[],'ST':[],'WT':[]}
         base_path = "../sprites/archers"
@@ -34,17 +37,32 @@ class Archer(pg.sprite.Sprite) :
                         self.frames[dir_name].append(surf)
 
 
-
     def update_archer(self,dt,enemy_group):
         for enemy in enemy_group:
             if hasattr(enemy,"rect"):
                 distance = pg.math.Vector2(self.rect.center).distance_to(enemy.rect.center)
+                shoot_direction = pg.Vector2(enemy.rect.center) - pg.Vector2(self.rect.center)
+                
                 if distance <= self.attack_range:
+                    if self.direction == "NT":
+                        if shoot_direction.y > 0:
+                            continue
+
+                    if self.direction == "ET":
+                        if shoot_direction.x < 0:
+                            continue
+
+                    if self.direction == "ST":
+                        if shoot_direction.y < 0:
+                            continue
+
+                    if self.direction == "WT":
+                        if shoot_direction.x > 0:
+                            continue
                     self.arching = True
                     break
                 else:
                     self.arching = False
-
 
         if self.arching:
             now = pg.time.get_ticks()
@@ -52,7 +70,10 @@ class Archer(pg.sprite.Sprite) :
                 self.last_update = now
                 self.current_frame = (self.current_frame -1 + 1 )% (len(self.frames[self.direction])-1)+1 # cuz starting from frame 1 the frame 0 is used for the static state
                 self.image = self.frames[self.direction][self.current_frame]
-
+                if enemy_group and self.current_frame == 6:
+                    Arrow(self.direction, self.rect, enemy, self.all_sprites)
+                else:
+                    self.arching = False
         else:
             self.image = self.frames[self.direction][0]
             self.current_frame = 1
@@ -62,14 +83,14 @@ class Archer(pg.sprite.Sprite) :
 
         range_surface = pg.Surface((self.attack_range*2 ,self.attack_range*2),pg.SRCALPHA)
         arc_rect = pg.Rect(0,0,self.attack_range*2,self.attack_range*2)
-        directyion_angle = {'NT':(0.4,2.74),#1.57,2.14
+        direction_angle = {'NT':(0.4,2.74),#1.57,2.14
                             'ST':(3.54,5.88),
                             'ET':(5.1,1.17),#5.7,6.28
                             'WT':(1.97,4.31)} #(3.14,3.7)
 
-        start_angle ,end_angle = directyion_angle.get(self.direction,(0,6.28))
-        pg.draw.arc(range_surface,(255,0,0,100), arc_rect,start_angle ,end_angle,1000)
+        start_angle ,end_angle = direction_angle.get(self.direction,(0,6.28))
 
         surface.blit(range_surface,(screen_pos.x - self.attack_range,screen_pos.y-self.attack_range))
         surface.blit(self.image , self.rect.topleft)
+
 
