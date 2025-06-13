@@ -70,8 +70,6 @@ class Game:
         # Load player spawn point
         for obj in map.get_layer_by_name('Player_waypoint'):
             self.player = Player(self.all_sprites, (obj.x, obj.y), self.collision_sprites)
-
-
         #load goblin houses
         for obj in map.get_layer_by_name('Goblin_House'):
             # Use the actual house image for visual representation
@@ -168,7 +166,7 @@ class Game:
                 self.shop_button_state = 2
                 self.gamemanager.state = 'shop'
         else :
-            self.pause_button_state = 0
+            self.shop_button_state = 0
     
     def draw_debug_collisions(self):
         """Draw collision boxes for debugging purposes"""
