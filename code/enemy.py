@@ -37,6 +37,7 @@ class Enemy(pg.sprite.Sprite):
         # x -> 0-1   y -> 0-1 
         self.direction = pg.Vector2(x,y)
         self.direction = self.direction.normalize() if self.direction else self.direction
+    @staticmethod
     def spawning():
         recent_spawn =pg.time.get_ticks() 
         if recent_spawn - Enemy.last_spawn_t > Enemy.spawn_time:

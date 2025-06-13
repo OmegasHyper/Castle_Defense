@@ -9,6 +9,7 @@ class Archer(pg.sprite.Sprite) :
     def __init__(self,groups,pos,direction = "NT"):
         super().__init__(groups)
         self.frames = None      #store ainamtions for each direction
+        self.isArcher= True # this line is to exlude the archers from the ysorting ,DAVID
         self.all_sprites = groups[0]
         self.pos = pos
         self.direction = direction
@@ -71,7 +72,7 @@ class Archer(pg.sprite.Sprite) :
                 self.current_frame = (self.current_frame -1 + 1 )% (len(self.frames[self.direction])-1)+1 # cuz starting from frame 1 the frame 0 is used for the static state
                 self.image = self.frames[self.direction][self.current_frame]
                 if enemy_group and self.current_frame == 6:
-                    Arrow(self.direction, self.rect, enemy, self.all_sprites)
+                    Arrow(self.all_sprites,self.rect, enemy, self.direction)
                 else:
                     self.arching = False
         else:

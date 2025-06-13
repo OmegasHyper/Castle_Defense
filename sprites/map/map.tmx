@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="112" height="112" tilewidth="64" tileheight="64" infinite="0" nextlayerid="11" nextobjectid="872">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="112" height="112" tilewidth="64" tileheight="64" infinite="0" nextlayerid="13" nextobjectid="882">
  <tileset firstgid="1" source="../tiles_sets/ground.tsx"/>
  <tileset firstgid="41" source="../tiles_sets/castle.tsx"/>
  <tileset firstgid="42" source="../tiles_sets/Tower_Red.tsx"/>
@@ -767,7 +767,7 @@
   </object>
  </objectgroup>
  <objectgroup id="10" name="Player_waypoint">
-  <object id="715" name="Player_waypoint" x="3393.33" y="4349.33">
+  <object id="715" name="Player_waypoint" x="3390.3" y="3682.66">
    <point/>
   </object>
  </objectgroup>
@@ -779,6 +779,34 @@
   <object id="3" name="NT" gid="42" x="3293" y="2780" width="200" height="408"/>
   <object id="4" name="ET" gid="42" x="4038" y="3540" width="200" height="408"/>
   <object id="5" name="WT" gid="42" x="2562" y="3534" width="200" height="408"/>
+ </objectgroup>
+ <objectgroup id="11" name="Outer_archers_waypoints">
+  <object id="872" name="ST" x="3391" y="4024">
+   <point/>
+  </object>
+  <object id="873" name="WT" x="2660" y="3274">
+   <point/>
+  </object>
+  <object id="874" name="NT" x="3390.67" y="2524.67">
+   <point/>
+  </object>
+  <object id="875" name="ET" x="4140" y="3278.67">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="12" name="Inner_archers_waypoints">
+  <object id="877" name="ET" x="3640.67" y="3186.67">
+   <point/>
+  </object>
+  <object id="879" name="WT" x="3186.67" y="3188.67">
+   <point/>
+  </object>
+  <object id="880" name="NT" x="3396" y="3170">
+   <point/>
+  </object>
+  <object id="881" name="ST" x="3398.67" y="3272">
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="8" name="Trees">
   <object id="70" gid="77" x="1421.39" y="4143.82" width="180" height="180"/>
