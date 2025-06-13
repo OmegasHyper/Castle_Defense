@@ -8,7 +8,8 @@ class Enemy(pg.sprite.Sprite):
     Strongimage = pg.image.load("../sprites/enemies/barrel/N/walk/1.png")
     spawn =True
     number_eneimes = 0
-    spawn_time = 500
+    total_eneimes = 0
+    spawn_time = 0
     last_spawn_t = pg.time.get_ticks()
 
     def __init__(self,groups,pos,state, collision_spr, strong):
@@ -22,6 +23,7 @@ class Enemy(pg.sprite.Sprite):
         self.ismoving = False
         self.enemy = True
         Enemy.number_eneimes +=1
+        Enemy.total_eneimes+=1
         self.display = pg.display.get_surface()
         print(Enemy.number_eneimes)
         self.state = state

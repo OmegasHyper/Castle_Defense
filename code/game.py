@@ -124,11 +124,7 @@ class Game:
         for obj in map.get_layer_by_name('Enemy_waypoint'):
             self.enemy_waypoints.append(obj)
         self.enemy_queue = Queue()
-        
-        for i in range(waves['1']['weak']):
-            rand_waypoint = self.enemy_waypoints[randint(0,3)]
-            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites, False))
-            
+        self.create_round(self.round)
     def draw_debug_collisions(self):
         """Draw collision boxes for debugging purposes"""
         # Draw player hitbox
@@ -171,7 +167,7 @@ class Game:
         for i in range(waves[r]['strong']):
             rand_waypoint = self.enemy_waypoints[randint(0,3)]
             self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,True))
-        
+        Enemy.spawn_time = waves [r]['spawn_time']
         print(f"round {r} created")
 
     
@@ -192,6 +188,7 @@ class Game:
         Enemy.spawning()
         if Enemy.spawn == True :
             enemy = self.enemy_queue.dequeue()
+            print("enemy gooo")
             if enemy != None :
                 enemy.ismoving = True
                 Enemy.spawn = False
