@@ -21,9 +21,8 @@ class Game:
         self.building_sprites = pg.sprite.Group()
         self.archer = pg.sprite.Group()
         self.enemy_group = pg.sprite.Group()
-
         self.gamemanager = gamemanager
-
+        self.round = 1
         self.setup()
 
     def setup(self):
@@ -164,15 +163,16 @@ class Game:
             archer.draw_range(self.display)
         # Add this line to see collision boxes (remove when not debugging)
         #self.draw_debug_collisions()
-    def create_round(self):
-        for i in range(waves['2']['weak']):
+    def create_round(self,round):
+        r = str(round)
+        for i in range(waves[r]['weak']):
             rand_waypoint = self.enemy_waypoints[randint(0,3)]
             self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,False))
-        for i in range(waves['2']['strong']):
+        for i in range(waves[r]['strong']):
             rand_waypoint = self.enemy_waypoints[randint(0,3)]
             self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,True))
         
-        print("round2 created")
+        print("round created")
 
     
     time_start_wait =0
@@ -198,12 +198,13 @@ class Game:
         # timer for waves 
         if not self.enemy_queue.get_size() :
             print("round finish")
+            self.round +=1
             if Game.get_time:
                 Game.time_start_wait = pg.time.get_ticks()
                 Game.get_time = False
             create = not self.wait(1000,Game.time_start_wait)      ## the timer is changable for debuging it has to be from levels table
             if create:
-                self.create_round()
+                self.create_round(self.round)
                 Game.get_time = True
         self.all_sprites.update(dt)
         self.draw()
