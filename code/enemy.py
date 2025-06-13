@@ -9,12 +9,14 @@ WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 class Enemy(pg.sprite.Sprite):
     image = pg.image.load("../sprites/enemies/torch/E/walk/3.png")
+    Strongimage = pg.image.load("../sprites/enemies/barrel/N/walk/1.png")
     spawn =True
     number_eneimes = 0
-    spawn_time = 2000
+    total_eneimes = 0
+    spawn_time = 0
     last_spawn_t = pg.time.get_ticks()
 
-    def __init__(self,groups,pos,state, collision_spr):
+    def __init__(self,groups,pos,state, collision_spr, strong):
         super().__init__(groups)
         self.animate_speed = 24
         self.health = 500
@@ -25,6 +27,7 @@ class Enemy(pg.sprite.Sprite):
         self.ismoving = False
         self.enemy = True
         Enemy.number_eneimes +=1
+        Enemy.total_eneimes+=1
         self.display = pg.display.get_surface()
         print(Enemy.number_eneimes)
         self.state = state
@@ -35,12 +38,24 @@ class Enemy(pg.sprite.Sprite):
         self.atk_speed = 500     #for timer
         self.isAttacking = True #for timer
         self.last_attack = 0    #for timer
+
+        self.strong = strong 
+        if strong :
+            self.image = Enemy.Strongimage 
+            self.damage = 20
+            self.health = 200
+            print("strong created")
+        else: 
+            print("weak created")     ## debugging
+            self.damage = 1
+
         ## HEALTH PRE-RENDERING (OPTIMIZE FPS) AND INITIALIZATION
         self.health_bar_width = 60
         self.health_bar_height = 8
         self.health_bar_bg = pg.Surface((self.health_bar_width, self.health_bar_height), pg.SRCALPHA)
         pg.draw.rect(self.health_bar_bg, (0, 0, 0), (0, 0, self.health_bar_width, self.health_bar_height),
                      border_radius=4)
+
 
         ## will be changed  (debugging )
     def direction_func (self,x = 0 , y=-1 ):
@@ -82,7 +97,7 @@ class Enemy(pg.sprite.Sprite):
                     now = pg.time.get_ticks()
                     if now - self.last_attack > self.atk_speed:
                         self.last_attack =now
-                        sprite.health -=1
+                        sprite.health -=self.damage
                 else:
                     self.isAttacking = False
 
@@ -98,8 +113,12 @@ class Enemy(pg.sprite.Sprite):
 
     def animate(self,dt):
         if self.ismoving:
-            self.frame_index = self.frame_index + self.animate_speed * dt if self.direction else 0
-            self.image = enemy_frames[self.state]['walk'][int(self.frame_index) % len(enemy_frames[self.state]['walk'])]
+            if self.strong:
+                self.frame_index = self.frame_index + self.animate_speed * dt if self.direction else 0
+                self.image = strong_enemy_frames[self.state]['walk'][int(self.frame_index) % len(strong_enemy_frames[self.state]['walk'])]
+            else : 
+                self.frame_index = self.frame_index + self.animate_speed * dt if self.direction else 0
+                self.image = enemy_frames[self.state]['walk'][int(self.frame_index) % len(enemy_frames[self.state]['walk'])]
     def move(self,dt):
         self.handle_direction()
         self.hitbox_rect.x += self.direction.x * self.speed * dt
