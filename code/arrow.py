@@ -45,7 +45,7 @@ class Arrow(pg.sprite.Sprite):
         if self.state == 'ET':
             return -angle
         if self.state == 'WT':
-            return angle
+             return angle
         if self.state == 'NT':
             return angle
         if self.state == 'ST':
