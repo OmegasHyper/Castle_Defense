@@ -7,7 +7,6 @@ from Collision_sprites import *
 from sprites import * 
 from os import*
 from archer import Archer
-from collisionsprites import CollisionSprites
 from enemy import*
 from Tower import *
 
