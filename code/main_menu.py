@@ -17,7 +17,6 @@ class Main_Menu:
 
         self.load()
     def load(self):
-        self.buttons_spritesheet = pg.image.load('../sprites/buttons/buttons.png').convert_alpha()
         with open('../sprites/buttons/buttons.json') as f:
             data = json.load(f)
         buttons = data['frames']

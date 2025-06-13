@@ -22,7 +22,7 @@ class Enemy(pg.sprite.Sprite):
         self.enemy = True
         Enemy.number_eneimes +=1
         self.display = pg.display.get_surface()
-        print(Enemy.number_eneimes)
+        
         self.state = state
         self.action = walk
         self.frame_index = 0

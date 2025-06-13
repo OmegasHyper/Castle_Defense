@@ -31,7 +31,7 @@ for direction in enemy_paths.keys():
                 for file_name in sorted(png_files, key=lambda name: int(name.split('.')[0])):
                     full_path = join(root_path, file_name)
                     enemy_paths[direction][action].append(full_path)
-                    print(f"Found path: {direction}/{action}/{file_name}")
+                    
 
 enemy_frames ={
         'N': { 'walk': [], 'atk': [] },
