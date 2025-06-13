@@ -98,7 +98,7 @@ class Game:
             new_width = original_image.get_width() *2
             new_height = original_image.get_height()*2
             scaled_image = pg.transform.scale(original_image,(new_width,new_height))
-            Sprites(self.all_sprites, scaled_image, (int(obj.x+70), int(obj.y)))
+            Sprites((self.all_sprites), scaled_image, (int(obj.x+70), int(obj.y)))
 
             # Create collision surface with correct dimensions (converted to integers)
             width = int(obj.width)-240
@@ -117,7 +117,7 @@ class Game:
 
         for i in range(waves['1']['weak']):
             rand_waypoint = self.enemy_waypoints[randint(0,3)]
-            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.tower_sprites))
+            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites , False))
 
         buttons_spritesheet = pg.image.load('../sprites/buttons/buttons.png').convert_alpha()
         with open('../sprites/buttons/buttons.json') as f:
@@ -159,9 +159,6 @@ class Game:
                 self.gamemanager.state = 'shop'
         else :
             self.shop_button_state = 0
-    
-
-        self.create_round(self.round)
 
     def draw_debug_collisions(self):
         """Draw collision boxes for debugging purposes"""
