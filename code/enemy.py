@@ -37,8 +37,12 @@ class Enemy(pg.sprite.Sprite):
         self.strong = strong 
         if strong :
             self.image = Enemy.Strongimage 
+            self.damage = 20
+            self.health = 200
             print("strong created")
-        else: print("weak created")     ## debugging
+        else: 
+            print("weak created")     ## debugging
+            self.damage = 1
 
         ## will be changed  (debugging )
     def direction_func (self,x = 0 , y=-1 ):
@@ -67,7 +71,7 @@ class Enemy(pg.sprite.Sprite):
                     now = pg.time.get_ticks()
                     if now - self.last_attack > self.atk_speed:
                         self.last_attack =now
-                        sprite.health -=1
+                        sprite.health -=self.damage
                 else:
                     self.isAttacking = False
 
