@@ -9,6 +9,7 @@ from os import*
 from archer import Archer
 from collisionsprites import CollisionSprites
 from enemy import*
+from Tower import *
 
 
 class Game:
@@ -17,20 +18,11 @@ class Game:
         self.all_sprites = AllSPrites()
         self.collision_sprites = pg.sprite.Group()
         self.collision_sprites2 = pg.sprite.Group() #for archer_animations
-        self.tower_sprites = pg.sprite.Group()
+        self.building_sprites = pg.sprite.Group()
         self.archer = pg.sprite.Group()
         self.enemy_group = pg.sprite.Group()
 
-        
-        
-
         self.gamemanager = gamemanager
-
-        # CollisionSprites( (3393.33,1910),(30,40),(255,0,0),(self.all_sprites,self.collision_sprites2)) # for testing the archer animations
-
-        # Archer((self.all_sprites,self.archer), (3400.33, 2450),"NT")
-        # Archer((self.all_sprites,self.archer), (4400, 3370),"ET")
-        # Archer((self.all_sprites,self.archer), (2372, 3370),"WT")
 
         self.setup()
 
@@ -96,8 +88,8 @@ class Game:
             collision_surf.fill('red')  # This won't be visible, just for debugging
             Collision_sprites(self.collision_sprites, collision_surf, (x, y))
         for obj in map.get_layer_by_name('Towers'):
-            # Use the actual tree image for visual representation
-            Sprites((self.all_sprites,self.tower_sprites), obj.image, (int(obj.x+35), int(obj.y+70)))
+            # Use the actual Tower image for visual representation
+            Tower((self.all_sprites, self.building_sprites), obj.image, (int(obj.x+35), int(obj.y+70)))
 
             # Create collision surface with correct dimensions (converted to integers)
             width = int(obj.width)-80
@@ -108,7 +100,6 @@ class Game:
             collision_surf = pg.Surface((width, height))
             collision_surf.fill('red')  # This won't be visible, just for debugging
             Collision_sprites(self.collision_sprites, collision_surf, (x, y))
-            print (obj.x, obj.y)
         for obj in map.get_layer_by_name('Castle'):
             # Use the actual catsle image for scaling
             original_image = obj.image
@@ -136,7 +127,7 @@ class Game:
         self.enemy_queue = Queue()
         for i in range(waves['1']['weak']):
             rand_waypoint = self.enemy_waypoints[randint(0,3)]
-            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.tower_sprites))
+            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites))
             
     def draw_debug_collisions(self):
         """Draw collision boxes for debugging purposes"""
@@ -171,12 +162,11 @@ class Game:
         for archer in self.archer:
             archer.draw_range(self.display)
         # Add this line to see collision boxes (remove when not debugging)
-        # self.draw_debug_collisions()
+        #self.draw_debug_collisions()
 
     def update(self,dt):
         for archer in self.archer:
             archer.update_archer(dt,self.enemy_group)
-
         Enemy.spawning()
         if Enemy.spawn == True :
             enemy = self.enemy_queue.dequeue()
@@ -185,4 +175,6 @@ class Game:
                 Enemy.spawn = False
         self.all_sprites.update(dt)
         self.draw()
+        for building in self.building_sprites:
+            building.update_health(dt)
 

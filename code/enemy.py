@@ -28,7 +28,9 @@ class Enemy(pg.sprite.Sprite):
         self.frame_index = 0
         self.collision_spr = collision_spr
         self.hitbox_rect = self.rect
-        
+        self.atk_speed = 500     #for timer
+        self.isAttacking = True #for timer
+        self.last_attack = 0    #for timer
         
 
         ## will be changed  (debugging )
@@ -46,14 +48,21 @@ class Enemy(pg.sprite.Sprite):
         else : Enemy.spawn = False
     def collision(self , direction):
         for sprite in self.collision_spr:
-            if sprite.rect.colliderect(self.hitbox_rect):
+            if self.rect.colliderect(sprite.hitbox):
                 if(direction == 'x'):
-                    if self.direction.x > 0 : self.hitbox_rect.right = sprite.rect.left
-                    if self.direction.x < 0: self.hitbox_rect.left = sprite.rect.right
+                    if self.direction.x > 0 : self.hitbox_rect.right = sprite.hitbox.left
+                    if self.direction.x < 0: self.hitbox_rect.left = sprite.hitbox.right
                 else:
-                    if self.direction.y > 0: self.hitbox_rect.bottom = sprite.rect.top
-                    if self.direction.y < 0 : self.hitbox_rect.top = sprite.rect.bottom
+                    if self.direction.y > 0: self.hitbox_rect.bottom = sprite.hitbox.top
+                    if self.direction.y < 0 : self.hitbox_rect.top = sprite.hitbox.bottom
                 self.rect.center = self.hitbox_rect.center
+                if self.isAttacking:
+                    now = pg.time.get_ticks()
+                    if now - self.last_attack > self.atk_speed:
+                        self.last_attack =now
+                        sprite.health -=1
+                else:
+                    self.isAttacking = False
 
     def handle_direction(self):
         if self.state == 'N':
