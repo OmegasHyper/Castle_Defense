@@ -2,7 +2,11 @@ from settings import *
 from Queue import Queue
 #from ground import collisionsprites
 
-
+BLACK = (0, 0, 0)
+RED = (220, 20, 60)
+DARK_RED = (139, 0, 0)
+WHITE = (255, 255, 255)
+GREEN = (0, 255, 0)
 class Enemy(pg.sprite.Sprite):
     image = pg.image.load("../sprites/enemies/torch/E/walk/3.png")
     Strongimage = pg.image.load("../sprites/enemies/barrel/N/walk/1.png")
@@ -34,6 +38,7 @@ class Enemy(pg.sprite.Sprite):
         self.atk_speed = 500     #for timer
         self.isAttacking = True #for timer
         self.last_attack = 0    #for timer
+
         self.strong = strong 
         if strong :
             self.image = Enemy.Strongimage 
@@ -43,6 +48,14 @@ class Enemy(pg.sprite.Sprite):
         else: 
             print("weak created")     ## debugging
             self.damage = 1
+
+        ## HEALTH PRE-RENDERING (OPTIMIZE FPS) AND INITIALIZATION
+        self.health_bar_width = 60
+        self.health_bar_height = 8
+        self.health_bar_bg = pg.Surface((self.health_bar_width, self.health_bar_height), pg.SRCALPHA)
+        pg.draw.rect(self.health_bar_bg, (0, 0, 0), (0, 0, self.health_bar_width, self.health_bar_height),
+                     border_radius=4)
+
 
         ## will be changed  (debugging )
     def direction_func (self,x = 0 , y=-1 ):
@@ -57,6 +70,19 @@ class Enemy(pg.sprite.Sprite):
             Enemy.spawn = True
             Enemy.last_spawn_t = recent_spawn
         else : Enemy.spawn = False
+
+    def load_health_bar(self, offset):
+        x = self.rect.centerx - self.health_bar_width // 2 + offset.x
+        y = self.rect.top + 45 + offset.y
+
+        self.display.blit(self.health_bar_bg, (x, y))
+
+        health_ratio = max(self.health, 0) / 500
+        if health_ratio > 0:
+            health_width = int((self.health_bar_width - 4) * health_ratio)
+            health_rect = pg.Rect(x + 2, y + 2, health_width, self.health_bar_height - 4)
+            pg.draw.rect(self.display, (220, 20, 60), health_rect, border_radius=3)
+
     def collision(self , direction):
         for sprite in self.collision_spr:
             if self.rect.colliderect(sprite.hitbox):
@@ -101,14 +127,19 @@ class Enemy(pg.sprite.Sprite):
         self.collision('y')
         self.rect.center = self.hitbox_rect.center
     def draw( self,x):
+        self.load_health_bar(x)
         if self.ismoving:
             self.display.blit(self.image,self.rect.topleft + x)
+
+
 
     def update(self,dt):
         if self.ismoving :
             self.collision(self.direction)
             self.move(dt)
             self.animate(dt)
+
+
 
     def get_killed(self):
         Enemy.number_eneimes -= 1
