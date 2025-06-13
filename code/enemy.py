@@ -35,8 +35,10 @@ class Enemy(pg.sprite.Sprite):
         self.isAttacking = True #for timer
         self.last_attack = 0    #for timer
         self.strong = strong 
-        if strong :self.image = Enemy.Strongimage 
-        
+        if strong :
+            self.image = Enemy.Strongimage 
+            print("strong created")
+        else: print("weak created")     ## debugging
 
         ## will be changed  (debugging )
     def direction_func (self,x = 0 , y=-1 ):

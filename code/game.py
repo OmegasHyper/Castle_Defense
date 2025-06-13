@@ -161,14 +161,23 @@ class Game:
         #self.draw_debug_collisions()
     def create_round(self,round):
         r = str(round)
-        for i in range(waves[r]['weak']):
-            rand_waypoint = self.enemy_waypoints[randint(0,3)]
-            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,False))
-        for i in range(waves[r]['strong']):
-            rand_waypoint = self.enemy_waypoints[randint(0,3)]
-            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,True))
+        counter_weak = 0
+        counter_strong = 0
+        
+        for i in range(waves[r]['weak']+waves[r]['strong']):
+            which_create = randint(0,1)
+            if (which_create and counter_weak < waves[r]['weak']) or  counter_strong ==  (waves[r]['strong']):    
+                rand_waypoint = self.enemy_waypoints[randint(0,3)]
+                self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,False))
+                counter_weak += 1
+            else : 
+                    rand_waypoint = self.enemy_waypoints[randint(0,3)]
+                    self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,True))
+                    counter_strong +=1
+                
         Enemy.spawn_time = waves [r]['spawn_time']
         print(f"round {r} created")
+        if r =='3' : print(Enemy.total_eneimes)           ## debugging purpose
 
     
     time_start_wait =0
@@ -199,7 +208,7 @@ class Game:
                 self.round +=1
                 Game.time_start_wait = pg.time.get_ticks()
                 Game.get_time = False
-            create = not self.wait(1000,Game.time_start_wait)      ## the timer is changable for debuging it has to be from levels table
+            create = not self.wait(10000,Game.time_start_wait)      ## the timer is changable for debuging it has to be from levels table
             if create and self.round <= 3:
                 self.create_round(self.round)
                 Game.get_time = True
