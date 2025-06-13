@@ -8,6 +8,8 @@ class Arrow(pg.sprite.Sprite):
         self.target = target
         self.front = None
         self.arrow_path = "../sprites/archers/Arrow"
+        attack_sound = pg.mixer.Sound("../sounds/Arrow_shot.wav")
+        attack_sound.play()
         self.arrow_path += state + ".png"
         self.image = pg.image.load(self.arrow_path).convert_alpha()
         self.state = state
