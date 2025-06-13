@@ -4,11 +4,11 @@ from settings import *
 class Player(pg.sprite.Sprite):
     def __init__(self,groups,pos,collision_sprites):
         super().__init__(groups)
-        self.image = pg.image.load("../sprites/player/walk/tile000.png")
+        self.image = pg.Surface((50, 50), pg.SRCALPHA)
         self.rect = self.image.get_frect(center=pos)
         self.collision_sprites = collision_sprites
-        self.hitbox_rect = self.rect.inflate(-150,-150)
-        self.speed = 500
+        self.hitbox_rect = self.rect
+        self.speed = 600
         self.direction = pg.Vector2()
 
     def input(self):
