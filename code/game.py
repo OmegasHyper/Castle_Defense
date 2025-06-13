@@ -168,7 +168,18 @@ class Game:
             rand_waypoint = self.enemy_waypoints[randint(0,3)]
             self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites))
         print("round2 created")
+
     
+    time_start_wait =0
+    get_time = True
+    def wait (self,time, time_start_wait):
+        time_to_stop = time
+        first_time = time_start_wait
+        delay =pg.time.get_ticks()
+        if delay - first_time > time_to_stop:
+            return False
+        else: 
+            return True 
     def update(self,dt):
         for archer in self.archer:
             archer.update_archer(dt,self.enemy_group)
@@ -178,11 +189,17 @@ class Game:
             if enemy != None :
                 enemy.ismoving = True
                 Enemy.spawn = False
+        if not self.enemy_queue.get_size() :
+            print("round 1 finish")
+            if Game.get_time:
+                Game.time_start_wait = pg.time.get_ticks()
+                Game.get_time = False
+            create = not self.wait(10000,Game.time_start_wait)
+            if create:
+                self.createR2()
+                Game.get_time = True
         self.all_sprites.update(dt)
         self.draw()
         for building in self.building_sprites:
             building.update_health(dt)
-        if not self.enemy_queue.get_size():
-            print("round 1 finish")
-            self.createR2()
 
