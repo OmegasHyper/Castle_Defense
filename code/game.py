@@ -28,9 +28,9 @@ class Game:
 
         # CollisionSprites( (3393.33,1910),(30,40),(255,0,0),(self.all_sprites,self.collision_sprites2)) # for testing the archer animations
 
-        Archer((self.all_sprites,self.archer), (3400.33, 2450),"NT")
-        Archer((self.all_sprites,self.archer), (4400, 3370),"ET")
-        Archer((self.all_sprites,self.archer), (2372, 3370),"WT")
+        # Archer((self.all_sprites,self.archer), (3400.33, 2450),"NT")
+        # Archer((self.all_sprites,self.archer), (4400, 3370),"ET")
+        # Archer((self.all_sprites,self.archer), (2372, 3370),"WT")
 
         self.setup()
 
@@ -79,7 +79,7 @@ class Game:
         # Load player spawn point
         for obj in map.get_layer_by_name('Player_waypoint'):
             self.player = Player(self.all_sprites, (obj.x, obj.y), self.collision_sprites)
-            Archer((self.all_sprites,self.archer), (obj.x, obj.y), "ST")
+
 
         #load goblin houses
         for obj in map.get_layer_by_name('Goblin_House'):
@@ -126,6 +126,10 @@ class Game:
             collision_surf = pg.Surface((width, height))
             collision_surf.fill('red')  # This won't be visible, just for debugging
             Collision_sprites(self.collision_sprites, collision_surf, (x, y))
+        for obj in map.get_layer_by_name('Outer_archers_waypoints'):
+            Archer((self.all_sprites, self.archer), (obj.x, obj.y), obj.name)
+        for obj in map.get_layer_by_name('Inner_archers_waypoints'):
+            Archer((self.all_sprites, self.archer), (obj.x, obj.y), obj.name)
         self.enemy_waypoints =[]
         for obj in map.get_layer_by_name('Enemy_waypoint'):
             self.enemy_waypoints.append(obj)

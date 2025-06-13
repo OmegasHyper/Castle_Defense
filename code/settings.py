@@ -6,6 +6,7 @@ from os.path import join
 from os import walk
 import os 
 os.chdir(os.path.dirname(__file__))
+import math
 
 WINDOW_WIDTH, WINDOW_HEIGHT = 1280, 720
 TILE_SIZE= 64
@@ -77,7 +78,7 @@ Player_upgrades =\
 
 waves = {
     '1': {
-        'weak': 12,
+        'weak': 24,
         'strong': 0
     },
     '2': {
