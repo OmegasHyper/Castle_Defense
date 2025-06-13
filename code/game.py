@@ -7,7 +7,6 @@ from Collision_sprites import *
 from sprites import * 
 #from os import*      os has open() that overrides json.open()
 from archer import Archer
-from collisionsprites import CollisionSprites
 from enemy import*
 
 
