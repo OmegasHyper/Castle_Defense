@@ -15,7 +15,7 @@ from Tower import *
 class Game:
     def __init__(self,display , gamemanager):
         self.display = display
-        self.all_sprites = AllSPrites()
+        self.all_sprites = AllSprites()
         self.collision_sprites = pg.sprite.Group()
         self.collision_sprites2 = pg.sprite.Group() #for archer_animations
         self.building_sprites = pg.sprite.Group()
@@ -49,10 +49,7 @@ class Game:
             x = int(obj.x)+40
             y = int(obj.y)+50
 
-            collision_surf = pg.Surface((width, height))
-            collision_surf.fill('red')  # This won't be visible, just for debugging
-            Collision_sprites(self.collision_sprites, collision_surf, (x, y))
-        # Load col++sion objects
+        # Load collision objects
         for obj in map.get_layer_by_name('Collisions'):
             # Convert to integers to avoid floating point precision issues
             width = int(obj.width)
@@ -83,9 +80,6 @@ class Game:
             x = int(obj.x)+15
             y = int(obj.y)+40
 
-            collision_surf = pg.Surface((width, height))
-            collision_surf.fill('red')  # This won't be visible, just for debugging
-            Collision_sprites(self.collision_sprites, collision_surf, (x, y))
         for obj in map.get_layer_by_name('Towers'):
             # Use the actual Tower image for visual representation
             Tower((self.all_sprites, self.building_sprites), obj.image, (int(obj.x+35), int(obj.y+70)))
@@ -96,9 +90,6 @@ class Game:
             x = int(obj.x)+40
             y = int(obj.y)+190
 
-            collision_surf = pg.Surface((width, height))
-            collision_surf.fill('red')  # This won't be visible, just for debugging
-            Collision_sprites(self.collision_sprites, collision_surf, (x, y))
         for obj in map.get_layer_by_name('Castle'):
             # Use the actual catsle image for scaling
             original_image = obj.image
@@ -113,9 +104,6 @@ class Game:
             x = int(obj.x)+130
             y = int(obj.y)+150
 
-            collision_surf = pg.Surface((width, height))
-            collision_surf.fill('red')  # This won't be visible, just for debugging
-            Collision_sprites(self.collision_sprites, collision_surf, (x, y))
         for obj in map.get_layer_by_name('Outer_archers_waypoints'):
             Archer((self.all_sprites, self.archer), (obj.x, obj.y), obj.name)
         for obj in map.get_layer_by_name('Inner_archers_waypoints'):

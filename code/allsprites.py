@@ -1,13 +1,13 @@
 from settings import *
 
-class AllSPrites(pg.sprite.Group):
+class AllSprites(pg.sprite.Group):
     offset = pg.Vector2()
     def __init__(self):
         super().__init__()
         self.display_surface = pg.display.get_surface()
     def draw(self , target_pos):
-        AllSPrites.offset.x = 1280 / 2 - target_pos[0] # Show tile area
-        AllSPrites.offset.y = 720 / 2 - target_pos[1]
+        AllSprites.offset.x = 1280 / 2 - target_pos[0] # Show tile area
+        AllSprites.offset.y = 720 / 2 - target_pos[1]
         ground_sprites = [sprite for sprite in self if hasattr(sprite , 'ground' )]
         object_sprites = [sprite for sprite in self if not hasattr(sprite , 'ground' ) ]
         enemy_sprites  = [sprite for sprite in self if hasattr(sprite , 'enemy') and not hasattr(sprite, 'ground') ]
@@ -17,7 +17,7 @@ class AllSPrites(pg.sprite.Group):
                 #print(sprite)
                 if  hasattr(sprite , 'enemy') and not hasattr(sprite, 'ground') :
                     if sprite.ismoving:
-                        sprite.draw(AllSPrites.offset)
+                        sprite.draw(AllSprites.offset)
                     else :continue
                 else :
-                    self.display_surface.blit(sprite.image,sprite.rect.topleft + AllSPrites.offset)
+                    self.display_surface.blit(sprite.image,sprite.rect.topleft + AllSprites.offset)
