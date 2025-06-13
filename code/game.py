@@ -125,9 +125,10 @@ class Game:
         for obj in map.get_layer_by_name('Enemy_waypoint'):
             self.enemy_waypoints.append(obj)
         self.enemy_queue = Queue()
+        
         for i in range(waves['1']['weak']):
             rand_waypoint = self.enemy_waypoints[randint(0,3)]
-            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites))
+            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites, False))
             
     def draw_debug_collisions(self):
         """Draw collision boxes for debugging purposes"""
@@ -163,10 +164,14 @@ class Game:
             archer.draw_range(self.display)
         # Add this line to see collision boxes (remove when not debugging)
         #self.draw_debug_collisions()
-    def createR2(self):
+    def create_round(self):
         for i in range(waves['2']['weak']):
             rand_waypoint = self.enemy_waypoints[randint(0,3)]
-            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites))
+            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,False))
+        for i in range(waves['2']['strong']):
+            rand_waypoint = self.enemy_waypoints[randint(0,3)]
+            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,True))
+        
         print("round2 created")
 
     
@@ -183,20 +188,22 @@ class Game:
     def update(self,dt):
         for archer in self.archer:
             archer.update_archer(dt,self.enemy_group)
+        # spawn of eneimes 
         Enemy.spawning()
         if Enemy.spawn == True :
             enemy = self.enemy_queue.dequeue()
             if enemy != None :
                 enemy.ismoving = True
                 Enemy.spawn = False
+        # timer for waves 
         if not self.enemy_queue.get_size() :
-            print("round 1 finish")
+            print("round finish")
             if Game.get_time:
                 Game.time_start_wait = pg.time.get_ticks()
                 Game.get_time = False
-            create = not self.wait(10000,Game.time_start_wait)
+            create = not self.wait(1000,Game.time_start_wait)      ## the timer is changable for debuging it has to be from levels table
             if create:
-                self.createR2()
+                self.create_round()
                 Game.get_time = True
         self.all_sprites.update(dt)
         self.draw()

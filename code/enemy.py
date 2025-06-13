@@ -5,12 +5,13 @@ from Queue import Queue
 
 class Enemy(pg.sprite.Sprite):
     image = pg.image.load("../sprites/enemies/torch/E/walk/3.png")
+    Strongimage = pg.image.load("../sprites/enemies/barrel/N/walk/1.png")
     spawn =True
     number_eneimes = 0
-    spawn_time = 2000
+    spawn_time = 500
     last_spawn_t = pg.time.get_ticks()
 
-    def __init__(self,groups,pos,state, collision_spr):
+    def __init__(self,groups,pos,state, collision_spr, strong):
         super().__init__(groups)
         self.animate_speed = 24
         self.health = 500
@@ -31,6 +32,8 @@ class Enemy(pg.sprite.Sprite):
         self.atk_speed = 500     #for timer
         self.isAttacking = True #for timer
         self.last_attack = 0    #for timer
+        self.strong = strong 
+        if strong :self.image = Enemy.Strongimage 
         
 
         ## will be changed  (debugging )
@@ -76,8 +79,12 @@ class Enemy(pg.sprite.Sprite):
 
     def animate(self,dt):
         if self.ismoving:
-            self.frame_index = self.frame_index + self.animate_speed * dt if self.direction else 0
-            self.image = enemy_frames[self.state]['walk'][int(self.frame_index) % len(enemy_frames[self.state]['walk'])]
+            if self.strong:
+                self.frame_index = self.frame_index + self.animate_speed * dt if self.direction else 0
+                self.image = strong_enemy_frames[self.state]['walk'][int(self.frame_index) % len(strong_enemy_frames[self.state]['walk'])]
+            else : 
+                self.frame_index = self.frame_index + self.animate_speed * dt if self.direction else 0
+                self.image = enemy_frames[self.state]['walk'][int(self.frame_index) % len(enemy_frames[self.state]['walk'])]
     def move(self,dt):
         self.handle_direction()
         self.hitbox_rect.x += self.direction.x * self.speed * dt

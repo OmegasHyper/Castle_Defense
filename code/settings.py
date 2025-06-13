@@ -19,8 +19,15 @@ enemy_paths = {
     'E': {'walk': [], 'atk': []},
     'W': {'walk': [], 'atk': []}
 }
+strong_base_path = '../sprites/enemies/barrel'
+strong_enemy_paths = {
+    'N': {'walk': [], 'atk': []},
+    'S': {'walk': [], 'atk': []},
+    'E': {'walk': [], 'atk': []},
+    'W': {'walk': [], 'atk': []}
+}
 
-# Get paths for each direction and action
+# Get paths for each direction and action for enemies
 for direction in enemy_paths.keys():
     for action in ['walk', 'atk']:
         folder_path = join(base_path, direction, action)
@@ -33,7 +40,27 @@ for direction in enemy_paths.keys():
                     enemy_paths[direction][action].append(full_path)
                     print(f"Found path: {direction}/{action}/{file_name}")
 
+## for well structured should be function
+                    
+for direction in strong_enemy_paths.keys():
+    for action in ['walk', 'atk']:
+        folder_path = join(strong_base_path, direction, action)
+        for root_path, sub_dirs, file_names in walk(folder_path):
+            if file_names:
+                # Filter only PNG files and sort numerically
+                png_files = [f for f in file_names if f.endswith('.png')]
+                for file_name in sorted(png_files, key=lambda name: int(name.split('.')[0])):
+                    full_path = join(root_path, file_name)
+                    strong_enemy_paths[direction][action].append(full_path)
+                    print(f"Found path: {direction}/{action}/{file_name}")
+
 enemy_frames ={
+        'N': { 'walk': [], 'atk': [] },
+        'S': { 'walk': [], 'atk': [] },
+        'E': { 'walk': [], 'atk': [] },
+        'W': { 'walk': [], 'atk': [] }
+    }
+strong_enemy_frames ={
         'N': { 'walk': [], 'atk': [] },
         'S': { 'walk': [], 'atk': [] },
         'E': { 'walk': [], 'atk': [] },
@@ -75,16 +102,16 @@ Player_upgrades =\
     'speed': 90
 },
 }
-
+## changed for debugging
 waves = {
     '1': {
-        'weak': 24,
-        'strong': 0,
+        'weak': 1,
+        'strong': 100,
         'spawn_time':2000
     },
     '2': {
-        'weak': 40,
-        'strong': 5,
+        'weak': 0,
+        'strong': 20,
         'spawn_time':1000
     },
     '3': {

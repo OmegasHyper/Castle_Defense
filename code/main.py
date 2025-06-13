@@ -25,6 +25,12 @@ class Game_Mannager:
                 for full_path in enemy_paths[direction][action]:
                         surf = pg.image.load(full_path).convert_alpha()
                         enemy_frames[direction][action].append(surf)
+
+        for direction in strong_enemy_paths.keys():
+            for action in ['walk', 'atk']:
+                for full_path in strong_enemy_paths[direction][action]:
+                        surf = pg.image.load(full_path).convert_alpha()
+                        strong_enemy_frames[direction][action].append(surf)
                         
     def run(self):
         while self.running:
