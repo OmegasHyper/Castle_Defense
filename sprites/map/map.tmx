@@ -10,7 +10,7 @@
  <tileset firstgid="89" source="../tiles_sets/decos.tsx"/>
  <tileset firstgid="124" source="../tiles_sets/scare_crow.tsx"/>
  <tileset firstgid="125" source="../tiles_sets/goblin_sign.tsx"/>
- <tileset firstgid="126" source="C:/Users/CompuMart/Desktop/elevated_ground.tsx"/>
+ <tileset firstgid="126" source="../tiles_sets/elevated_ground.tsx"/>
  <layer id="1" name="Ground" width="112" height="112">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
