@@ -5,6 +5,7 @@ class Pause_menu:
         self.display = display
         self.game_manager = game_manager
         self.resume_button_state = 0
+        self.menu_button_state = 0
         self.mid_button = []
         self.display_copy = display.copy()
         self.scale = 0.2
@@ -32,28 +33,42 @@ class Pause_menu:
         self.mid_button[1] = pg.transform.smoothscale(self.mid_button[1], (130, 70))
         self.mid_button.append(get_button(buttons['Button_Blue_3Slides_Pressed.png']))
         self.mid_button[2] = pg.transform.smoothscale(self.mid_button[2], (130, 70))
-        self.resume_button_rect = self.mid_button[self.resume_button_state].get_frect(center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2))
+        self.resume_button_rect = self.mid_button[self.resume_button_state].get_frect(center = (WINDOW_WIDTH/2, (WINDOW_HEIGHT/2) -70))
+        self.menu_button_rect = self.mid_button[self.menu_button_state].get_frect(center = (WINDOW_WIDTH/2, (WINDOW_HEIGHT/2) +70))
 
         self.pixel_font = pg.font.Font('../sprites/fonts/Minecraft.ttf', 25)
         self.resume_text = self.pixel_font.render('Resume' , True , 'white')
         self.resume_text_rect = self.resume_text.get_frect(center = self.resume_button_rect.center)
+        self.menu_text = self.pixel_font.render('Menu', True, 'white')
+        self.menu_text_rect = self.menu_text.get_frect(center=self.menu_button_rect.center)
 
     def update(self):
         self.display.blit(self.blurred, (0, 0))
         self.display.blit(self.overlay, (0, 0))
         self.display.blit(self.resume_text, self.resume_text_rect)
+        self.display.blit(self.menu_text, self.menu_text_rect)
 
         self.collision()
         self.display.blit(self.mid_button[self.resume_button_state], self.resume_button_rect)
         self.display.blit(self.resume_text , self.resume_text_rect)
+        self.display.blit(self.mid_button[self.menu_button_state], self.menu_button_rect)
+        self.display.blit(self.menu_text, self.menu_text_rect)
 
     def collision(self):
         if self.resume_button_rect.collidepoint(pg.mouse.get_pos()):
             self.resume_button_state = 1
-            if pg.mouse.get_pressed()[0]:
+            if pg.mouse.get_just_pressed()[0]:
                 self.resume_button_state = 2
                 self.game_manager.state = 'game'
                 # print(self.game_manager.state)
         else :
             self.resume_button_state = 0
+
+        if self.menu_button_rect.collidepoint(pg.mouse.get_pos()):
+            self.menu_button_state = 1
+            if pg.mouse.get_pressed()[0]:
+                self.menu_button_state = 2
+                self.game_manager.state = 'menu'
+        else :
+            self.menu_button_state = 0
             
