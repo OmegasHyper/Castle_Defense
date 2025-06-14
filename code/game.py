@@ -250,11 +250,11 @@ class Game:
             which_create = randint(0,1)
             if (which_create and counter_weak < waves[r]['weak']) or  counter_strong ==  (waves[r]['strong']):    
                 rand_waypoint = self.enemy_waypoints[randint(0,3)]
-                self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,(self.building_sprites,self.Obstacles_spr),False))
+                self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,(self.building_sprites,self.Obstacles_spr),False, round))
                 counter_weak += 1
             else : 
                     rand_waypoint = self.enemy_waypoints[randint(0,3)]
-                    self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,(self.building_sprites,self.Obstacles_spr),True))
+                    self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,(self.building_sprites,self.Obstacles_spr),True, round))
                     counter_strong +=1
                 
         Enemy.spawn_time = waves [r]['spawn_time']
