@@ -198,7 +198,7 @@ class Archer(pg.sprite.Sprite) :
 
             if self.current_frame == 6:
                 # Shoot arrow at current target
-                Arrow(self.all_sprites, self.rect, self.current_target, self.direction)
+                Arrow(self.all_sprites, self.rect, self.current_target, self.direction, self.round)
 
     def draw_range(self, surface):
         screen_pos = pg.Vector2(self.rect.center)
