@@ -7,8 +7,9 @@ import random
 attack_sound = pg.mixer.Sound("../sounds/Arrow_shot.wav")
 attack_sound.set_volume(0.4)
 class Arrow(pg.sprite.Sprite):
-    def __init__(self, groups, archer_rect, target, state):
+    def __init__(self, groups, archer_rect, target, state, round):
         super().__init__(groups)
+        self.round = round
         self.target = target
         self.front = None
         self.arrow_path = "../sprites/archers/Arrow"
@@ -72,6 +73,9 @@ class Arrow(pg.sprite.Sprite):
             #print(self.target.health)
             if self.target.health <= 0:
                 self.target.get_killed()
-                quantity = random.randint(20, 50)
+                if self.target.strong:
+                    quantity = 10 * self.round
+                else:
+                    quantity = 7 * self.round
                 gold(self.all_sprites, quantity, self.target.rect.center)
             self.kill()

@@ -8,7 +8,7 @@ class Player(pg.sprite.Sprite):
         self.rect = self.image.get_frect(center=pos)
         self.collision_sprites = collision_sprites
         self.hitbox_rect = self.rect
-        self.speed = 600
+        self.speed = 900
         self.direction = pg.Vector2()
 
     def input(self):

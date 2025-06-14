@@ -114,9 +114,9 @@ class Game:
             y = int(obj.y)+150
 
         for obj in map.get_layer_by_name('Outer_archers_waypoints'):
-            Archer((self.all_sprites, self.archer), (obj.x, obj.y), obj.name)
+            Archer((self.all_sprites, self.archer), (obj.x, obj.y), self.round, obj.name)
         for obj in map.get_layer_by_name('Inner_archers_waypoints'):
-            Archer((self.all_sprites, self.archer), (obj.x, obj.y), obj.name)
+            Archer((self.all_sprites, self.archer), (obj.x, obj.y), self.round, obj.name)
         self.enemy_waypoints =[]
         for obj in map.get_layer_by_name('Enemy_waypoint'):
             self.enemy_waypoints.append(obj)
