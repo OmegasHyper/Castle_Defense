@@ -1,4 +1,6 @@
 from Queue import Node
+import game
+import Obstacles
 class Stack :
     def __init__(self):
         self.top = None  # Points to the top of
@@ -34,7 +36,10 @@ class Stack_obstacles (Stack):
         super().__init__()
     def pop(self):
         if self.isempty():return None
+        
         temp=self.top
         self.top = self.top.next
         self.size -= 1
+        if temp.data.health == 40:
+            game.gold_quantity += Obstacles.pricee
         temp.data.kill()

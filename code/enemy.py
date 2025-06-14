@@ -1,8 +1,8 @@
-from Castle_Defense.code.allsprites import AllSprites
 from settings import *
 from Queue import Queue
 from gold import *
 from random import randint
+import allsprites
 #from ground import collisionsprites
 
 BLACK = (0, 0, 0)
