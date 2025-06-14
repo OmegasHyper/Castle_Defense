@@ -1,3 +1,4 @@
+from shop_menu import ShopMenu
 from settings import *
 import pygame as pg
 from game import *
@@ -19,6 +20,7 @@ class Game_Mannager:
         pg.display.set_caption('Castle Defense')
         self.main_menu = Main_Menu(self.display,self)
         self.game =  Game(self.display , self)
+        self.shop_menu = ShopMenu(self.display,self)
         self.clock = pg.time.Clock()
         self.state = 'menu'
         self.load()
@@ -56,6 +58,7 @@ class Game_Mannager:
                 self.game.update(dt)
 
                 self.pause_menu = Pause_menu(self.display, self)
+                self.shop_menu= ShopMenu(self.display,self)
 
                 if not  self.state_switched  :
                     main_menu_sound.stop()
@@ -70,7 +73,7 @@ class Game_Mannager:
                 self.pause_menu = Pause_menu(self.display, self)
                 #self.pause_menu.display_copy = self.display.copy()
             elif self.state == 'shop':
-                pass
+                self.shop_menu.update()
             pg.display.update()
     pg.quit()
 

@@ -13,7 +13,7 @@ class Tower(pg.sprite.Sprite):
         self.hitbox.top += 10
         self.black_health_rect = pg.Rect(self.pos[0], self.pos[1], 500, 500)
         self.display_offset = AllSprites.offset
-        self.health = 110
+        self.health = 5
         self.isBuilding = True
 
     def load_health_bar(self):
@@ -22,5 +22,8 @@ class Tower(pg.sprite.Sprite):
     
     def update_health(self, dt):
         self.load_health_bar()
-
+        if self.health <= 0:
+            self.kill()
+        else:
+            self.load_health_bar()
 

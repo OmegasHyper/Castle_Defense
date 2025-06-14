@@ -9,7 +9,7 @@ from sprites import *
 from archer import Archer
 from enemy import*
 from Tower import *
-
+from Castle import *
 from Obstacles import *
 from Stack import *
 
@@ -23,6 +23,7 @@ class Game:
     def __init__(self,display , gamemanager):
         # self.gold_sprite = pg.image.load("../sprites/map/Resources/Resources/G_Idle_(NoShadow).png").convert_alpha()
         # self.gold_sprite = pg.transform.smoothscale(self.gold_sprite, (100, 100))
+        self.tower_dict = {}
         self.display = display
         self.all_sprites = AllSprites()
         self.collision_sprites = pg.sprite.Group()
@@ -99,10 +100,13 @@ class Game:
             x = int(obj.x)+15
             y = int(obj.y)+40
 
-        for obj in map.get_layer_by_name('Towers'):
-            # Use the actual Tower image for visual representation
-            Tower((self.all_sprites, self.building_sprites), obj.image, (int(obj.x+35), int(obj.y+70)))
 
+        # self.tower_dict = {}
+        for obj in map.get_layer_by_name('Towers'):
+            tower_name = obj.name
+            # Use the actual Tower image for visual representation
+            tower_instance =Tower((self.all_sprites, self.building_sprites), obj.image, (int(obj.x+35), int(obj.y+70)))
+            self.tower_dict[tower_name] = tower_instance
             # Create collision surface with correct dimensions (converted to integers)
             width = int(obj.width)-80
             height = int(obj.height)-300
@@ -110,21 +114,25 @@ class Game:
             y = int(obj.y)+190
 
         for obj in map.get_layer_by_name('Castle'):
-            # Use the actual catsle image for scaling
-            original_image = obj.image
-            new_width = original_image.get_width() *2
-            new_height = original_image.get_height()*2
-            scaled_image = pg.transform.scale(original_image,(new_width,new_height))
-            Sprites((self.all_sprites), scaled_image, (int(obj.x+70), int(obj.y)))
-
             # Create collision surface with correct dimensions (converted to integers)
-            width = int(obj.width)-240
-            height = int(obj.height)-260
-            x = int(obj.x)+130
-            y = int(obj.y)+150
+            width = int(obj.width) - 80
+            height = int(obj.height) - 300
+            x = int(obj.x) + 40
+            y = int(obj.y) + 190
+            # Use the actual castle image for scaling
+            original_image = obj.image
+            new_width = original_image.get_width() * 2
+            new_height = original_image.get_height() * 2
+            scaled_image = pg.transform.scale(original_image, (new_width, new_height))
 
+            # Create an instance of the Castle class
+            castle_instance = Castle((self.all_sprites, self.building_sprites), scaled_image,
+                                     (int(obj.x + 70), int(obj.y)))
+            self.tower_dict[obj.name] = castle_instance  # Store the castle instance in the dictionary
         for obj in map.get_layer_by_name('Outer_archers_waypoints'):
-            Archer((self.all_sprites, self.archer), (obj.x, obj.y), obj.name)
+            tower_name = obj.name
+            parent_tower = self.tower_dict[tower_name]
+            Archer((self.all_sprites, self.archer), (obj.x, obj.y), tower_name,parent_tower=parent_tower)
         for obj in map.get_layer_by_name('Inner_archers_waypoints'):
             Archer((self.all_sprites, self.archer), (obj.x, obj.y), obj.name)
         self.enemy_waypoints =[]

@@ -71,17 +71,17 @@ Tower_upgrades = \
     {
             'level1': {
                 'dmg': 10,
-                'range': 120,
+                'range': 600,
                 'fire_rate': 10
             },
             'level2': {
                 'dmg': 40,
-                'range': 200,
+                'range': 650,
                 'fire_rate': 20
             },
             'level3': {
                 'dmg': 120,
-                'range': 350,
+                'range': 700,
                 'fire_rate': 30
             }
         }
