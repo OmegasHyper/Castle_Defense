@@ -65,6 +65,6 @@ class Arrow(pg.sprite.Sprite):
         if self.target.rect.contains(self.rect):
             self.target.health -= self.damage
             #print(self.target.health)
-            if self.target.health <= 0:
-                self.target.get_killed()
+            # if self.target.health <= 0:           ## not safe to be used as kill should work from enemy update method
+            #     self.target.get_killed()
             self.kill()

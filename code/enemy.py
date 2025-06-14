@@ -155,6 +155,8 @@ class Enemy(pg.sprite.Sprite):
             self.collision(self.direction)
             self.move(dt)
             self.animate(dt)
+        if self.health <= 0:           
+            self.get_killed()
 
 
 
