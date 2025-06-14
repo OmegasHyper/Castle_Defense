@@ -16,7 +16,7 @@ from Stack import *
 
 button_hover_sound = pg.mixer.Sound("../sounds/button_hover.wav")
 button_click_sound = pg.mixer.Sound("../sounds/button_click.mp3")
-gold_quantity = 0
+gold_quantity = 2000
 
 
 class Game:
@@ -70,7 +70,7 @@ class Game:
 
         # Load collision objects
         for obj in map.get_layer_by_name('Collisions'):
-            global gold_quantity
+            # global gold_quantity
            
             # Convert to integers to avoid floating point precision issues
             width = int(obj.width)
