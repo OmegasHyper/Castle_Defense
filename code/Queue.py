@@ -1,4 +1,4 @@
-#For most use cases in Python: Use collections.deque — it's fast, safe, and designed for queues
+#For most use cases in Python: Use collections.deque — it's fast, safe, and designed for queues but now use hand maded Queue for task
 # Queue using linked list logic 
 class Queue :
     def __init__ (self):

@@ -9,9 +9,15 @@ from sprites import *
 from archer import Archer
 from enemy import*
 from Tower import *
+
+from Obstacles import *
+from Stack import *
+
+
 button_hover_sound = pg.mixer.Sound("../sounds/button_hover.wav")
 button_click_sound = pg.mixer.Sound("../sounds/button_click.mp3")
-gold_quantity = 0
+gold_quantity = 2000
+
 
 class Game:
     def __init__(self,display , gamemanager):
@@ -25,13 +31,17 @@ class Game:
         self.archer = pg.sprite.Group()
         self.enemy_group = pg.sprite.Group()
 
+        self.Obstacles_spr = pg.sprite.Group()
+        self.gamemanager = gamemanager
+        self.round = 1
+        self.stack_obst = Stack_obstacles()
+        
         self.pause_button_state = 0
         self.shop_button_state = 0
         self.mid_button = []
-        self.gamemanager = gamemanager
-        self.round = 1
         self.isButton1hovered = False
         self.isButton2hovered = False
+
         self.setup()
 
     def setup(self):
@@ -60,7 +70,7 @@ class Game:
 
         # Load collision objects
         for obj in map.get_layer_by_name('Collisions'):
-            global gold_quantity
+            # global gold_quantity
            
             # Convert to integers to avoid floating point precision issues
             width = int(obj.width)
@@ -122,10 +132,6 @@ class Game:
             self.enemy_waypoints.append(obj)
         self.enemy_queue = Queue()
 
-        for i in range(waves['1']['weak']):
-            rand_waypoint = self.enemy_waypoints[randint(0,3)]
-            self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites , False))
-
         buttons_spritesheet = pg.image.load('../sprites/buttons/buttons.png').convert_alpha()
         with open('../sprites/buttons/buttons.json') as f:
             data = json.load(f)
@@ -156,6 +162,9 @@ class Game:
         #self.gold_sprite_rect = self.gold_text.get_frect(midright=(self.gold_text_rect.midleft))
         #self.gold_sprite_rect.x -= 63
         #self.gold_sprite_rect.y -= 48
+
+        # create first round 
+        self.create_round(self.round)
     def collision(self):
         if self.pause_button_rect.collidepoint(pg.mouse.get_pos()):
             self.pause_button_state = 1
@@ -241,17 +250,17 @@ class Game:
             which_create = randint(0,1)
             if (which_create and counter_weak < waves[r]['weak']) or  counter_strong ==  (waves[r]['strong']):    
                 rand_waypoint = self.enemy_waypoints[randint(0,3)]
-                self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,False))
+                self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,(self.building_sprites,self.Obstacles_spr),False))
                 counter_weak += 1
             else : 
                     rand_waypoint = self.enemy_waypoints[randint(0,3)]
-                    self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,True))
+                    self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,(self.building_sprites,self.Obstacles_spr),True))
                     counter_strong +=1
                 
         Enemy.spawn_time = waves [r]['spawn_time']
         print(f"round {r} created")
         if r =='3' : print(Enemy.total_eneimes)           ## debugging purpose
-
+        self.round+=1
     
     time_start_wait =0
     get_time = True
@@ -277,13 +286,17 @@ class Game:
         # timer for waves 
         if not self.enemy_queue.get_size() :
             if Game.get_time:
-                self.round +=1
                 Game.time_start_wait = pg.time.get_ticks()
                 Game.get_time = False
             create = not self.wait(10000,Game.time_start_wait)      ## the timer is changable for debuging it has to be from levels table
             if create and self.round <= 3:
                 self.create_round(self.round)
+                
                 Game.get_time = True
+        put_obst(self.all_sprites, self.Obstacles_spr,self.stack_obst)
+        check_undo(self.stack_obst)
+
+            # Obstacles((self.all_sprites, self.Obstacles_spr), (3400, 5000))
         self.all_sprites.update(dt)
         self.collision()
         self.draw()

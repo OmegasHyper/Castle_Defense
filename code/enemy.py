@@ -1,5 +1,7 @@
 from settings import *
 from Queue import Queue
+from gold import *
+from random import randint
 #from ground import collisionsprites
 
 BLACK = (0, 0, 0)
@@ -30,6 +32,7 @@ class Enemy(pg.sprite.Sprite):
         self.direction = pg.Vector2(0, -1)
         self.ismoving = False
         self.enemy = True
+        self.all_sprites = groups[0]
         Enemy.number_eneimes +=1
         Enemy.total_eneimes+=1
         self.display = pg.display.get_surface()
@@ -39,20 +42,26 @@ class Enemy(pg.sprite.Sprite):
         self.frame_index = 0
         self.collision_spr = collision_spr
         self.hitbox_rect = self.rect
-        self.atk_speed = 500     #for timer
-        self.isAttacking = True #for timer
+        self.atk_speed = 1000     #for timer
+        self.isAttacking = False #for timer
         self.last_attack = 0    #for timer
         self.healthbar_offset_x = 0
         self.healthbar_offset_y = 45
         self.max_health = 500
         self.strong = strong 
+        self.obst = True
+        self.piriority = "low"
+
         if strong :
-            self.image = Enemy.Strongimage 
+            self.image = Enemy.Strongimage
+            self.speed = 150
             self.damage = 20
             self.health = self.max_health = 200
             self.healthbar_offset_x = -40
             self.healthbar_offset_y = +15
+            self.piriority = "high"
             print("strong created")
+
         else: 
             print("weak created")     ## debugging
             self.damage = 1
@@ -93,24 +102,30 @@ class Enemy(pg.sprite.Sprite):
             pg.draw.rect(self.display, (220, 20, 60), health_rect, border_radius=3)
 
     def collision(self , direction):
-        for sprite in self.collision_spr:
-            if self.rect.colliderect(sprite.hitbox):
-                if(direction == 'x'):
-                    if self.direction.x > 0 : self.hitbox_rect.right = sprite.hitbox.left
-                    if self.direction.x < 0: self.hitbox_rect.left = sprite.hitbox.right
-                else:
-                    if self.direction.y > 0: self.hitbox_rect.bottom = sprite.hitbox.top
-                    if self.direction.y < 0 : self.hitbox_rect.top = sprite.hitbox.bottom
-                self.rect.center = self.hitbox_rect.center
-                if self.isAttacking:
-                    goblin_attack_sound.play()
-                    now = pg.time.get_ticks()
-                    if now - self.last_attack > self.atk_speed:
-                        self.last_attack =now
-                        sprite.health -=self.damage
-                else:
-                    self.isAttacking = False
-
+        self.isAttacking = False
+        for spr in self.collision_spr:
+            for sprite in spr:
+                if self.rect.colliderect(sprite.hitbox):
+                    self.isAttacking = True
+                    if(direction == 'x'):
+                        if self.direction.x > 0 : self.hitbox_rect.right = sprite.hitbox.left
+                        if self.direction.x < 0: self.hitbox_rect.left = sprite.hitbox.right
+                    else:
+                        if self.direction.y > 0: self.hitbox_rect.bottom = sprite.hitbox.top
+                        if self.direction.y < 0 : self.hitbox_rect.top = sprite.hitbox.bottom
+                    self.rect.center = self.hitbox_rect.center
+                    if self.isAttacking:
+                        if(hasattr(sprite , 'obst')) and self.obst : self.health-=80 ; self.obst = False; 
+                        now = pg.time.get_ticks()
+                        if now - self.last_attack > self.atk_speed:
+                            goblin_attack_sound.play()
+                            self.last_attack =now
+                            if(hasattr(sprite , 'obst')) :sprite.obst_health_dec(self.damage)
+                            else: sprite.health -=self.damage
+                
+        if not self.isAttacking:
+            self.obst = True
+    
     def handle_direction(self):
         if self.state == 'N':
             self.direction_func(0,1)
@@ -148,11 +163,15 @@ class Enemy(pg.sprite.Sprite):
             self.collision(self.direction)
             self.move(dt)
             self.animate(dt)
+        if self.health <= 0:           
+            self.get_killed()
 
 
 
     def get_killed(self):
         Enemy.number_eneimes -= 1
+        quantity = randint(20, 50)
+        gold(self.all_sprites, quantity, self.rect.center)
         die_sound.play()
         self.kill()
         

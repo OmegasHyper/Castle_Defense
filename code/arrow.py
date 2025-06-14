@@ -71,11 +71,10 @@ class Arrow(pg.sprite.Sprite):
         if self.target.rect.contains(self.rect):
             self.target.health -= self.damage
             #print(self.target.health)
-            if self.target.health <= 0:
-                self.target.get_killed()
-                if self.target.strong:
-                    quantity = 10 * self.round
-                else:
-                    quantity = 7 * self.round
-                gold(self.all_sprites, quantity, self.target.rect.center)
+
+            # if self.target.health <= 0:           ## not safe to be used as kill should work from enemy update method
+                # self.target.get_killed()
+                # quantity = random.randint(20, 50)
+                # gold(self.all_sprites, quantity, self.target.rect.center)
+
             self.kill()
