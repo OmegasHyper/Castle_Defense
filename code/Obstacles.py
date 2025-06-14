@@ -10,10 +10,10 @@ class Obstacles(pg.sprite.Sprite) :
         self.image = Obstacles.imsc
         self.rect = self.image.get_frect(center=pos)
         self.health = 100
-        self.hitbox = self.rect.inflate(-200,-200)
+        self.hitbox = self.rect.inflate(-70,-60)
         self.hitbox.top += 10
         self.health = 40
-        self.obst = True
+        self.isObstacle = True
     def kill_obst (self):
         # broke_sound.play()       when sound is loaded 
         self.kill()
