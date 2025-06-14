@@ -107,13 +107,13 @@ class Enemy(pg.sprite.Sprite):
                         if self.direction.y < 0 : self.hitbox_rect.top = sprite.hitbox.bottom
                     self.rect.center = self.hitbox_rect.center
                     if self.isAttacking:
-                        if(hasattr(sprite , 'obst')) and self.obst: self.health-=80 ; self.obst = False; sprite.obst_health_dec(self.damage)
-                        
+                        if(hasattr(sprite , 'obst')) and self.obst : self.health-=80 ; self.obst = False; 
                         now = pg.time.get_ticks()
                         if now - self.last_attack > self.atk_speed:
                             goblin_attack_sound.play()
                             self.last_attack =now
-                            sprite.health -=self.damage
+                            if(hasattr(sprite , 'obst')) :sprite.obst_health_dec(self.damage)
+                            else: sprite.health -=self.damage
                 
         if not self.isAttacking:
             self.obst = True
