@@ -61,10 +61,10 @@ class Enemy(pg.sprite.Sprite):
             self.healthbar_offset_x = -40
             self.healthbar_offset_y = +15
             self.piriority = "high"
-            print("strong created")
+            # print("strong created")
 
         else: 
-            print("weak created")     ## debugging
+            # print("weak created")     ## debugging
             self.damage = 1
 
         ## HEALTH PRE-RENDERING (OPTIMIZE FPS) AND INITIALIZATION
@@ -173,9 +173,10 @@ class Enemy(pg.sprite.Sprite):
         Enemy.number_eneimes -= 1
         if self.strong:
             quantity = 10 * max(1, self.round // 1.3)
+            print(quantity)
         else:
             quantity = 7 * max(1, self.round // 1.3)
-
+            print(quantity)
         gold(self.all_sprites, quantity, self.rect.center)
         die_sound.play()
         self.kill()

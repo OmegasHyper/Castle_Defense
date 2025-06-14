@@ -155,8 +155,8 @@ class Game:
         self.pause_text_rect = self.pause_text.get_frect(center = self.pause_button_rect.center)
         self.shop_text = self.pixel_font.render('Shop', True, 'white')
         self.shop_text_rect = self.shop_text.get_frect(center = self.shop_button_rect.center)
-        self.round_text = self.pixel_font.render(f'Wave: {self.round}', True, 'white')
-        self.round_text_rect = self.round_text.get_frect(center = (WINDOW_WIDTH / 2, 80))
+        # self.round_text = self.pixel_font.render(f'Wave: {self.round}', True, 'white')
+        # self.round_text_rect = self.round_text.get_frect(center = (WINDOW_WIDTH / 2, 80))
 
         
         #self.gold_sprite_rect = self.gold_text.get_frect(midright=(self.gold_text_rect.midleft))
@@ -230,6 +230,9 @@ class Game:
         self.display.blit(self.mid_button[self.shop_button_state], self.shop_button_rect)
         self.display.blit(self.shop_text,self.shop_text_rect)
         self.display.blit(self.pause_text , self.pause_text_rect)
+        round_bg_rect = self.round_text_rect.inflate(30, 15)
+        pg.draw.rect(self.display, (0, 0, 0), round_bg_rect, border_radius=12)
+        pg.draw.rect(self.display, (255, 255, 255), round_bg_rect, width=2, border_radius=12)
         self.display.blit(self.round_text, self.round_text_rect)
 
         gold_quantity_text = f'Gold: {gold_quantity}'
@@ -259,9 +262,10 @@ class Game:
                 
         Enemy.spawn_time = waves [r]['spawn_time']
         print(f"round {r} created")
-        if r =='3' : print(Enemy.total_eneimes)           ## debugging purpose
+        if r =='3' : print(Enemy.total_eneimes)         ## debugging purpose
+        self.round_text = self.pixel_font.render(f'Wave: {self.round}', True, 'white')
+        self.round_text_rect = self.round_text.get_frect(center=(WINDOW_WIDTH / 2, 80))
         self.round+=1
-    
     time_start_wait =0
     get_time = True
     def wait (self,time, time_start_wait):
