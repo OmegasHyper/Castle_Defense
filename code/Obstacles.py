@@ -9,7 +9,7 @@ class Obstacles(pg.sprite.Sprite) :
         self.health = 100
         self.hitbox = self.rect.inflate(-140,-180)
         self.hitbox.top += 10
-        
+    
     
 
     

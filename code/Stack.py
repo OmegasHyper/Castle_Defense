@@ -9,6 +9,7 @@ class Stack :
         newnode.next = self.top
         self.top = newnode
         self.size += 1
+    ## modified pop to kill the 
     def pop (self):
         if self.isempty():return None
         temp=self.top
@@ -27,3 +28,13 @@ class Stack :
         return self.top is None
     def get_size(self):
         return self.size
+
+class Stack_obstacles (Stack):
+    def __init__(self):
+        super().__init__()
+    def pop(self):
+        if self.isempty():return None
+        temp=self.top
+        self.top = self.top.next
+        self.size -= 1
+        temp.data.kill()

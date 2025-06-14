@@ -11,6 +11,7 @@ from collisionsprites import CollisionSprites
 from enemy import*
 from Tower import *
 from Obstacles import *
+from Stack import *
 
 
 class Game:
@@ -25,6 +26,7 @@ class Game:
         self.Obstacles_spr = pg.sprite.Group()
         self.gamemanager = gamemanager
         self.round = 1
+        self.stack = Stack_obstacles()
         self.setup()
 
     def setup(self):
@@ -207,7 +209,10 @@ class Game:
             world_pos = pg.Vector2(mouse_pos) - self.all_sprites.offset
             print(mouse_pos)
             print(world_pos)
-            Obstacles((self.all_sprites, self.Obstacles_spr),world_pos)
+            self.stack.push(Obstacles((self.all_sprites, self.Obstacles_spr),world_pos))
+        if pg.key.get_just_pressed()[pg.K_z]:
+            self.stack.pop()
+
             # Obstacles((self.all_sprites, self.Obstacles_spr), (3400, 5000))
         self.all_sprites.update(dt)
         self.draw()

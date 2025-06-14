@@ -19,7 +19,7 @@ class Tower(pg.sprite.Sprite):
     def load_health_bar(self):
         pg.draw.rect(pg.display.get_surface(), 'black',(self.pos[0] + self.display_offset.x, self.pos[1] + self.display_offset.y, 120, 30), 5, 5)
         pg.draw.rect(pg.display.get_surface(), 'red', (self.pos[0] + self.display_offset.x + 5, self.pos[1] + self.display_offset.y +5, self.health, 20))
-
+    
     def update_health(self, dt):
         self.load_health_bar()
 
