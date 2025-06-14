@@ -107,7 +107,7 @@ class Enemy(pg.sprite.Sprite):
                         if self.direction.y < 0 : self.hitbox_rect.top = sprite.hitbox.bottom
                     self.rect.center = self.hitbox_rect.center
                     if self.isAttacking:
-                        if(hasattr(sprite , 'obst')) and self.obst: self.health-=80 ; self.obst = False
+                        if(hasattr(sprite , 'obst')) and self.obst: self.health-=80 ; self.obst = False; sprite.obst_health_dec(self.damage)
                         
                         now = pg.time.get_ticks()
                         if now - self.last_attack > self.atk_speed:

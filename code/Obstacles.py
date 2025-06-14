@@ -9,8 +9,15 @@ class Obstacles(pg.sprite.Sprite) :
         self.health = 100
         self.hitbox = self.rect.inflate(-140,-180)
         self.hitbox.top += 10
-        self.health = 30
+        self.health = 40
         self.obst = True
+    def kill_obst (self):
+        # broke_sound.play()       when sound is loaded 
+        self.kill()
+    def obst_health_dec(self,damage):
+        self.health -= damage
+        if self.health <= 0:           
+            self.kill_obst()
 
 def put_obst(all_spr,Obst_spr,stack): 
         if pg.mouse.get_just_pressed()[0]:
@@ -21,6 +28,6 @@ def put_obst(all_spr,Obst_spr,stack):
 def check_undo(stack):
         if pg.key.get_just_pressed()[pg.K_z]:
             stack.pop()
-    
+
 
     
