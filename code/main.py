@@ -24,6 +24,7 @@ class Game_Mannager:
         self.load()
         self.state_switched = False
         main_menu_sound.play(loops=-1)
+
         
     def load(self):
         for direction in enemy_paths.keys():
@@ -37,7 +38,8 @@ class Game_Mannager:
                 for full_path in strong_enemy_paths[direction][action]:
                         surf = pg.image.load(full_path).convert_alpha()
                         strong_enemy_frames[direction][action].append(surf)
-                        
+
+
     def run(self):
         while self.running:
             dt = self.clock.tick_busy_loop(60)/1000

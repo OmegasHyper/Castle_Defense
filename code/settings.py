@@ -39,8 +39,9 @@ for direction in enemy_paths.keys():
                 for file_name in sorted(png_files, key=lambda name: int(name.split('.')[0])):
                     full_path = join(root_path, file_name)
                     enemy_paths[direction][action].append(full_path)
+                    print(f"Found path: {direction}/{action}/{file_name}")
                     
-
+print()
 ## for well structured should be function
                     
 for direction in strong_enemy_paths.keys():
@@ -67,6 +68,7 @@ strong_enemy_frames ={
         'E': { 'walk': [], 'atk': [] },
         'W': { 'walk': [], 'atk': [] }
     }
+explosion = []
 Tower_upgrades = \
     {
             'level1': {

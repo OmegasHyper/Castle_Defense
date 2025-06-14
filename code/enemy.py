@@ -45,6 +45,7 @@ class Enemy(pg.sprite.Sprite):
         self.collision_spr = collision_spr
         self.hitbox_rect = self.rect.copy().inflate(-80,-80)
         self.atk_speed = 1000     #for timer
+        self.att_animation_speed = 10
         self.isAttacking = False #for timer
         self.last_attack = 0    #for timer
         self.healthbar_offset_x = 0
@@ -77,14 +78,13 @@ class Enemy(pg.sprite.Sprite):
         pg.draw.rect(self.health_bar_bg, (0, 0, 0), (0, 0, self.health_bar_width, self.health_bar_height),
                      border_radius=4)
 
-
-
         ## will be changed  (debugging )
     def direction_func (self,x = 0 , y=-1 ):
         # takes the direction as x and y make vector and normalize
         # x -> 0-1   y -> 0-1 
         self.direction = pg.Vector2(x,y)
         self.direction = self.direction.normalize() if self.direction else self.direction
+
     @staticmethod
     def spawning():
         recent_spawn =pg.time.get_ticks() 
@@ -106,7 +106,6 @@ class Enemy(pg.sprite.Sprite):
             pg.draw.rect(self.display, (220, 20, 60), health_rect, border_radius=3)
 
     def collision(self , direction):
-        self.isAttacking = False
         for spr in self.collision_spr:
             for sprite in spr:
                 if self.hitbox_rect.colliderect(sprite.hitbox):
@@ -126,7 +125,8 @@ class Enemy(pg.sprite.Sprite):
                         if now - self.last_attack > self.atk_speed:
                             goblin_attack_sound.play()
                             self.last_attack =now
-                            if(hasattr(sprite , 'obst')) :sprite.obst_health_dec(self.damage)
+                            if(hasattr(sprite , 'isObstacle')) :
+                                sprite.obst_health_dec(self.damage)
                             else: sprite.health -=self.damage
 
                 
@@ -144,25 +144,33 @@ class Enemy(pg.sprite.Sprite):
             self.direction_func(0, -1)
 
     def animate(self,dt):
-        if self.ismoving:
+        if self.isAttacking:
+            print(f"Attacking - State: {self.state}, Strong: {self.strong}, Frame: {int(self.frame_index)}")
+            if self.strong:
+                self.frame_index = self.frame_index + self.att_animation_speed * dt if self.direction else 0
+                self.image = strong_enemy_frames[self.state]['atk'][int(self.frame_index) % len(strong_enemy_frames[self.state]['atk'])]
+            else :
+                self.frame_index = self.frame_index + self.att_animation_speed * dt if self.direction else 0
+                self.image = enemy_frames[self.state]['atk'][int(self.frame_index) % len(enemy_frames[self.state]['atk'])]
+        elif self.ismoving:
             if self.strong:
                 self.frame_index = self.frame_index + self.animate_speed * dt if self.direction else 0
                 self.image = strong_enemy_frames[self.state]['walk'][int(self.frame_index) % len(strong_enemy_frames[self.state]['walk'])]
-            else : 
+            else :
                 self.frame_index = self.frame_index + self.animate_speed * dt if self.direction else 0
                 self.image = enemy_frames[self.state]['walk'][int(self.frame_index) % len(enemy_frames[self.state]['walk'])]
 
     def move(self,dt):
         self.handle_direction()
-        self.hitbox_rect.x += self.direction.x * self.speed * dt
-        self.collision('x')
+        self.isAttacking = False # this line is important for the atk animations to work in all states (NSEW)
         self.hitbox_rect.y += self.direction.y * self.speed * dt
         self.collision('y')
+        self.hitbox_rect.x += self.direction.x * self.speed * dt
+        self.collision('x')
         self.rect.center = self.hitbox_rect.center
         if self.strong:
             self.rect.centerx = self.hitbox_rect.centerx - self.hitbox_offset_x
             self.rect.centery = self.hitbox_rect.centery - self.hitbox_offset_y
-
 
     """" def draw_hitbox(self, offset):
         #Draw the hitbox rectangle for debugging
@@ -188,16 +196,13 @@ class Enemy(pg.sprite.Sprite):
         if self.ismoving:
             self.display.blit(self.image,self.rect.topleft + x)
 
-
     def update(self,dt):
         if self.ismoving :
-            self.collision(self.direction)
             self.move(dt)
             self.animate(dt)
-        if self.health <= 0:           
+            self.collision(self.direction)
+        if self.health <= 0:
             self.get_killed()
-
-
 
     def get_killed(self):
         Enemy.number_eneimes -= 1
