@@ -45,14 +45,18 @@ class Enemy(pg.sprite.Sprite):
         self.healthbar_offset_x = 0
         self.healthbar_offset_y = 45
         self.max_health = 500
-        self.strong = strong 
+        self.strong = strong
+        self.piriority = "low"
         if strong :
-            self.image = Enemy.Strongimage 
+            self.image = Enemy.Strongimage
+            self.speed = 150
             self.damage = 20
             self.health = self.max_health = 200
             self.healthbar_offset_x = -40
             self.healthbar_offset_y = +15
+            self.piriority = "high"
             print("strong created")
+
         else: 
             print("weak created")     ## debugging
             self.damage = 1
