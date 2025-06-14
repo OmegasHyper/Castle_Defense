@@ -1,5 +1,7 @@
 from settings import *
 from Queue import Queue
+from gold import *
+from random import randint
 #from ground import collisionsprites
 
 BLACK = (0, 0, 0)
@@ -30,6 +32,7 @@ class Enemy(pg.sprite.Sprite):
         self.direction = pg.Vector2(0, -1)
         self.ismoving = False
         self.enemy = True
+        self.all_sprites = groups[0]
         Enemy.number_eneimes +=1
         Enemy.total_eneimes+=1
         self.display = pg.display.get_surface()
@@ -167,6 +170,8 @@ class Enemy(pg.sprite.Sprite):
 
     def get_killed(self):
         Enemy.number_eneimes -= 1
+        quantity = randint(20, 50)
+        gold(self.all_sprites, quantity, self.rect.center)
         die_sound.play()
         self.kill()
         
