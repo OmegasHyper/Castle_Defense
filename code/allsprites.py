@@ -12,7 +12,8 @@ class AllSprites(pg.sprite.Group):
         object_sprites = [sprite for sprite in self if not hasattr(sprite , 'ground' ) ]
         enemy_sprites  = [sprite for sprite in self if hasattr(sprite , 'enemy') and not hasattr(sprite, 'ground') ]
         archers_sprites = [sprite for sprite in self if not hasattr(sprite , 'ground' ) and hasattr(sprite , 'isArcher')]
-        for layer in [ground_sprites,object_sprites,archers_sprites, enemy_sprites]:#the order is important
+        obstacles = [sprite for sprite in self if not hasattr(sprite , 'ground' ) and hasattr(sprite , 'isObstacle')]
+        for layer in [ground_sprites,object_sprites,archers_sprites, obstacles,enemy_sprites]:#the order is important
             for sprite in sorted(layer,key  = lambda sprite: sprite.rect.centery):
                 #print(sprite)
                 if  hasattr(sprite , 'enemy') and not hasattr(sprite, 'ground') :

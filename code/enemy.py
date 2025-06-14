@@ -2,6 +2,7 @@ from settings import *
 from Queue import Queue
 from gold import *
 from random import randint
+import allsprites
 #from ground import collisionsprites
 
 BLACK = (0, 0, 0)
@@ -21,6 +22,7 @@ class Enemy(pg.sprite.Sprite):
     total_eneimes = 0
     spawn_time = 0
     last_spawn_t = pg.time.get_ticks()
+    show_hitboxes = True
 
     def __init__(self,groups,pos,state, collision_spr, strong):
         super().__init__(groups)
@@ -41,7 +43,7 @@ class Enemy(pg.sprite.Sprite):
         self.action = walk
         self.frame_index = 0
         self.collision_spr = collision_spr
-        self.hitbox_rect = self.rect
+        self.hitbox_rect = self.rect.copy().inflate(-80,-80)
         self.atk_speed = 1000     #for timer
         self.isAttacking = False #for timer
         self.last_attack = 0    #for timer
@@ -60,6 +62,8 @@ class Enemy(pg.sprite.Sprite):
             self.healthbar_offset_x = -40
             self.healthbar_offset_y = +15
             self.piriority = "high"
+            self.hitbox_offset_x = -35
+            self.hitbox_offset_y = -20
             print("strong created")
 
         else: 
@@ -105,7 +109,7 @@ class Enemy(pg.sprite.Sprite):
         self.isAttacking = False
         for spr in self.collision_spr:
             for sprite in spr:
-                if self.rect.colliderect(sprite.hitbox):
+                if self.hitbox_rect.colliderect(sprite.hitbox):
                     self.isAttacking = True
                     if(direction == 'x'):
                         if self.direction.x > 0 : self.hitbox_rect.right = sprite.hitbox.left
@@ -113,15 +117,18 @@ class Enemy(pg.sprite.Sprite):
                     else:
                         if self.direction.y > 0: self.hitbox_rect.bottom = sprite.hitbox.top
                         if self.direction.y < 0 : self.hitbox_rect.top = sprite.hitbox.bottom
-                    self.rect.center = self.hitbox_rect.center
+                    if self.strong:
+                        self.rect.centerx = self.hitbox_rect.centerx - self.hitbox_offset_x
+                        self.rect.centery = self.hitbox_rect.centery - self.hitbox_offset_y
                     if self.isAttacking:
-                        if(hasattr(sprite , 'obst')) and self.obst : self.health-=80 ; self.obst = False; 
+                        #if(hasattr(sprite , 'obst')) and self.obst : self.health-=80 ; self.obst = False;
                         now = pg.time.get_ticks()
                         if now - self.last_attack > self.atk_speed:
                             goblin_attack_sound.play()
                             self.last_attack =now
                             if(hasattr(sprite , 'obst')) :sprite.obst_health_dec(self.damage)
                             else: sprite.health -=self.damage
+
                 
         if not self.isAttacking:
             self.obst = True
@@ -144,6 +151,7 @@ class Enemy(pg.sprite.Sprite):
             else : 
                 self.frame_index = self.frame_index + self.animate_speed * dt if self.direction else 0
                 self.image = enemy_frames[self.state]['walk'][int(self.frame_index) % len(enemy_frames[self.state]['walk'])]
+
     def move(self,dt):
         self.handle_direction()
         self.hitbox_rect.x += self.direction.x * self.speed * dt
@@ -151,11 +159,34 @@ class Enemy(pg.sprite.Sprite):
         self.hitbox_rect.y += self.direction.y * self.speed * dt
         self.collision('y')
         self.rect.center = self.hitbox_rect.center
+        if self.strong:
+            self.rect.centerx = self.hitbox_rect.centerx - self.hitbox_offset_x
+            self.rect.centery = self.hitbox_rect.centery - self.hitbox_offset_y
+
+
+    """" def draw_hitbox(self, offset):
+        #Draw the hitbox rectangle for debugging
+        if Enemy.show_hitboxes:
+            # Calculate hitbox position with offset
+            hitbox_pos = (self.hitbox_rect.x + offset.x, self.hitbox_rect.y + offset.y)
+            hitbox_rect = pg.Rect(hitbox_pos, self.hitbox_rect.size)
+
+            # Choose color based on enemy type and state
+            if self.strong:
+                color = 'blue' if not self.isAttacking else 'red'
+            else:
+                color = 'blue' if not self.isAttacking else 'red'
+
+            # Draw hitbox outline
+            pg.draw.rect(self.display, color, hitbox_rect, 2)
+
+            # Optional: Draw center point
+            center_pos = (hitbox_rect.centerx, hitbox_rect.centery)
+            pg.draw.circle(self.display, color, center_pos, 3) """
     def draw( self,x):
         self.load_health_bar(x)
         if self.ismoving:
             self.display.blit(self.image,self.rect.topleft + x)
-
 
 
     def update(self,dt):
