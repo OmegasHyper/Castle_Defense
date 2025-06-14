@@ -24,4 +24,3 @@ class Tower(pg.sprite.Sprite):
         self.load_health_bar()
 
 
-

@@ -33,7 +33,7 @@ class Enemy(pg.sprite.Sprite):
         Enemy.number_eneimes +=1
         Enemy.total_eneimes+=1
         self.display = pg.display.get_surface()
-        print(Enemy.number_eneimes)
+        
         self.state = state
         self.action = walk
         self.frame_index = 0
@@ -47,13 +47,18 @@ class Enemy(pg.sprite.Sprite):
         self.max_health = 500
         self.strong = strong 
         self.obst = True
+        self.piriority = "low"
+
         if strong :
-            self.image = Enemy.Strongimage 
+            self.image = Enemy.Strongimage
+            self.speed = 150
             self.damage = 20
             self.health = self.max_health = 200
             self.healthbar_offset_x = -40
             self.healthbar_offset_y = +15
+            self.piriority = "high"
             print("strong created")
+
         else: 
             print("weak created")     ## debugging
             self.damage = 1
