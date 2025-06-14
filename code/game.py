@@ -9,7 +9,8 @@ from sprites import *
 from archer import Archer
 from enemy import*
 from Tower import *
-
+button_hover_sound = pg.mixer.Sound("../sounds/button_hover.wav")
+button_click_sound = pg.mixer.Sound("../sounds/button_click.mp3")
 
 class Game:
     def __init__(self,display , gamemanager):
@@ -26,7 +27,8 @@ class Game:
         self.mid_button = []
         self.gamemanager = gamemanager
         self.round = 1
-
+        self.isButton1hovered = False
+        self.isButton2hovered = False
         self.setup()
 
     def setup(self):
@@ -146,19 +148,29 @@ class Game:
     def collision(self):
         if self.pause_button_rect.collidepoint(pg.mouse.get_pos()):
             self.pause_button_state = 1
+            if not self.isButton1hovered:
+                button_hover_sound.play()
+                self.isButton1hovered = True
             if pg.mouse.get_pressed()[0]:
+                button_click_sound.play()
                 self.pause_button_state = 2
                 self.gamemanager.state = 'pause'
         else :
+            self.isButton1hovered = False
             self.pause_button_state = 0
 
         if self.shop_button_rect.collidepoint(pg.mouse.get_pos()):
             self.shop_button_state = 1
+            if not self.isButton2hovered:
+                button_hover_sound.play()
+                self.isButton2hovered = True
             if pg.mouse.get_pressed()[0]:
+                button_click_sound.play()
                 self.shop_button_state = 2
                 self.gamemanager.state = 'shop'
         else :
             self.shop_button_state = 0
+            self.isButton2hovered = False
 
     def draw_debug_collisions(self):
         """Draw collision boxes for debugging purposes"""

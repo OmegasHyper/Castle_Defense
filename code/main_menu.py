@@ -1,6 +1,7 @@
 from settings import *
 main_menu_sound = pg.mixer.Sound("../sounds/main_menu.mp3")
-
+button_hover_sound = pg.mixer.Sound("../sounds/button_hover.wav")
+button_click_sound = pg.mixer.Sound("../sounds/button_click.mp3")
 class Main_Menu:
     def __init__(self,display,gamemanager):
         self.gamemanager = gamemanager
@@ -15,7 +16,8 @@ class Main_Menu:
         self.buttons_spritesheet = pg.image.load('../sprites/buttons/buttons.png').convert_alpha()
         self.menu_background = pg.image.load('../sprites/menu_background.jpg').convert_alpha()
         self.menu_background_rect = self.menu_background.get_frect(center=(WINDOW_WIDTH / 2, WINDOW_HEIGHT / 2))
-
+        self.isButton1hovered = False
+        self.isButton2hovered = False
         self.load()
     def load(self):
         with open('../sprites/buttons/buttons.json') as f:
@@ -51,18 +53,31 @@ class Main_Menu:
     def collision(self):
         if self.button1_rect.collidepoint(pg.mouse.get_pos()):
             self.button1_state = 1
+            if not self.isButton1hovered:
+
+                 button_hover_sound.play()
+                 self.isButton1hovered = True
             if pg.mouse.get_just_pressed()[0]:
+                button_click_sound.play()
                 self.button1_state = 2
                 self.gamemanager.state = 'game'
+
         else :
+            self.isButton1hovered = False
             self.button1_state = 0
         if self.button2_rect.collidepoint(pg.mouse.get_pos()):
+            if not self.isButton2hovered:
+
+              button_hover_sound.play()
+              self.isButton2hovered = True
             self.button2_state = 1
             if pg.mouse.get_just_pressed()[0]:
+                button_click_sound.play()
                 self.button2_state = 2
                 self.gamemanager.running = False
         else :
             self.button2_state = 0
+            self.isButton2hovered = False
     def draw(self):
        # self.display.blit(self.Button_Red_9Slides,self.Button_Red_9Slides_rect)
         self.display.fill('black')

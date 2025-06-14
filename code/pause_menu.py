@@ -1,5 +1,6 @@
 from settings import *
-
+button_hover_sound = pg.mixer.Sound("../sounds/button_hover.wav")
+button_click_sound = pg.mixer.Sound("../sounds/button_click.mp3")
 class Pause_menu:
     def __init__(self, display, game_manager):
         self.display = display
@@ -18,6 +19,8 @@ class Pause_menu:
         self.pause_text = self.pixel_font.render("Paused", True, (210, 210, 210))
         self.pause_text_rect = self.pause_text.get_frect(center = (WINDOW_WIDTH/2, WINDOW_HEIGHT/2))
         self.button_setup()
+        self.isButton1hovered = False
+        self.isButton2hovered = False
     def button_setup (self):
         buttons_spritesheet = pg.image.load('../sprites/buttons/buttons.png').convert_alpha()
         with open('../sprites/buttons/buttons.json') as f:
@@ -57,18 +60,28 @@ class Pause_menu:
     def collision(self):
         if self.resume_button_rect.collidepoint(pg.mouse.get_pos()):
             self.resume_button_state = 1
+            if not self.isButton1hovered:
+                button_hover_sound.play()
+                self.isButton1hovered = True
             if pg.mouse.get_just_pressed()[0]:
+                button_click_sound.play()
                 self.resume_button_state = 2
                 self.game_manager.state = 'game'
                 # print(self.game_manager.state)
         else :
+            self.isButton1hovered = False
             self.resume_button_state = 0
 
         if self.menu_button_rect.collidepoint(pg.mouse.get_pos()):
             self.menu_button_state = 1
+            if not self.isButton2hovered:
+                button_hover_sound.play()
+                self.isButton2hovered = True
+
             if pg.mouse.get_pressed()[0]:
+                button_click_sound.play()
                 self.menu_button_state = 2
                 self.game_manager.state = 'menu'
         else :
             self.menu_button_state = 0
-            
+            self.isButton2hovered = False
