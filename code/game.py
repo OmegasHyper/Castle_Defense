@@ -11,9 +11,12 @@ from enemy import*
 from Tower import *
 button_hover_sound = pg.mixer.Sound("../sounds/button_hover.wav")
 button_click_sound = pg.mixer.Sound("../sounds/button_click.mp3")
+gold_quantity = 0
 
 class Game:
     def __init__(self,display , gamemanager):
+        # self.gold_sprite = pg.image.load("../sprites/map/Resources/Resources/G_Idle_(NoShadow).png").convert_alpha()
+        # self.gold_sprite = pg.transform.smoothscale(self.gold_sprite, (100, 100))
         self.display = display
         self.all_sprites = AllSprites()
         self.collision_sprites = pg.sprite.Group()
@@ -57,6 +60,8 @@ class Game:
 
         # Load collision objects
         for obj in map.get_layer_by_name('Collisions'):
+            global gold_quantity
+           
             # Convert to integers to avoid floating point precision issues
             width = int(obj.width)
             height = int(obj.height)
@@ -144,7 +149,11 @@ class Game:
         self.pause_text_rect = self.pause_text.get_frect(center = self.pause_button_rect.center)
         self.shop_text = self.pixel_font.render('Shop', True, 'white')
         self.shop_text_rect = self.shop_text.get_frect(center = self.shop_button_rect.center)
-
+        
+        
+        #self.gold_sprite_rect = self.gold_text.get_frect(midright=(self.gold_text_rect.midleft))
+        #self.gold_sprite_rect.x -= 63
+        #self.gold_sprite_rect.y -= 48
     def collision(self):
         if self.pause_button_rect.collidepoint(pg.mouse.get_pos()):
             self.pause_button_state = 1
@@ -195,7 +204,6 @@ class Game:
         collision_count = len(self.collision_sprites)
         count_text = font.render(f"Collision objects: {collision_count}", True, 'white')
         self.display.blit(count_text, (10, 50))
-        
 
     def draw(self):
         self.display.fill('black')
@@ -211,6 +219,14 @@ class Game:
         self.display.blit(self.mid_button[self.shop_button_state], self.shop_button_rect)
         self.display.blit(self.shop_text,self.shop_text_rect)
         self.display.blit(self.pause_text , self.pause_text_rect)
+        
+        gold_quantity_text = f'Gold: {gold_quantity}'
+        self.gold_text = self.pixel_font.render(gold_quantity_text, True, (240, 240, 240))
+        self.gold_text_rect = self.gold_text.get_frect(center = (130, 50) )
+        pg.draw.rect(self.display, (0, 81, 186), self.gold_text_rect.inflate(17, 12).move(0, -5), 0, 10)
+        pg.draw.rect(self.display, (54, 151, 247), self.gold_text_rect.inflate(10, 5).move(0, -5), 0, 10)
+        self.display.blit(self.gold_text, self.gold_text_rect)
+        # self.display.blit(self.gold_sprite, self.gold_sprite_rect)
 
         #self.draw_debug_collisions()
     def create_round(self,round):
@@ -270,4 +286,7 @@ class Game:
         self.draw()
         for building in self.building_sprites:
             building.update_health(dt)
+
+        
+
 
