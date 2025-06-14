@@ -39,13 +39,14 @@ class Enemy(pg.sprite.Sprite):
         self.frame_index = 0
         self.collision_spr = collision_spr
         self.hitbox_rect = self.rect
-        self.atk_speed = 500     #for timer
-        self.isAttacking = True #for timer
+        self.atk_speed = 1000     #for timer
+        self.isAttacking = False #for timer
         self.last_attack = 0    #for timer
         self.healthbar_offset_x = 0
         self.healthbar_offset_y = 45
         self.max_health = 500
         self.strong = strong 
+        self.obst = True
         if strong :
             self.image = Enemy.Strongimage 
             self.damage = 20
@@ -93,9 +94,11 @@ class Enemy(pg.sprite.Sprite):
             pg.draw.rect(self.display, (220, 20, 60), health_rect, border_radius=3)
 
     def collision(self , direction):
+        self.isAttacking = False
         for spr in self.collision_spr:
             for sprite in spr:
                 if self.rect.colliderect(sprite.hitbox):
+                    self.isAttacking = True
                     if(direction == 'x'):
                         if self.direction.x > 0 : self.hitbox_rect.right = sprite.hitbox.left
                         if self.direction.x < 0: self.hitbox_rect.left = sprite.hitbox.right
@@ -104,13 +107,16 @@ class Enemy(pg.sprite.Sprite):
                         if self.direction.y < 0 : self.hitbox_rect.top = sprite.hitbox.bottom
                     self.rect.center = self.hitbox_rect.center
                     if self.isAttacking:
-                        goblin_attack_sound.play()
+                        if(hasattr(sprite , 'obst')) and self.obst: self.health-=80 ; self.obst = False
+                        
                         now = pg.time.get_ticks()
                         if now - self.last_attack > self.atk_speed:
+                            goblin_attack_sound.play()
                             self.last_attack =now
                             sprite.health -=self.damage
-                    else:
-                        self.isAttacking = False
+                
+        if not self.isAttacking:
+            self.obst = True
     
     def handle_direction(self):
         if self.state == 'N':

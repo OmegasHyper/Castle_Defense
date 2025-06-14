@@ -9,6 +9,8 @@ class Obstacles(pg.sprite.Sprite) :
         self.health = 100
         self.hitbox = self.rect.inflate(-140,-180)
         self.hitbox.top += 10
+        self.health = 30
+        self.obst = True
 
 def put_obst(all_spr,Obst_spr,stack): 
         if pg.mouse.get_just_pressed()[0]:
