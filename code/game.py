@@ -203,10 +203,12 @@ class Game:
                 self.create_round(self.round)
                 Game.get_time = True
         if pg.mouse.get_just_pressed()[0]:
-            pos = pg.mouse.get_pos()
-            print(pos)
-            Obstacles((self.all_sprites, self.Obstacles_spr),pos)
-            Obstacles((self.all_sprites, self.Obstacles_spr), (3400, 5000))
+            mouse_pos = pg.mouse.get_pos()
+            world_pos = pg.Vector2(mouse_pos) - self.all_sprites.offset
+            print(mouse_pos)
+            print(world_pos)
+            Obstacles((self.all_sprites, self.Obstacles_spr),world_pos)
+            # Obstacles((self.all_sprites, self.Obstacles_spr), (3400, 5000))
         self.all_sprites.update(dt)
         self.draw()
         for building in self.building_sprites:
