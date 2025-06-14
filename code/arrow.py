@@ -1,7 +1,8 @@
 from math import acosh
-
+from gold import *
 from settings import *
 from game import *
+import random
 
 attack_sound = pg.mixer.Sound("../sounds/Arrow_shot.wav")
 attack_sound.set_volume(0.4)
@@ -11,7 +12,7 @@ class Arrow(pg.sprite.Sprite):
         self.target = target
         self.front = None
         self.arrow_path = "../sprites/archers/Arrow"
-
+        self.all_sprites = groups
         attack_sound.play()
         self.arrow_path += state + ".png"
         self.image = pg.image.load(self.arrow_path).convert_alpha()
@@ -67,4 +68,6 @@ class Arrow(pg.sprite.Sprite):
             #print(self.target.health)
             if self.target.health <= 0:
                 self.target.get_killed()
+                quantity = random.randint(20, 50)
+                gold(self.all_sprites, quantity, self.target.rect.center)
             self.kill()
