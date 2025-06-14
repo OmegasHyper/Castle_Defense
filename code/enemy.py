@@ -93,24 +93,25 @@ class Enemy(pg.sprite.Sprite):
             pg.draw.rect(self.display, (220, 20, 60), health_rect, border_radius=3)
 
     def collision(self , direction):
-        for sprite in self.collision_spr:
-            if self.rect.colliderect(sprite.hitbox):
-                if(direction == 'x'):
-                    if self.direction.x > 0 : self.hitbox_rect.right = sprite.hitbox.left
-                    if self.direction.x < 0: self.hitbox_rect.left = sprite.hitbox.right
-                else:
-                    if self.direction.y > 0: self.hitbox_rect.bottom = sprite.hitbox.top
-                    if self.direction.y < 0 : self.hitbox_rect.top = sprite.hitbox.bottom
-                self.rect.center = self.hitbox_rect.center
-                if self.isAttacking:
-                    goblin_attack_sound.play()
-                    now = pg.time.get_ticks()
-                    if now - self.last_attack > self.atk_speed:
-                        self.last_attack =now
-                        sprite.health -=self.damage
-                else:
-                    self.isAttacking = False
-
+        for spr in self.collision_spr:
+            for sprite in spr:
+                if self.rect.colliderect(sprite.hitbox):
+                    if(direction == 'x'):
+                        if self.direction.x > 0 : self.hitbox_rect.right = sprite.hitbox.left
+                        if self.direction.x < 0: self.hitbox_rect.left = sprite.hitbox.right
+                    else:
+                        if self.direction.y > 0: self.hitbox_rect.bottom = sprite.hitbox.top
+                        if self.direction.y < 0 : self.hitbox_rect.top = sprite.hitbox.bottom
+                    self.rect.center = self.hitbox_rect.center
+                    if self.isAttacking:
+                        goblin_attack_sound.play()
+                        now = pg.time.get_ticks()
+                        if now - self.last_attack > self.atk_speed:
+                            self.last_attack =now
+                            sprite.health -=self.damage
+                    else:
+                        self.isAttacking = False
+    
     def handle_direction(self):
         if self.state == 'N':
             self.direction_func(0,1)

@@ -10,6 +10,7 @@ from archer import Archer
 from collisionsprites import CollisionSprites
 from enemy import*
 from Tower import *
+from Obstacles import *
 
 
 class Game:
@@ -21,6 +22,7 @@ class Game:
         self.building_sprites = pg.sprite.Group()
         self.archer = pg.sprite.Group()
         self.enemy_group = pg.sprite.Group()
+        self.Obstacles_spr = pg.sprite.Group()
         self.gamemanager = gamemanager
         self.round = 1
         self.setup()
@@ -156,11 +158,11 @@ class Game:
             which_create = randint(0,1)
             if (which_create and counter_weak < waves[r]['weak']) or  counter_strong ==  (waves[r]['strong']):    
                 rand_waypoint = self.enemy_waypoints[randint(0,3)]
-                self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,False))
+                self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,(self.building_sprites,self.Obstacles_spr),False))
                 counter_weak += 1
             else : 
                     rand_waypoint = self.enemy_waypoints[randint(0,3)]
-                    self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,True))
+                    self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,(self.building_sprites,self.Obstacles_spr),True))
                     counter_strong +=1
                 
         Enemy.spawn_time = waves [r]['spawn_time']
@@ -200,6 +202,11 @@ class Game:
             if create and self.round <= 3:
                 self.create_round(self.round)
                 Game.get_time = True
+        if pg.mouse.get_just_pressed()[0]:
+            pos = pg.mouse.get_pos()
+            print(pos)
+            Obstacles((self.all_sprites, self.Obstacles_spr),pos)
+            Obstacles((self.all_sprites, self.Obstacles_spr), (3400, 5000))
         self.all_sprites.update(dt)
         self.draw()
         for building in self.building_sprites:
