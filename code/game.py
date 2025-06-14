@@ -26,7 +26,7 @@ class Game:
         self.Obstacles_spr = pg.sprite.Group()
         self.gamemanager = gamemanager
         self.round = 1
-        self.stack = Stack_obstacles()
+        self.stack_obst = Stack_obstacles()
         self.setup()
 
     def setup(self):
@@ -182,6 +182,7 @@ class Game:
             return False
         else: 
             return True 
+    
     def update(self,dt):
         for archer in self.archer:
             archer.update_archer(dt,self.enemy_group)
@@ -204,14 +205,8 @@ class Game:
             if create and self.round <= 3:
                 self.create_round(self.round)
                 Game.get_time = True
-        if pg.mouse.get_just_pressed()[0]:
-            mouse_pos = pg.mouse.get_pos()
-            world_pos = pg.Vector2(mouse_pos) - self.all_sprites.offset
-            print(mouse_pos)
-            print(world_pos)
-            self.stack.push(Obstacles((self.all_sprites, self.Obstacles_spr),world_pos))
-        if pg.key.get_just_pressed()[pg.K_z]:
-            self.stack.pop()
+        put_obst(self.all_sprites, self.Obstacles_spr,self.stack_obst)
+        check_undo(self.stack_obst)
 
             # Obstacles((self.all_sprites, self.Obstacles_spr), (3400, 5000))
         self.all_sprites.update(dt)

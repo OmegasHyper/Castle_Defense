@@ -9,7 +9,16 @@ class Obstacles(pg.sprite.Sprite) :
         self.health = 100
         self.hitbox = self.rect.inflate(-140,-180)
         self.hitbox.top += 10
-    
+
+def put_obst(all_spr,Obst_spr,stack): 
+        if pg.mouse.get_just_pressed()[0]:
+            mouse_pos = pg.mouse.get_pos()
+            world_pos = pg.Vector2(mouse_pos) - all_spr.offset
+            stack.push(Obstacles((all_spr, Obst_spr),world_pos))
+
+def check_undo(stack):
+        if pg.key.get_just_pressed()[pg.K_z]:
+            stack.pop()
     
 
     
