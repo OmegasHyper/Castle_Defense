@@ -149,7 +149,9 @@ class Game:
         self.pause_text_rect = self.pause_text.get_frect(center = self.pause_button_rect.center)
         self.shop_text = self.pixel_font.render('Shop', True, 'white')
         self.shop_text_rect = self.shop_text.get_frect(center = self.shop_button_rect.center)
-        
+        self.round_text = self.pixel_font.render(f'Wave: {self.round}', True, 'white')
+        self.round_text_rect = self.round_text.get_frect(center = (WINDOW_WIDTH / 2, 80))
+
         
         #self.gold_sprite_rect = self.gold_text.get_frect(midright=(self.gold_text_rect.midleft))
         #self.gold_sprite_rect.x -= 63
@@ -219,7 +221,8 @@ class Game:
         self.display.blit(self.mid_button[self.shop_button_state], self.shop_button_rect)
         self.display.blit(self.shop_text,self.shop_text_rect)
         self.display.blit(self.pause_text , self.pause_text_rect)
-        
+        self.display.blit(self.round_text, self.round_text_rect)
+
         gold_quantity_text = f'Gold: {gold_quantity}'
         self.gold_text = self.pixel_font.render(gold_quantity_text, True, (240, 240, 240))
         self.gold_text_rect = self.gold_text.get_frect(center = (130, 50) )
