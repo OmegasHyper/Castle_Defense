@@ -1,5 +1,5 @@
 from settings import *
-
+import game
 class gold(pg.sprite.Sprite):
     def __init__(self, groups, quantity, pos):
         super().__init__(groups)
@@ -40,5 +40,7 @@ class gold(pg.sprite.Sprite):
                 self.frame_index -= 1 
                 self.image = self.frames[self.frame_index]
             else:
-                print(f"{self.quantity} Gold collected")
+                # print(f"{self.quantity} Gold collected")
+                game.gold_quantity += self.quantity
+                print(game.gold_quantity)
                 self.kill()
