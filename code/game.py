@@ -115,6 +115,7 @@ class Game:
 
         for obj in map.get_layer_by_name('Castle'):
             # Create collision surface with correct dimensions (converted to integers)
+            print(obj.name)
             width = int(obj.width) - 80
             height = int(obj.height) - 300
             x = int(obj.x) + 40
@@ -134,7 +135,9 @@ class Game:
             parent_tower = self.tower_dict[tower_name]
             Archer((self.all_sprites, self.archer), (obj.x, obj.y), tower_name,parent_tower=parent_tower)
         for obj in map.get_layer_by_name('Inner_archers_waypoints'):
-            Archer((self.all_sprites, self.archer), (obj.x, obj.y), obj.name)
+            archer_instance=  Archer((self.all_sprites, self.archer), (obj.x, obj.y), obj.name)
+            castle_instance = self.tower_dict["Castle"]
+            castle_instance.add_archer(archer_instance)
         self.enemy_waypoints =[]
         for obj in map.get_layer_by_name('Enemy_waypoint'):
             self.enemy_waypoints.append(obj)

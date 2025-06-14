@@ -13,9 +13,13 @@ class Castle(pg.sprite.Sprite):
         self.hitbox.top += 10
         self.black_health_rect = pg.Rect(self.pos[0], self.pos[1], 500, 500)
         self.display_offset = AllSprites.offset
-        self.health = 500  # You can set the health value as needed
+        self.health = 10  # You can set the health value as needed
         self.isBuilding = True
 
+        self.associated_archers = []
+    def add_archer(self, archer_sprite):
+        if archer_sprite not in self.associated_archers:
+            self.associated_archers.append(archer_sprite)
     def load_health_bar(self):
         bar_width = 450
         bar_height = 40
@@ -32,7 +36,10 @@ class Castle(pg.sprite.Sprite):
                      border_radius=6)
     def update_health(self, dt):
         self.load_health_bar()
+
         if self.health <= 0:
+            for archer in self.associated_archers:
+                archer.kill()
             self.kill()
         else:
             self.load_health_bar()
