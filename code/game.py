@@ -9,9 +9,15 @@ from sprites import *
 from archer import Archer
 from enemy import*
 from Tower import *
+
+from Obstacles import *
+from Stack import *
+
+
 button_hover_sound = pg.mixer.Sound("../sounds/button_hover.wav")
 button_click_sound = pg.mixer.Sound("../sounds/button_click.mp3")
 gold_quantity = 0
+
 
 class Game:
     def __init__(self,display , gamemanager):
@@ -25,13 +31,17 @@ class Game:
         self.archer = pg.sprite.Group()
         self.enemy_group = pg.sprite.Group()
 
+        self.Obstacles_spr = pg.sprite.Group()
+        self.gamemanager = gamemanager
+        self.round = 1
+        self.stack_obst = Stack_obstacles()
+        
         self.pause_button_state = 0
         self.shop_button_state = 0
         self.mid_button = []
-        self.gamemanager = gamemanager
-        self.round = 1
         self.isButton1hovered = False
         self.isButton2hovered = False
+
         self.setup()
 
     def setup(self):
@@ -238,11 +248,11 @@ class Game:
             which_create = randint(0,1)
             if (which_create and counter_weak < waves[r]['weak']) or  counter_strong ==  (waves[r]['strong']):    
                 rand_waypoint = self.enemy_waypoints[randint(0,3)]
-                self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,False))
+                self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,(self.building_sprites,self.Obstacles_spr),False))
                 counter_weak += 1
             else : 
                     rand_waypoint = self.enemy_waypoints[randint(0,3)]
-                    self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,self.building_sprites,True))
+                    self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,(self.building_sprites,self.Obstacles_spr),True))
                     counter_strong +=1
                 
         Enemy.spawn_time = waves [r]['spawn_time']
@@ -281,6 +291,10 @@ class Game:
             if create and self.round <= 3:
                 self.create_round(self.round)
                 Game.get_time = True
+        put_obst(self.all_sprites, self.Obstacles_spr,self.stack_obst)
+        check_undo(self.stack_obst)
+
+            # Obstacles((self.all_sprites, self.Obstacles_spr), (3400, 5000))
         self.all_sprites.update(dt)
         self.collision()
         self.draw()
