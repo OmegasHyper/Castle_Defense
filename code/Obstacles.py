@@ -23,7 +23,7 @@ class Obstacles(pg.sprite.Sprite) :
             self.kill_obst()
 
 def put_obst(all_spr,Obst_spr,stack): 
-        if pg.mouse.get_just_pressed()[0] and  game.gold_quantity >Obstacles.price:
+        if pg.mouse.get_just_pressed()[2] and  game.gold_quantity >Obstacles.price:
             game.gold_quantity -= Obstacles.price 
             mouse_pos = pg.mouse.get_pos()
             world_pos = pg.Vector2(mouse_pos) - all_spr.offset
@@ -32,6 +32,7 @@ def put_obst(all_spr,Obst_spr,stack):
 def check_undo(stack):
         if pg.key.get_just_pressed()[pg.K_z]:
             stack.pop()
+            game.gold_quantity += 200
 
 
     
