@@ -15,7 +15,7 @@ class Castle(pg.sprite.Sprite):
         self.display_offset = AllSprites.offset
         self.health = 10  # You can set the health value as needed
         self.isBuilding = True
-
+        self.isDead = False
         self.associated_archers = []
     def add_archer(self, archer_sprite):
         if archer_sprite not in self.associated_archers:
@@ -41,5 +41,6 @@ class Castle(pg.sprite.Sprite):
             for archer in self.associated_archers:
                 archer.kill()
             self.kill()
+            self.isDead = True
         else:
             self.load_health_bar()
