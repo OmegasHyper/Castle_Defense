@@ -12,6 +12,7 @@ from Tower import *
 from Castle import *
 from Obstacles import *
 from Stack import *
+import enemy
 
 wingame_sound = pg.mixer.Sound("../sounds/win.wav")
 button_hover_sound = pg.mixer.Sound("../sounds/button_hover.wav")
@@ -307,7 +308,7 @@ class Game:
                 Game.time_start_wait = pg.time.get_ticks()
                 Game.get_time = False
             create = not self.wait(10000,Game.time_start_wait)      ## the timer is changable for debuging it has to be from levels table
-            if create and self.round > 3:
+            if create and self.round > 3 and Enemy.number_eneimes == 0:
                 print("round finished")
                 self.gamemanager.state = "wingame"
                 wingame_sound.play()
