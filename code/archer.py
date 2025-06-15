@@ -7,7 +7,7 @@ from settings import *
 from enemy import *
 from Tower import *
 class Archer(pg.sprite.Sprite):
-    def __init__(self, groups, pos, direction="NT",parent_tower= None, round):
+    def __init__(self, groups, pos, direction="NT",parent_tower= None, round =1):
         super().__init__(groups)
         self.round = round
         self.frames = None  # Store animations for each direction

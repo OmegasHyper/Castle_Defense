@@ -14,7 +14,7 @@ class Castle(pg.sprite.Sprite):
         self.hitbox.top += 10
         self.black_health_rect = pg.Rect(self.pos[0], self.pos[1], 500, 500)
         self.display_offset = AllSprites.offset
-        self.health = 10  # You can set the health value as needed
+        self.health = 500  # You can set the health value as needed
         self.isBuilding = True
         self.isDead = False
         self.associated_archers = []

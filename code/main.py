@@ -28,7 +28,7 @@ class Game_Mannager:
         self.load()
         self.allowIngamesound = True
         self.state_switched = False
-        main_menu_sound.play(loops=-1)
+        main_menu_sound.play(loops=-1).set_volume(0.5)
 
         
     def load(self):
@@ -82,7 +82,7 @@ class Game_Mannager:
 
                 if not  self.state_switched  and self.allowIngamesound :
                     main_menu_sound.stop()
-                    ingame_sound.play(loops=-1)
+                    ingame_sound.play(loops=-1).set_volume(0.2)
                     self.state_switched = True
             elif self.state == 'pause':
                 self.paused = not self.paused
