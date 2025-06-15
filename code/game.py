@@ -308,6 +308,9 @@ class Game:
         self.all_sprites.update(dt)
         self.collision()
         self.draw()
+        castle_instance = self.tower_dict["Castle"]
+        if  castle_instance.isDead :
+            self.gamemanager.state= "gameover"
         for building in self.building_sprites:
             building.update_health(dt)
 

@@ -4,6 +4,7 @@ import pygame as pg
 from game import *
 from main_menu import *
 from pause_menu import *
+from gameover_menu import *
 import os
 os.chdir(os.path.dirname(__file__))
 main_menu_sound = pg.mixer.Sound("../sounds/main_menu.mp3")
@@ -15,6 +16,7 @@ class Game_Mannager:
     def __init__(self):
         self.running = True
         self.paused = False
+        self.gameOver = False
         pg.init()
         self.display = pg.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGHT))
         pg.display.set_caption('Castle Defense')
@@ -51,6 +53,8 @@ class Game_Mannager:
 
             if self.paused and self.state =='pause':
                 self.pause_menu.update()
+            if self.gameOver and self.state == 'gameover':
+                self.gameover_menu.update()
             elif self.state == 'menu':
                 self.main_menu.draw()
 
@@ -58,6 +62,7 @@ class Game_Mannager:
                 self.game.update(dt)
 
                 self.pause_menu = Pause_menu(self.display, self)
+                self.gameover_menu = GameOver_menu(self.display, self)
                 self.shop_menu= ShopMenu(self.display,self)
 
                 if not  self.state_switched  :
@@ -72,6 +77,9 @@ class Game_Mannager:
                 self.paused = not self.paused
                 self.pause_menu = Pause_menu(self.display, self)
                 #self.pause_menu.display_copy = self.display.copy()
+            elif self.state == 'gameover':
+                self.gameOver = not self.gameOver
+                self.gameover_menu = GameOver_menu(self.display, self)
             elif self.state == 'shop':
                 self.shop_menu.update()
             pg.display.update()
