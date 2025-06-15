@@ -7,7 +7,7 @@ import random
 attack_sound = pg.mixer.Sound("../sounds/Arrow_shot.wav")
 attack_sound.set_volume(0.4)
 class Arrow(pg.sprite.Sprite):
-    def __init__(self, groups, archer_rect, target, state, round):
+    def __init__(self, groups, archer_rect, target, state, damage, round):
         super().__init__(groups)
         self.round = round
         self.target = target
@@ -29,7 +29,7 @@ class Arrow(pg.sprite.Sprite):
         
         self.rect = rect
         self.speed = 900
-        self.damage = 100
+        self.damage = damage
         self.direction = pg.math.Vector2(self.target.rect.center)- pg.math.Vector2(archer_rect.center)
         self.direction = self.direction.normalize() if direction else direction
         self.archer_rect = archer_rect

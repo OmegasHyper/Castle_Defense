@@ -5,17 +5,19 @@ import pygame as pg
 from arrow import Arrow
 from settings import *
 from enemy import *
-
-class Archer(pg.sprite.Sprite) :
-    def __init__(self,groups,pos, round, direction = "NT"):
+from Tower import *
+class Archer(pg.sprite.Sprite):
+    def __init__(self, groups, pos, direction="NT",parent_tower= None, round):
         super().__init__(groups)
         self.round = round
         self.frames = None  # Store animations for each direction
-        self.isArcher = True  # Exclude archers from y-sorting
+        self.isArcher = True # Exclude archers from y-sorting
         self.all_sprites = groups[0]
         self.pos = pos
         self.direction = direction
+        self.parent_tower = parent_tower
         self.attack_range = 500
+        self.damage = 100
         self.load_images()
 
         self.current_frame = 1
@@ -57,6 +59,10 @@ class Archer(pg.sprite.Sprite) :
         return True
 
     def update_archer(self, dt, enemy_group):
+
+        if self.parent_tower and self.parent_tower.health<=0:
+            self.kill()
+            return
 
         enemies_in_queue = set()
         temp_queue = Queue()
@@ -198,7 +204,7 @@ class Archer(pg.sprite.Sprite) :
 
             if self.current_frame == 6:
                 # Shoot arrow at current target
-                Arrow(self.all_sprites, self.rect, self.current_target, self.direction, self.round)
+                Arrow(self.all_sprites, self.rect, self.current_target, self.direction, self.damage, self.round)
 
     def draw_range(self, surface):
         screen_pos = pg.Vector2(self.rect.center)
