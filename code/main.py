@@ -38,7 +38,10 @@ class Game_Mannager:
                 for full_path in strong_enemy_paths[direction][action]:
                         surf = pg.image.load(full_path).convert_alpha()
                         strong_enemy_frames[direction][action].append(surf)
-
+        explosion_path = '../sprites/effects/bom'
+        for i in range(8):
+            surf = pg.image.load(join(explosion_path,f'{i}.png'))
+            explosion.append(surf)
 
     def run(self):
         while self.running:
