@@ -37,7 +37,7 @@ def put_obst(all_spr,Obst_spr,stack):
 def check_undo(stack):
         if pg.key.get_just_pressed()[pg.K_z]:
             stack.pop()
-            game.gold_quantity += 200
+            
 
 
     
