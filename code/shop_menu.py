@@ -3,18 +3,20 @@ from settings import *
 from game import outer_archers
 import game
 # outer_archers : south, west, north, east
+
+tower_level = {
+    'NT': 1,
+    'WT': 1,
+    'ET': 1,
+    'ST': 1
+}
 class ShopMenu:
     def __init__(self,display,game_manager):
         self.display = display
         self.game_manager = game_manager
         # self.gold_quantity = game.gold_quantity
         # self.archers = archers
-        self.tower_level = {
-            'NT' : 1,
-            'WT' : 1,
-            'ET' : 1,
-            'ST' : 1
-        }
+   
         self.resume_button_state = 0
         self.NT_button_state = 0
         self.ST_button_state = 0
@@ -93,22 +95,22 @@ class ShopMenu:
         self.display.blit(self.ET_text, self.ET_text_rect)
         self.display.blit(self.WT_text, self.WT_text_rect)
 
-        if self.tower_level['NT'] == 3:
-            self.NT_current_text = self.pixel_font.render(f'North tower level: {self.tower_level['NT']} (Max)', True, (230, 230, 230))
+        if tower_level['NT'] == 3:
+            self.NT_current_text = self.pixel_font.render(f'North tower level: {tower_level['NT']} (Max)', True, (230, 230, 230))
         else:
-            self.NT_current_text = self.pixel_font.render(f'North tower level: {self.tower_level['NT']}', True, (230, 230, 230))
-        if self.tower_level['ST'] == 3:
-            self.ST_current_text = self.pixel_font.render(f'South tower level: {self.tower_level['ST']} (Max)', True, (230, 230, 230))
+            self.NT_current_text = self.pixel_font.render(f'North tower level: {tower_level['NT']}', True, (230, 230, 230))
+        if tower_level['ST'] == 3:
+            self.ST_current_text = self.pixel_font.render(f'South tower level: {tower_level['ST']} (Max)', True, (230, 230, 230))
         else:
-            self.ST_current_text = self.pixel_font.render(f'South tower level: {self.tower_level['ST']}', True, (230, 230, 230))
-        if self.tower_level['ET'] == 3:
-            self.ET_current_text = self.pixel_font.render(f'East tower level: {self.tower_level['ET']} (Max)', True, (230, 230, 230))
+            self.ST_current_text = self.pixel_font.render(f'South tower level: {tower_level['ST']}', True, (230, 230, 230))
+        if tower_level['ET'] == 3:
+            self.ET_current_text = self.pixel_font.render(f'East tower level: {tower_level['ET']} (Max)', True, (230, 230, 230))
         else:
-            self.ET_current_text = self.pixel_font.render(f'East tower level: {self.tower_level['ET']}', True, (230, 230, 230))
-        if self.tower_level['WT'] == 3:
-            self.WT_current_text = self.pixel_font.render(f'West tower level: {self.tower_level['WT']} (Max)', True, (230, 230, 230))
+            self.ET_current_text = self.pixel_font.render(f'East tower level: {tower_level['ET']}', True, (230, 230, 230))
+        if tower_level['WT'] == 3:
+            self.WT_current_text = self.pixel_font.render(f'West tower level: {tower_level['WT']} (Max)', True, (230, 230, 230))
         else:
-            self.WT_current_text = self.pixel_font.render(f'West tower level: {self.tower_level['WT']}', True, (230, 230, 230))
+            self.WT_current_text = self.pixel_font.render(f'West tower level: {tower_level['WT']}', True, (230, 230, 230))
 
         self.NT_current_text_rect = self.NT_current_text.get_rect(center = (400, 150))
         self.ST_current_text_rect = self.ST_current_text.get_rect(center = (900, 150))
@@ -151,12 +153,12 @@ class ShopMenu:
             if pg.mouse.get_just_pressed()[0]:
                 button_click_sound.play()
                 self.NT_button_state = 2
-                if game.gold_quantity >= Tower_upgrades[f'level{self.tower_level['NT']}']['cost'] and self.tower_level['NT'] < 3:
-                    game.gold_quantity -= Tower_upgrades[f'level{self.tower_level['NT']}']['cost']
-                    self.tower_level['NT'] += 1
-                    outer_archers[2].attack_range = Tower_upgrades[f'level{self.tower_level['NT']}']['range']
-                    outer_archers[2].damage = Tower_upgrades[f'level{self.tower_level['NT']}']['dmg']
-                    outer_archers[2].animation_speed = Tower_upgrades[f'level{self.tower_level['NT']}']['fire_rate']
+                if game.gold_quantity >= Tower_upgrades[f'level{tower_level['NT']}']['cost'] and tower_level['NT'] < 3:
+                    game.gold_quantity -= Tower_upgrades[f'level{tower_level['NT']}']['cost']
+                    tower_level['NT'] += 1
+                    outer_archers[2].attack_range = Tower_upgrades[f'level{tower_level['NT']}']['range']
+                    outer_archers[2].damage = Tower_upgrades[f'level{tower_level['NT']}']['dmg']
+                    outer_archers[2].animation_speed = Tower_upgrades[f'level{tower_level['NT']}']['fire_rate']
 
         else :
             self.NT_button_state = 0
@@ -172,12 +174,12 @@ class ShopMenu:
             if pg.mouse.get_just_pressed()[0]:
                 button_click_sound.play()
                 self.ST_button_state = 2
-                if game.gold_quantity >= Tower_upgrades[f'level{self.tower_level['ST']}']['cost'] and self.tower_level['ST'] < 3:
-                    game.gold_quantity -= Tower_upgrades[f'level{self.tower_level['ST']}']['cost']
-                    self.tower_level['ST'] += 1
-                    outer_archers[0].attack_range = Tower_upgrades[f'level{self.tower_level['ST']}']['range']
-                    outer_archers[0].damage = Tower_upgrades[f'level{self.tower_level['ST']}']['dmg']
-                    outer_archers[0].animation_speed = Tower_upgrades[f'level{self.tower_level['ST']}']['fire_rate']
+                if game.gold_quantity >= Tower_upgrades[f'level{tower_level['ST']}']['cost'] and tower_level['ST'] < 3:
+                    game.gold_quantity -= Tower_upgrades[f'level{tower_level['ST']}']['cost']
+                    tower_level['ST'] += 1
+                    outer_archers[0].attack_range = Tower_upgrades[f'level{tower_level['ST']}']['range']
+                    outer_archers[0].damage = Tower_upgrades[f'level{tower_level['ST']}']['dmg']
+                    outer_archers[0].animation_speed = Tower_upgrades[f'level{tower_level['ST']}']['fire_rate']
 
 
         else :
@@ -194,12 +196,12 @@ class ShopMenu:
             if pg.mouse.get_just_pressed()[0]:
                 button_click_sound.play()
                 self.ET_button_state = 2
-                if game.gold_quantity >= Tower_upgrades[f'level{self.tower_level['ET']}']['cost'] and self.tower_level['ET'] < 3:
-                    game.gold_quantity -= Tower_upgrades[f'level{self.tower_level['ET']}']['cost']
-                    self.tower_level['ET'] += 1
-                    outer_archers[3].attack_range = Tower_upgrades[f'level{self.tower_level['ET']}']['range']
-                    outer_archers[3].damage = Tower_upgrades[f'level{self.tower_level['ET']}']['dmg']
-                    outer_archers[3].animation_speed = Tower_upgrades[f'level{self.tower_level['ET']}']['fire_rate']
+                if game.gold_quantity >= Tower_upgrades[f'level{tower_level['ET']}']['cost'] and tower_level['ET'] < 3:
+                    game.gold_quantity -= Tower_upgrades[f'level{tower_level['ET']}']['cost']
+                    tower_level['ET'] += 1
+                    outer_archers[3].attack_range = Tower_upgrades[f'level{tower_level['ET']}']['range']
+                    outer_archers[3].damage = Tower_upgrades[f'level{tower_level['ET']}']['dmg']
+                    outer_archers[3].animation_speed = Tower_upgrades[f'level{tower_level['ET']}']['fire_rate']
 
         else :
             self.ET_button_state = 0
@@ -215,12 +217,12 @@ class ShopMenu:
             if pg.mouse.get_just_pressed()[0]:
                 button_click_sound.play()
                 self.WT_button_state = 2
-                if game.gold_quantity >= Tower_upgrades[f'level{self.tower_level['WT']}']['cost'] and self.tower_level['WT'] < 3:
-                    game.gold_quantity -= Tower_upgrades[f'level{self.tower_level['WT']}']['cost']
-                    self.tower_level['WT'] += 1
-                    outer_archers[1].attack_range = Tower_upgrades[f'level{self.tower_level['WT']}']['range']
-                    outer_archers[1].damage = Tower_upgrades[f'level{self.tower_level['WT']}']['dmg']
-                    outer_archers[1].animation_speed = Tower_upgrades[f'level{self.tower_level['WT']}']['fire_rate']
+                if game.gold_quantity >= Tower_upgrades[f'level{tower_level['WT']}']['cost'] and tower_level['WT'] < 3:
+                    game.gold_quantity -= Tower_upgrades[f'level{tower_level['WT']}']['cost']
+                    tower_level['WT'] += 1
+                    outer_archers[1].attack_range = Tower_upgrades[f'level{tower_level['WT']}']['range']
+                    outer_archers[1].damage = Tower_upgrades[f'level{tower_level['WT']}']['dmg']
+                    outer_archers[1].animation_speed = Tower_upgrades[f'level{tower_level['WT']}']['fire_rate']
                     
         else :
             self.WT_button_state = 0
