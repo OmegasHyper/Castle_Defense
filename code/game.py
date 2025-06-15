@@ -13,7 +13,7 @@ from Castle import *
 from Obstacles import *
 from Stack import *
 
-
+wingame_sound = pg.mixer.Sound("../sounds/win.wav")
 button_hover_sound = pg.mixer.Sound("../sounds/button_hover.wav")
 button_click_sound = pg.mixer.Sound("../sounds/button_click.mp3")
 gold_quantity = 1000
@@ -307,10 +307,15 @@ class Game:
                 Game.time_start_wait = pg.time.get_ticks()
                 Game.get_time = False
             create = not self.wait(10000,Game.time_start_wait)      ## the timer is changable for debuging it has to be from levels table
+            if create and self.round > 3:
+                print("round finished")
+                self.gamemanager.state = "wingame"
+                wingame_sound.play()
             if create and self.round <= 3:
                 self.create_round(self.round)
                 
                 Game.get_time = True
+
         put_obst(self.all_sprites, self.Obstacles_spr,self.stack_obst)
         check_undo(self.stack_obst)
 
