@@ -6,11 +6,10 @@ from arrow import Arrow
 from settings import *
 from enemy import *
 from Tower import *
-
-
 class Archer(pg.sprite.Sprite):
-    def __init__(self, groups, pos, direction="NT",parent_tower= None):
+    def __init__(self, groups, pos, direction="NT",parent_tower= None, round):
         super().__init__(groups)
+        self.round = round
         self.frames = None  # Store animations for each direction
         self.isArcher = True # Exclude archers from y-sorting
         self.all_sprites = groups[0]
@@ -205,7 +204,7 @@ class Archer(pg.sprite.Sprite):
 
             if self.current_frame == 6:
                 # Shoot arrow at current target
-                Arrow(self.all_sprites, self.rect, self.current_target, self.direction, self.damage)
+                Arrow(self.all_sprites, self.rect, self.current_target, self.direction, self.damage, self.round)
 
     def draw_range(self, surface):
         screen_pos = pg.Vector2(self.rect.center)

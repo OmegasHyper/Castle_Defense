@@ -167,7 +167,9 @@ class Game:
         self.pause_text_rect = self.pause_text.get_frect(center = self.pause_button_rect.center)
         self.shop_text = self.pixel_font.render('Shop', True, 'white')
         self.shop_text_rect = self.shop_text.get_frect(center = self.shop_button_rect.center)
-        
+        # self.round_text = self.pixel_font.render(f'Wave: {self.round}', True, 'white')
+        # self.round_text_rect = self.round_text.get_frect(center = (WINDOW_WIDTH / 2, 80))
+
         
         #self.gold_sprite_rect = self.gold_text.get_frect(midright=(self.gold_text_rect.midleft))
         #self.gold_sprite_rect.x -= 63
@@ -240,7 +242,11 @@ class Game:
         self.display.blit(self.mid_button[self.shop_button_state], self.shop_button_rect)
         self.display.blit(self.shop_text,self.shop_text_rect)
         self.display.blit(self.pause_text , self.pause_text_rect)
-        
+        round_bg_rect = self.round_text_rect.inflate(30, 15)
+        pg.draw.rect(self.display, (0, 0, 0), round_bg_rect, border_radius=12)
+        pg.draw.rect(self.display, (255, 255, 255), round_bg_rect, width=2, border_radius=12)
+        self.display.blit(self.round_text, self.round_text_rect)
+
         gold_quantity_text = f'Gold: {gold_quantity}'
         self.gold_text = self.pixel_font.render(gold_quantity_text, True, (240, 240, 240))
         self.gold_text_rect = self.gold_text.get_frect(center = (130, 50) )
@@ -251,7 +257,7 @@ class Game:
 
         #self.draw_debug_collisions()
     def create_round(self,round):
-        r = str(round)
+        r = str(self.round)
         counter_weak = 0
         counter_strong = 0
         
@@ -259,17 +265,19 @@ class Game:
             which_create = randint(0,1)
             if (which_create and counter_weak < waves[r]['weak']) or  counter_strong ==  (waves[r]['strong']):    
                 rand_waypoint = self.enemy_waypoints[randint(0,3)]
-                self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,(self.building_sprites,self.Obstacles_spr),False))
+                self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,(self.building_sprites,self.Obstacles_spr),False, self.round))
                 counter_weak += 1
             else : 
                     rand_waypoint = self.enemy_waypoints[randint(0,3)]
-                    self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,(self.building_sprites,self.Obstacles_spr),True))
+                    self.enemy_queue.enqueue(Enemy((self.all_sprites,self.enemy_group), (rand_waypoint.x , rand_waypoint.y),rand_waypoint.name,(self.building_sprites,self.Obstacles_spr),True, self.round))
                     counter_strong +=1
                 
         Enemy.spawn_time = waves [r]['spawn_time']
-        if r =='3' : print(Enemy.total_eneimes)           ## debugging purpose
+        print(f"round {r} created")
+        if r =='3' : print(Enemy.total_eneimes)         ## debugging purpose
+        self.round_text = self.pixel_font.render(f'Wave: {self.round}', True, 'white')
+        self.round_text_rect = self.round_text.get_frect(center=(WINDOW_WIDTH / 2, 80))
         self.round+=1
-    
     time_start_wait =0
     get_time = True
     def wait (self,time, time_start_wait):
