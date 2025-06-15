@@ -113,16 +113,16 @@ waves = {
     '1': {
         'weak': 20,
         'strong': 10,
-        'spawn_time':2000
+        'spawn_time':1000
     },
     '2': {
         'weak': 30,
         'strong': 15,
-        'spawn_time':1500
+        'spawn_time':800
     },
     '3': {
         'weak': 40,
         'strong': 20,
-        'spawn_time':100
+        'spawn_time':600
     }
 }

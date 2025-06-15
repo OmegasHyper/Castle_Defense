@@ -262,7 +262,7 @@ class Enemy(pg.sprite.Sprite):
 
     def calculate_gold_reward(self):
         if self.strong:
-            return int(12 * (self.round / 1.2))
-        return int(6 * (self.round / 1.2))
+            return int(96 * (self.round / 1.2))
+        return int(64 * (self.round / 1.2))
 
 
