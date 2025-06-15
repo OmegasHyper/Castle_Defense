@@ -9,7 +9,7 @@ from sprites import *
 from archer import Archer
 from enemy import*
 from Tower import *
-
+from Castle import *
 from Obstacles import *
 from Stack import *
 
@@ -18,7 +18,6 @@ button_hover_sound = pg.mixer.Sound("../sounds/button_hover.wav")
 button_click_sound = pg.mixer.Sound("../sounds/button_click.mp3")
 gold_quantity = 1000
 outer_archers = []
-
 class Game:
     def __init__(self,display , gamemanager):
         # self.gold_sprite = pg.image.load("../sprites/map/Resources/Resources/G_Idle_(NoShadow).png").convert_alpha()
@@ -116,25 +115,30 @@ class Game:
             y = int(obj.y)+190
 
         for obj in map.get_layer_by_name('Castle'):
-            # Use the actual catsle image for scaling
-            original_image = obj.image
-            new_width = original_image.get_width() *2
-            new_height = original_image.get_height()*2
-            scaled_image = pg.transform.scale(original_image,(new_width,new_height))
-            Sprites((self.all_sprites), scaled_image, (int(obj.x+70), int(obj.y)))
-
             # Create collision surface with correct dimensions (converted to integers)
-            width = int(obj.width)-240
-            height = int(obj.height)-260
-            x = int(obj.x)+130
-            y = int(obj.y)+150
+            print(obj.name)
+            width = int(obj.width) - 80
+            height = int(obj.height) - 300
+            x = int(obj.x) + 40
+            y = int(obj.y) + 190
+            # Use the actual castle image for scaling
+            original_image = obj.image
+            new_width = original_image.get_width() * 2
+            new_height = original_image.get_height() * 2
+            scaled_image = pg.transform.scale(original_image, (new_width, new_height))
 
+            # Create an instance of the Castle class
+            castle_instance = Castle((self.all_sprites, self.building_sprites), scaled_image,
+                                     (int(obj.x + 70), int(obj.y)))
+            self.tower_dict[obj.name] = castle_instance  # Store the castle instance in the dictionary
         for obj in map.get_layer_by_name('Outer_archers_waypoints'):
             tower_name = obj.name
             parent_tower = self.tower_dict[tower_name]
             outer_archers.append(Archer((self.all_sprites, self.archer), (obj.x, obj.y), tower_name,parent_tower=parent_tower))
         for obj in map.get_layer_by_name('Inner_archers_waypoints'):
-            Archer((self.all_sprites, self.archer), (obj.x, obj.y), obj.name)
+            archer_instance=  Archer((self.all_sprites, self.archer), (obj.x, obj.y), obj.name)
+            castle_instance = self.tower_dict["Castle"]
+            castle_instance.add_archer(archer_instance)
         self.enemy_waypoints =[]
         for obj in map.get_layer_by_name('Enemy_waypoint'):
             self.enemy_waypoints.append(obj)
@@ -263,7 +267,6 @@ class Game:
                     counter_strong +=1
                 
         Enemy.spawn_time = waves [r]['spawn_time']
-        print(f"round {r} created")
         if r =='3' : print(Enemy.total_eneimes)           ## debugging purpose
         self.round+=1
     
@@ -277,7 +280,9 @@ class Game:
             return False
         else: 
             return True 
-
+    def reset(self):
+        global gold_quantity
+        gold_quantity = 2000
     def update(self,dt):
         for archer in self.archer:
             archer.update_archer(dt,self.enemy_group)
@@ -305,6 +310,13 @@ class Game:
         self.all_sprites.update(dt)
         self.collision()
         self.draw()
+        castle_instance = self.tower_dict["Castle"]
+        if  castle_instance.isDead :
+            self.gamemanager.allowIngamesound = False
+            castle_instance.play_gameover()
+            self.gamemanager.state= "gameover"
+
+
         for building in self.building_sprites:
             building.update_health(dt)
 
