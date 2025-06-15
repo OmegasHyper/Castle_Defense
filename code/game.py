@@ -16,7 +16,7 @@ from Stack import *
 
 button_hover_sound = pg.mixer.Sound("../sounds/button_hover.wav")
 button_click_sound = pg.mixer.Sound("../sounds/button_click.mp3")
-gold_quantity = 200000
+gold_quantity = 1000
 outer_archers = []
 
 class Game:
