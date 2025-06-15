@@ -1,11 +1,14 @@
 import pygame as pg 
 import game
+
 pricee = 200
+
 class Obstacles(pg.sprite.Sprite) :
     image = pg.image.load("../sprites/Obstacles/obstacle.png")
     # imsc = pg.transform.smoothscale_by(image,(0.3,0.3))
     imsc = image
     price = pricee
+
     def __init__(self,groups,pos):
         super().__init__(groups)
         self.image = Obstacles.imsc
@@ -34,6 +37,7 @@ def put_obst(all_spr,Obst_spr,stack):
 def check_undo(stack):
         if pg.key.get_just_pressed()[pg.K_z]:
             stack.pop()
+            game.gold_quantity += 200
 
 
     
