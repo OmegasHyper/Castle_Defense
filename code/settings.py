@@ -111,8 +111,8 @@ Player_upgrades =\
 ## changed for debugging
 waves = {
     '1': {
-        'weak': 200,
-        'strong': 200,
+        'weak': 5,
+        'strong': 5,
         'spawn_time':1000
     },
     '2': {

@@ -24,11 +24,16 @@ class Enemy(pg.sprite.Sprite):
     number_eneimes = 0
     total_eneimes = 0
     spawn_time = 0
+
     last_spawn_t = pg.time.get_ticks()
     show_hitboxes = True
 
-    def __init__(self, groups, pos, state, collision_spr, strong):
+    def __init__(self,groups,pos,state, collision_spr, strong, round):
+
         super().__init__(groups)
+        self.round = round
+        print(self.round) #for debugging
+        # Enemy.live_enemies +=1
         self.animate_speed = 24
         self.health = 500
         self.image = Enemy.image
@@ -245,7 +250,19 @@ class Enemy(pg.sprite.Sprite):
 
     def get_killed(self):
         Enemy.number_eneimes -= 1
-        quantity = randint(20, 50)
+        if self.strong:
+            quantity = self.calculate_gold_reward()
+            print(quantity)
+        else:
+            quantity = self.calculate_gold_reward()
+            print(quantity)
         gold(self.all_sprites, quantity, self.rect.center)
         die_sound.play()
         self.kill()
+
+    def calculate_gold_reward(self):
+        if self.strong:
+            return int(12 * (self.round / 1.2))
+        return int(6 * (self.round / 1.2))
+
+
