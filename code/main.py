@@ -76,7 +76,6 @@ class Game_Mannager:
 
             elif self.state == 'game':
                 self.game.update(dt)
-
                 self.pause_menu = Pause_menu(self.display, self)
                 self.gameover_menu = GameOver_menu(self.display, self)
                 self.shop_menu= ShopMenu(self.display,self)
@@ -85,10 +84,6 @@ class Game_Mannager:
                     main_menu_sound.stop()
                     ingame_sound.play(loops=-1)
                     self.state_switched = True
-                # self.game.draw()
-
-
-                # self.game.draw()        
             elif self.state == 'pause':
                 self.paused = not self.paused
                 self.pause_menu = Pause_menu(self.display, self)
