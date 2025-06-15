@@ -280,7 +280,9 @@ class Game:
             return False
         else: 
             return True 
-
+    def reset(self):
+        global gold_quantity
+        gold_quantity = 2000
     def update(self,dt):
         for archer in self.archer:
             archer.update_archer(dt,self.enemy_group)
@@ -310,7 +312,11 @@ class Game:
         self.draw()
         castle_instance = self.tower_dict["Castle"]
         if  castle_instance.isDead :
+            self.gamemanager.allowIngamesound = False
+            castle_instance.play_gameover()
             self.gamemanager.state= "gameover"
+
+
         for building in self.building_sprites:
             building.update_health(dt)
 
