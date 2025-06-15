@@ -61,7 +61,6 @@ class Pause_menu:
         if self.resume_button_rect.collidepoint(pg.mouse.get_pos()):
             self.resume_button_state = 1
             if not self.isButton1hovered:
-                button_hover_sound.play()
                 self.isButton1hovered = True
             if pg.mouse.get_just_pressed()[0]:
                 button_click_sound.play()
@@ -75,7 +74,6 @@ class Pause_menu:
         if self.menu_button_rect.collidepoint(pg.mouse.get_pos()):
             self.menu_button_state = 1
             if not self.isButton2hovered:
-                button_hover_sound.play()
                 self.isButton2hovered = True
 
             if pg.mouse.get_pressed()[0]:

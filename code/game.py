@@ -16,7 +16,7 @@ from Stack import *
 wingame_sound = pg.mixer.Sound("../sounds/win.wav")
 button_hover_sound = pg.mixer.Sound("../sounds/button_hover.wav")
 button_click_sound = pg.mixer.Sound("../sounds/button_click.mp3")
-gold_quantity = 100000
+gold_quantity = 1000
 outer_archers = []
 class Game:
     def __init__(self,display , gamemanager):
@@ -243,8 +243,8 @@ class Game:
         self.display.blit(self.shop_text,self.shop_text_rect)
         self.display.blit(self.pause_text , self.pause_text_rect)
         round_bg_rect = self.round_text_rect.inflate(30, 15)
-        pg.draw.rect(self.display, (0, 0, 0), round_bg_rect, border_radius=12)
-        pg.draw.rect(self.display, (255, 255, 255), round_bg_rect, width=2, border_radius=12)
+        pg.draw.rect(self.display, (54, 151, 247), round_bg_rect, border_radius=10)
+        pg.draw.rect(self.display, (0, 81, 186), round_bg_rect, width=5, border_radius=10)
         self.display.blit(self.round_text, self.round_text_rect)
 
         gold_quantity_text = f'Gold: {gold_quantity}'
@@ -276,7 +276,7 @@ class Game:
         print(f"round {r} created")
         if r =='3' : print(Enemy.total_eneimes)         ## debugging purpose
         self.round_text = self.pixel_font.render(f'Wave: {self.round}', True, 'white')
-        self.round_text_rect = self.round_text.get_frect(center=(WINDOW_WIDTH / 2, 80))
+        self.round_text_rect = self.round_text.get_frect(center=(WINDOW_WIDTH / 2, 90))
         self.round+=1
     time_start_wait =0
     get_time = True

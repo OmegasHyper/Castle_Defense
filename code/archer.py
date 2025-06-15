@@ -7,7 +7,9 @@ from settings import *
 from enemy import *
 from Tower import *
 class Archer(pg.sprite.Sprite):
-    def __init__(self, groups, pos, direction="NT",parent_tower= None, round=1):
+
+    def __init__(self, groups, pos, direction="NT",parent_tower= None, round =1):
+
         super().__init__(groups)
         self.round = round
         self.frames = None  # Store animations for each direction
@@ -17,7 +19,7 @@ class Archer(pg.sprite.Sprite):
         self.direction = direction
         self.parent_tower = parent_tower
         self.attack_range = 500
-        self.damage = 100
+        self.damage = 70
         self.load_images()
 
         self.current_frame = 1
@@ -27,11 +29,7 @@ class Archer(pg.sprite.Sprite):
 
         self.image = self.frames[self.direction][0]  # Static image
         self.rect = self.image.get_rect(center=self.pos)
-
-
         self.enemy_queue = Queue()
-
-
         self.current_target = None
 
     def load_images(self):

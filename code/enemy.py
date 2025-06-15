@@ -12,9 +12,9 @@ DARK_RED = (139, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
 die_sound = pg.mixer.Sound("../sounds/goblin_death.wav")
-die_sound.set_volume(0.4)
+die_sound.set_volume(0.1)
 goblin_attack_sound = pg.mixer.Sound("../sounds/goblin_attack.wav")
-goblin_attack_sound.set_volume(0.3)
+goblin_attack_sound.set_volume(0.1)
 
 
 class Enemy(pg.sprite.Sprite):
@@ -262,7 +262,7 @@ class Enemy(pg.sprite.Sprite):
 
     def calculate_gold_reward(self):
         if self.strong:
-            return int(12 * (self.round / 1.2))
-        return int(6 * (self.round / 1.2))
+            return int(96 * (self.round / 1.2))
+        return int(64 * (self.round / 1.2))
 
 

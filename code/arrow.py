@@ -5,7 +5,7 @@ from game import *
 import random
 
 attack_sound = pg.mixer.Sound("../sounds/Arrow_shot.wav")
-attack_sound.set_volume(0.4)
+attack_sound.set_volume(0.1)
 class Arrow(pg.sprite.Sprite):
     def __init__(self, groups, archer_rect, target, state, damage, round):
         super().__init__(groups)
