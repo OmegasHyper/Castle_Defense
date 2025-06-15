@@ -58,7 +58,7 @@ class Game_Mannager:
                 self.game.update(dt)
 
                 self.pause_menu = Pause_menu(self.display, self)
-                self.shop_menu= ShopMenu(self.display,self)
+                # self.shop_menu= ShopMenu(self.display,self)
 
                 if not  self.state_switched  :
                     main_menu_sound.stop()

@@ -70,19 +70,22 @@ strong_enemy_frames ={
 Tower_upgrades = \
     {
             'level1': {
-                'dmg': 10,
+                'dmg': 100,
                 'range': 600,
-                'fire_rate': 10
+                'fire_rate': 50,
+                'cost': 2000
             },
             'level2': {
-                'dmg': 40,
+                'dmg': 120,
                 'range': 650,
-                'fire_rate': 20
+                'fire_rate': 40,
+                'cost' : 4000
             },
             'level3': {
-                'dmg': 120,
+                'dmg': 150,
                 'range': 700,
-                'fire_rate': 30
+                'fire_rate': 25,
+                'cost' : 9000
             }
         }
 Player_upgrades =\

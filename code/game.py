@@ -16,14 +16,15 @@ from Stack import *
 
 button_hover_sound = pg.mixer.Sound("../sounds/button_hover.wav")
 button_click_sound = pg.mixer.Sound("../sounds/button_click.mp3")
-gold_quantity = 2000
-
+gold_quantity = 200000
+outer_archers = []
 
 class Game:
     def __init__(self,display , gamemanager):
         # self.gold_sprite = pg.image.load("../sprites/map/Resources/Resources/G_Idle_(NoShadow).png").convert_alpha()
         # self.gold_sprite = pg.transform.smoothscale(self.gold_sprite, (100, 100))
         self.tower_dict = {}
+        
         self.display = display
         self.all_sprites = AllSprites()
         self.collision_sprites = pg.sprite.Group()
@@ -46,6 +47,7 @@ class Game:
         self.setup()
 
     def setup(self):
+        global outer_archers
         map = pytmx.util_pygame.load_pygame('../sprites/map/map.tmx')
 
         # Load ground layers
@@ -130,7 +132,7 @@ class Game:
         for obj in map.get_layer_by_name('Outer_archers_waypoints'):
             tower_name = obj.name
             parent_tower = self.tower_dict[tower_name]
-            Archer((self.all_sprites, self.archer), (obj.x, obj.y), tower_name,parent_tower=parent_tower)
+            outer_archers.append(Archer((self.all_sprites, self.archer), (obj.x, obj.y), tower_name,parent_tower=parent_tower))
         for obj in map.get_layer_by_name('Inner_archers_waypoints'):
             Archer((self.all_sprites, self.archer), (obj.x, obj.y), obj.name)
         self.enemy_waypoints =[]
