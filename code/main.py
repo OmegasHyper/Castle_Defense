@@ -91,15 +91,12 @@ class Game_Mannager:
                     self.state_switched = True
             elif self.state == 'pause':
                 self.paused = not self.paused
-                self.pause_menu = Pause_menu(self.display, self)
-                #self.pause_menu.display_copy = self.display.copy()
+                
+                
             elif self.state == 'gameover':
                 self.gameOver = not self.gameOver
-                self.gameover_menu = GameOver_menu(self.display, self)
             elif self.state == 'wingame':
                 self.winGame = not self.winGame
-                self.wingame_menu = WinGame_menu(self.display, self)
-
             elif self.state == 'shop':
                 self.shop_menu.update()
             pg.display.update()
