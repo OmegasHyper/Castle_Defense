@@ -29,6 +29,7 @@ class Game_Mannager:
         self.allowIngamesound = True
         self.state_switched = False
         main_menu_sound.play(loops=-1)
+
         
     def load(self):
         for direction in enemy_paths.keys():
@@ -42,6 +43,13 @@ class Game_Mannager:
                 for full_path in strong_enemy_paths[direction][action]:
                         surf = pg.image.load(full_path).convert_alpha()
                         strong_enemy_frames[direction][action].append(surf)
+
+        explosion_path = '../sprites/effects/bom'
+        for i in range(8):
+            surf = pg.image.load(join(explosion_path,f'{i}.png'))
+            explosion.append(surf)
+
+
     def new_game(self):
         pg.mixer.stop()
         self.game.reset()
@@ -49,6 +57,7 @@ class Game_Mannager:
         game_manager.run()
         self.running = False
         ingame_sound.stop()
+
     def run(self):
         while self.running:
             dt = self.clock.tick_busy_loop(60)/1000

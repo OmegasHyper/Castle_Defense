@@ -266,7 +266,6 @@ class Game:
                     counter_strong +=1
                 
         Enemy.spawn_time = waves [r]['spawn_time']
-        print(f"round {r} created")
         if r =='3' : print(Enemy.total_eneimes)           ## debugging purpose
         self.round+=1
     
