@@ -1,6 +1,7 @@
 from settings import *
 button_hover_sound = pg.mixer.Sound("../sounds/button_hover.wav")
 button_click_sound = pg.mixer.Sound("../sounds/button_click.mp3")
+
 class GameOver_menu:
     def __init__(self, display, game_manager):
         self.display = display
@@ -21,6 +22,7 @@ class GameOver_menu:
         self.button_setup()
         self.isButton1hovered = False
         self.isButton2hovered = False
+
     def button_setup (self):
         buttons_spritesheet = pg.image.load('../sprites/buttons/buttons.png').convert_alpha()
         with open('../sprites/buttons/buttons.json') as f:
@@ -71,7 +73,7 @@ class GameOver_menu:
             if pg.mouse.get_just_pressed()[0]:
                 button_click_sound.play()
                 self.resume_button_state = 2
-                self.game_manager.state = 'game'
+                self.game_manager.new_game()
                 # print(self.game_manager.state)
         else :
             self.isButton1hovered = False
@@ -86,7 +88,7 @@ class GameOver_menu:
             if pg.mouse.get_pressed()[0]:
                 button_click_sound.play()
                 self.menu_button_state = 2
-                self.game_manager.state = 'menu'
+                self.game_manager.running =False
         else :
             self.menu_button_state = 0
             self.isButton2hovered = False

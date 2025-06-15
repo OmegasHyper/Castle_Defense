@@ -1,6 +1,7 @@
 from settings import *
 from allsprites import *
-
+gameover_sound = pg.mixer.Sound("../sounds/lose_game.wav")
+gameover_sound.set_volume(1)
 # This class is for the image
 class Castle(pg.sprite.Sprite):
     def __init__(self, groups, image, pos):
@@ -34,6 +35,8 @@ class Castle(pg.sprite.Sprite):
         # Red health fill based on current health
         pg.draw.rect(self.display, 'red', (x + 4, y + 4, int((bar_width - 8) * health_ratio), bar_height - 8),
                      border_radius=6)
+    def play_gameover(self):
+        gameover_sound.play()
     def update_health(self, dt):
         self.load_health_bar()
 

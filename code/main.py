@@ -26,6 +26,7 @@ class Game_Mannager:
         self.clock = pg.time.Clock()
         self.state = 'menu'
         self.load()
+        self.allowIngamesound = True
         self.state_switched = False
         main_menu_sound.play(loops=-1)
         
@@ -41,7 +42,13 @@ class Game_Mannager:
                 for full_path in strong_enemy_paths[direction][action]:
                         surf = pg.image.load(full_path).convert_alpha()
                         strong_enemy_frames[direction][action].append(surf)
-                        
+    def new_game(self):
+        pg.mixer.stop()
+        self.game.reset()
+        game_manager = Game_Mannager()
+        game_manager.run()
+        self.running = False
+        ingame_sound.stop()
     def run(self):
         while self.running:
             dt = self.clock.tick_busy_loop(60)/1000
@@ -65,7 +72,7 @@ class Game_Mannager:
                 self.gameover_menu = GameOver_menu(self.display, self)
                 self.shop_menu= ShopMenu(self.display,self)
 
-                if not  self.state_switched  :
+                if not  self.state_switched  and self.allowIngamesound :
                     main_menu_sound.stop()
                     ingame_sound.play(loops=-1)
                     self.state_switched = True
