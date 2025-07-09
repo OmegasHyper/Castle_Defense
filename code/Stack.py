@@ -24,7 +24,7 @@ class Stack :
     def display(self):
         current = self.top
         while current:
-            print(current.data)
+            # print(current.data)
             current = current.next
     def isempty(self):
         return self.top is None

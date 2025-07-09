@@ -42,5 +42,5 @@ class gold(pg.sprite.Sprite):
             else:
                 # print(f"{self.quantity} Gold collected")
                 game.gold_quantity += self.quantity
-                print(game.gold_quantity)
+                # print(game.gold_quantity)
                 self.kill()

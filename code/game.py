@@ -117,7 +117,7 @@ class Game:
 
         for obj in map.get_layer_by_name('Castle'):
             # Create collision surface with correct dimensions (converted to integers)
-            print(obj.name)
+            # print(obj.name)
             width = int(obj.width) - 80
             height = int(obj.height) - 300
             x = int(obj.x) + 40
@@ -274,8 +274,8 @@ class Game:
                     counter_strong +=1
                 
         Enemy.spawn_time = waves [r]['spawn_time']
-        print(f"round {r} created")
-        if r =='3' : print(Enemy.total_eneimes)         ## debugging purpose
+        # print(f"round {r} created")
+        # if r =='3' : print(Enemy.total_eneimes)         ## debugging purpose
         self.round_text = self.pixel_font.render(f'Wave: {self.round}', True, 'white')
         self.round_text_rect = self.round_text.get_frect(center=(WINDOW_WIDTH / 2, 90))
         self.round+=1
@@ -309,7 +309,7 @@ class Game:
                 Game.get_time = False
             create = not self.wait(10000,Game.time_start_wait)      ## the timer is changable for debuging it has to be from levels table
             if create and self.round > 3 and Enemy.number_eneimes == 0:
-                print("round finished")
+                # print("round finished")
                 self.gamemanager.state = "wingame"
                 wingame_sound.play()
             if create and self.round <= 3:

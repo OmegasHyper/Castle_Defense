@@ -32,7 +32,7 @@ class Enemy(pg.sprite.Sprite):
 
         super().__init__(groups)
         self.round = round
-        print(self.round) #for debugging
+        # print(self.round) #for debugging
         # Enemy.live_enemies +=1
         self.animate_speed = 24
         self.health = 500
@@ -80,10 +80,10 @@ class Enemy(pg.sprite.Sprite):
             self.explosion_cooldown = 100
             self.isExploding = False
             self.explosion_triggered = False
-            print("strong created")
+            # print("strong created")
 
         else:
-            print("weak created")  ## debugging
+            # print("weak created")  ## debugging
             self.damage = 2
 
         ## HEALTH PRE-RENDERING (OPTIMIZE FPS) AND INITIALIZATION
@@ -252,10 +252,10 @@ class Enemy(pg.sprite.Sprite):
         Enemy.number_eneimes -= 1
         if self.strong:
             quantity = self.calculate_gold_reward()
-            print(quantity)
+            # print(quantity)
         else:
             quantity = self.calculate_gold_reward()
-            print(quantity)
+            # print(quantity)
         gold(self.all_sprites, quantity, self.rect.center)
         die_sound.play()
         self.kill()
